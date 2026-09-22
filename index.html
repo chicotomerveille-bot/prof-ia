@@ -1062,8 +1062,9 @@ PDF, poly, photo de cahier : importé en secondes, résumé en 3 points clés.
 <svg aria-hidden="true" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
 </div>
 <h2 id="pay-success-title" class="text-2xl sm:text-3xl font-black text-slate-950 tracking-tight">Paiement réussi !</h2>
-<p class="text-sm sm:text-base text-slate-600 mt-3 leading-relaxed">Ton Pack arrive par e-mail dans ~2 minutes. Vérifie aussi tes spams.</p>
-<p id="pay-success-ref" class="text-xs text-slate-400 mt-2 font-mono"></p>
+<p class="text-sm sm:text-base text-slate-600 mt-3 leading-relaxed">Ton Pack est prêt. Télécharge-le maintenant :</p>
+<div id="pay-delivery-list" class="mt-4 space-y-2 text-left"></div>
+<p id="pay-success-ref" class="text-xs text-slate-400 mt-3 font-mono"></p>
 <button id="pay-success-close" class="btn-primary-gradient mt-6 flex items-center justify-center gap-2 rounded-2xl px-5 py-4 text-white font-extrabold shadow-glow min-h-[52px] w-full cursor-pointer">Commencer la configuration →</button>
 </div>
 </div>
@@ -1078,6 +1079,15 @@ var KK_CONFIG = {
   theme: '#0066FF',
   product: 'Pack Systeme Prof IA'
 };
+/* LIVRAISON AUTOMATIQUE — mets tes fichiers dans le dossier "pack/" du site
+   (ex: pack/guide-prof-ia.pdf) et liste-les ici. Ils apparaîtront en
+   téléchargement immédiat dès le paiement validé. */
+var KK_DELIVERY = [
+  { titre: 'Guide pratique pas-à-pas (PDF)', fichier: 'pack/guide-prof-ia.pdf' },
+  { titre: '60 prompts pédagogiques (PDF)', fichier: 'pack/prompts-prof-ia.pdf' },
+  { titre: 'Templates & fiches examen (PDF)', fichier: 'pack/templates-prof-ia.pdf' },
+  { titre: 'Lien Masterclass vidéo privée', fichier: 'https://REPLACE_PAR_LIEN_VIDEO' }
+];
 function openPayment() {
   if (typeof openKkiapayWidget === 'undefined') {
     var t = document.getElementById('tarifs');
@@ -1101,9 +1111,25 @@ function openPayment() {
   function showSuccess(ref) {
     var m = document.getElementById('pay-success-modal');
     if (ref) document.getElementById('pay-success-ref').textContent = 'Réf : ' + ref;
+    var list = document.getElementById('pay-delivery-list');
+    list.innerHTML = '';
+    for (var i = 0; i < KK_DELIVERY.length; i++) {
+      (function (item) {
+        var a = document.createElement('a');
+        a.href = item.fichier;
+        a.setAttribute('download', '');
+        a.setAttribute('target', '_blank');
+        a.setAttribute('rel', 'noopener');
+        a.className = 'flex items-center gap-3 rounded-xl border border-emerald-200 bg-emerald-50 hover:bg-emerald-100 px-4 py-3 text-sm font-bold text-emerald-900 transition-colors';
+        a.innerHTML = '<svg aria-hidden="true" style="width:18px;height:18px;flex-shrink:0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg><span></span>';
+        a.querySelector('span').textContent = item.titre;
+        list.appendChild(a);
+      })(KK_DELIVERY[i]);
+    }
     m.classList.remove('hidden');
     m.classList.add('flex');
   }
+  window.__showPaySuccess = showSuccess;
   document.getElementById('pay-success-close').addEventListener('click', function () {
     var m = document.getElementById('pay-success-modal');
     m.classList.add('hidden');
