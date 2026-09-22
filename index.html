@@ -1069,23 +1069,11 @@ PDF, poly, photo de cahier : importé en secondes, résumé en 3 points clés.
   document.getElementById('exit-overlay').addEventListener('click', hide);
   document.getElementById('exit-cta').addEventListener('click', hide);
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') hide(); });
-  // Desktop : souris qui quitte vers le haut (onglet / fermeture)
+  // Desktop : souris qui quitte vers le haut (onglet / fermeture).
+  // C'est le seul vrai signal de sortie : rien ne s'affiche au scroll ni au bout d'un délai.
   document.addEventListener('mouseout', function (e) {
     if (!e.relatedTarget && e.clientY <= 0) show();
   });
-  // Mobile : remontée rapide après lecture profonde, ou 50 s + 40 % lus
-  var maxDepth = 0, lastY = window.scrollY, lastT = Date.now();
-  function depth() {
-    var h = document.documentElement.scrollHeight - window.innerHeight;
-    return h > 0 ? window.scrollY / h : 0;
-  }
-  window.addEventListener('scroll', function () {
-    var y = window.scrollY, t = Date.now();
-    maxDepth = Math.max(maxDepth, depth());
-    if (maxDepth > 0.6 && lastY - y > 400 && t - lastT < 600) show();
-    lastY = y; lastT = t;
-  }, { passive: true });
-  setTimeout(function () { if (maxDepth > 0.4) show(); }, 50000);
 })();
 </script>
 </body></html>
