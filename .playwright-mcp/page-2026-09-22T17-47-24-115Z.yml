@@ -1,0 +1,491 @@
+- generic [active] [ref=f3e1]:
+  - link "Aller au contenu" [ref=f3e2] [cursor=pointer]:
+    - /url: "#contenu-pack"
+  - complementary [ref=f3e3]:
+    - generic [ref=f3e4]:
+      - generic [ref=f3e5]: "Lancement : 3 900 FCFA au lieu de 14 000 FCFA"
+      - generic [ref=f3e8]: Paiement unique • À vie • Sans abonnement
+      - link "J'en profite →" [ref=f3e9] [cursor=pointer]:
+        - /url: "#tarifs"
+  - banner [ref=f3e10]:
+    - navigation "Navigation principale" [ref=f3e11]:
+      - link "Prof IA - Accueil" [ref=f3e12] [cursor=pointer]:
+        - /url: "#"
+        - img "Logo Prof IA Tuteur Intelligent" [ref=f3e13]
+      - generic [ref=f3e14]:
+        - link "Le Pack" [ref=f3e15] [cursor=pointer]:
+          - /url: "#contenu-pack"
+        - link "Démo" [ref=f3e16] [cursor=pointer]:
+          - /url: "#demonstration"
+        - link "Résultats" [ref=f3e17] [cursor=pointer]:
+          - /url: "#avis"
+        - link "Offre 3 900 FCFA" [ref=f3e18] [cursor=pointer]:
+          - /url: "#tarifs"
+        - link "FAQ" [ref=f3e19] [cursor=pointer]:
+          - /url: "#faq"
+      - link "Mon tuteur (3 900 FCFA)" [ref=f3e21] [cursor=pointer]:
+        - /url: "#tarifs"
+  - main [ref=f3e25]:
+    - generic [ref=f3e28]:
+      - generic [ref=f3e29]:
+        - generic [ref=f3e30]: SYSTÈME CLÉ-EN-MAIN • PAIEMENT UNIQUE • SANS ABONNEMENT
+        - heading "Contrôle demain et le cours de 40 pages n'est même pas ouvert ?" [level=1] [ref=f3e35]
+        - generic [ref=f3e36]:
+          - paragraph [ref=f3e37]: Configure en 10 minutes un tuteur IA qui explique, interroge et corrige — à 23h30, sans jugement.
+          - paragraph [ref=f3e38]:
+            - text: Guide + méthode + 60 prompts pour transformer les IA gratuites (ChatGPT, Gemini…) en vrai tuteur. Pour toi ou ton enfant.
+            - strong [ref=f3e39]: 3 900 FCFA une fois, à vie.
+          - generic [ref=f3e40]:
+            - generic [ref=f3e44]:
+              - paragraph [ref=f3e45]: Pour les Parents
+              - paragraph [ref=f3e46]: Un investissement unique (3 900 FCFA à vie vs 30 000 FCFA/h de cours particulier) qui pacifie les soirées.
+            - generic [ref=f3e50]:
+              - paragraph [ref=f3e51]: Pour les Élèves
+              - paragraph [ref=f3e52]: Ton tuteur de poche configuré en 10 min sur ton smartphone. Il analyse tes polycopiés et répond à 23h30 sans jugement.
+        - generic [ref=f3e53]:
+          - link "Je configure mon tuteur maintenant (3 900 FCFA) →" [ref=f3e54] [cursor=pointer]:
+            - /url: "#tarifs"
+            - generic [ref=f3e55]: Je configure mon tuteur maintenant (3 900 FCFA)
+            - generic [ref=f3e56]: →
+          - link "Voir ce que contient le pack" [ref=f3e57] [cursor=pointer]:
+            - /url: "#contenu-pack"
+        - generic [ref=f3e61]:
+          - generic [ref=f3e62]:
+            - generic [ref=f3e63]: ✓
+            - generic [ref=f3e64]: Reçu par e-mail en 2 minutes
+          - generic [ref=f3e65]:
+            - generic [ref=f3e66]: ✓
+            - generic [ref=f3e67]: Fonctionne dès ce soir
+          - generic [ref=f3e68]:
+            - generic [ref=f3e69]: ✓
+            - generic [ref=f3e70]: Remboursé si ça ne marche pas pour toi
+        - generic [ref=f3e71]:
+          - generic [ref=f3e72]:
+            - generic [ref=f3e73]: LR
+            - generic [ref=f3e74]: KA
+            - generic [ref=f3e75]: TM
+            - generic [ref=f3e76]: SB
+          - generic [ref=f3e77]:
+            - generic [ref=f3e78]:
+              - text: ★ ★ ★ ★ ★
+              - generic [ref=f3e79]: 4.9/5
+            - paragraph [ref=f3e80]: Adopté par plus de 25 000 familles et étudiants autonomes
+      - generic [ref=f3e81]:
+        - generic [ref=f3e83]:
+          - img "Le Système Prof IA révise plus de 300 pages de cours avec assistant intelligent" [ref=f3e84]
+          - generic: Toutes matières • Tous niveaux
+        - generic [ref=f3e89]:
+          - paragraph [ref=f3e90]: Pack Téléchargeable
+          - paragraph [ref=f3e91]: Actif en 10 minutes
+        - generic [ref=f3e96]:
+          - paragraph [ref=f3e97]: Paiement Unique
+          - paragraph [ref=f3e98]: Tu possèdes le système à vie
+    - generic [ref=f3e100]:
+      - heading "Soyons clairs sur ce que tu achètes." [level=2] [ref=f3e101]
+      - generic [ref=f3e102]:
+        - paragraph [ref=f3e103]: Pas d'abonnement. Pas de logiciel. Pas d'IA « propriétaire ».
+        - paragraph [ref=f3e104]: La méthode exacte — vidéo écran + étapes — pour configurer les IA gratuites (ChatGPT, Gemini…) en vrai prof qui interroge au lieu de donner la réponse.
+        - paragraph [ref=f3e105]:
+          - strong [ref=f3e106]: 3 900 FCFA, une fois.
+          - text: À vie.
+    - generic [ref=f3e108]:
+      - paragraph [ref=f3e109]: Peu importe ta matière, ton niveau, ta filière.
+      - paragraph [ref=f3e110]: Le tuteur s'adapte à ton programme — pas l'inverse.
+      - generic [ref=f3e111]:
+        - generic [ref=f3e112]: Maths
+        - generic [ref=f3e113]: Physique-Chimie
+        - generic [ref=f3e114]: SVT
+        - generic [ref=f3e115]: Français
+        - generic [ref=f3e116]: Anglais
+        - generic [ref=f3e117]: Histoire-Géo
+        - generic [ref=f3e118]: Philo
+        - generic [ref=f3e119]: Droit
+        - generic [ref=f3e120]: Médecine
+        - generic [ref=f3e121]: Compta
+        - generic [ref=f3e122]: Informatique
+        - generic [ref=f3e123]: Économie
+      - paragraph [ref=f3e124]: Collège • Lycée • Fac • Concours
+    - generic [ref=f3e126]:
+      - generic [ref=f3e127]:
+        - generic [ref=f3e128]: LE PACK DIGITAL CLÉ-EN-MAIN
+        - heading "Ce que tu reçois instantanément par e-mail après ta commande" [level=2] [ref=f3e131]
+        - paragraph [ref=f3e132]: Guide + vidéo + 60 prompts. Ton téléphone devient un tuteur.
+      - generic [ref=f3e133]:
+        - generic [ref=f3e134]:
+          - generic [ref=f3e135]:
+            - text: Module 1 • E-book interactif
+            - heading "Le Guide Pratique Pas-à-Pas" [level=3] [ref=f3e139]
+            - paragraph [ref=f3e140]: "Le manuel illustré : tuteur prêt en 10 minutes, sans technique."
+          - generic [ref=f3e141]:
+            - generic [ref=f3e142]: Format PDF & Notion
+            - generic [ref=f3e143]: "Valeur : 25 000 FCFA"
+        - generic [ref=f3e144]:
+          - generic [ref=f3e145]:
+            - text: Module 2 • Vidéo HD
+            - heading "La Masterclass d'Installation (15 min)" [level=3] [ref=f3e150]
+            - paragraph [ref=f3e151]: "Écran filmé : tu reproduis les réglages exacts."
+          - generic [ref=f3e152]:
+            - generic [ref=f3e153]: Accès vidéo privé à vie
+            - generic [ref=f3e154]: "Valeur : 30 000 FCFA"
+        - generic [ref=f3e155]:
+          - generic [ref=f3e156]:
+            - text: Module 3 • Copier-Coller
+            - heading "Bibliothèque de Prompts Pédagogiques" [level=3] [ref=f3e160]
+            - paragraph [ref=f3e161]: "60 prompts socratiques : l'IA fait chercher, pas tricher."
+          - generic [ref=f3e162]:
+            - generic [ref=f3e163]: +60 Prompts calibrés
+            - generic [ref=f3e164]: "Valeur : 32 000 FCFA"
+        - generic [ref=f3e165]:
+          - generic [ref=f3e166]:
+            - text: Module 4 • Fiches & Outils
+            - heading "Templates & Feuilles d'Examen" [level=3] [ref=f3e170]
+            - paragraph [ref=f3e171]: "Quiz, flashcards, barème : ta note anticipée avant le Bac."
+          - generic [ref=f3e172]:
+            - generic [ref=f3e173]: Fichiers prêts à l'emploi
+            - generic [ref=f3e174]: "Valeur : 19 000 FCFA"
+      - generic [ref=f3e175]:
+        - generic [ref=f3e176]:
+          - paragraph [ref=f3e177]: "Valeur totale cumulée du Pack : 106 000 FCFA"
+          - paragraph [ref=f3e178]: "Le Système Complet : 3 900 FCFA une fois."
+        - link "Débloquer mon pack (3 900 FCFA) →" [ref=f3e179] [cursor=pointer]:
+          - /url: "#tarifs"
+    - generic [ref=f3e181]:
+      - generic [ref=f3e182]:
+        - generic [ref=f3e183]: "DOUBLE CIBLE : DEUX VISIONS, UN MÊME SUCCÈS"
+        - 'heading "Parents et élèves : tu te reconnais ?" [level=2] [ref=f3e188]'
+      - generic [ref=f3e189]:
+        - generic [ref=f3e190]:
+          - generic [ref=f3e191]: CÔTÉ PARENTS
+          - generic [ref=f3e195]:
+            - generic [ref=f3e196]:
+              - img "Besoin d'un Prof IA pour ton enfant ? Fin du calvaire des devoirs" [ref=f3e197]
+              - generic [ref=f3e198]: Temps d'écran canalisé vers la réussite
+            - heading "TU TE RECONNAIS ?" [level=3] [ref=f3e199]
+            - paragraph [ref=f3e202]: Si une seule de ces phrases résonne, ce système a été conçu pour toi.
+            - list [ref=f3e203]:
+              - listitem [ref=f3e204]:
+                - generic [ref=f3e205]: ✓
+                - generic [ref=f3e206]: Épuisé(e) le soir, encore les devoirs à superviser.
+              - listitem [ref=f3e207]:
+                - generic [ref=f3e208]: ✓
+                - generic [ref=f3e209]: « Je comprends pas » — et programme de 3ème oublié.
+              - listitem [ref=f3e210]:
+                - generic [ref=f3e211]: ✓
+                - generic [ref=f3e212]: "Prof à 30 000–40 000 FCFA/h : budget impossible chaque semaine."
+              - listitem [ref=f3e213]:
+                - generic [ref=f3e214]: ✓
+                - generic [ref=f3e215]: Son téléphone devient son outil de révision.
+          - generic [ref=f3e216]:
+            - generic [ref=f3e217]: Paix retrouvée à la maison
+            - link "Obtenir le Pack Famille →" [ref=f3e220] [cursor=pointer]:
+              - /url: "#tarifs"
+        - generic [ref=f3e221]:
+          - generic [ref=f3e222]: CÔTÉ ÉLÈVE & ÉTUDIANT
+          - generic [ref=f3e226]:
+            - generic [ref=f3e227]:
+              - img "Apprendre plus vite avec Prof IA - Étudiant débordé libéré" [ref=f3e228]
+              - generic [ref=f3e229]: Tes fiches de révision de bac assimilées sans stress
+            - heading "TU TE RECONNAIS ?" [level=3] [ref=f3e230]
+            - paragraph [ref=f3e233]: Si tu te reconnais dans au moins une de ces situations, le Système Prof IA a été pensé pour toi.
+            - list [ref=f3e234]:
+              - listitem [ref=f3e235]:
+                - generic [ref=f3e236]: ✓
+                - generic [ref=f3e237]: Contrôle dans 2 jours, cours jamais ouvert.
+              - listitem [ref=f3e238]:
+                - generic [ref=f3e239]: ✓
+                - generic [ref=f3e240]: Même phrase relue 3 fois, rien compris.
+              - listitem [ref=f3e241]:
+                - generic [ref=f3e242]: ✓
+                - generic [ref=f3e243]: Peur de poser une question « nulle » en classe.
+              - listitem [ref=f3e244]:
+                - generic [ref=f3e245]: ✓
+                - generic [ref=f3e246]: Bloqué à 23h, personne pour aider.
+          - generic [ref=f3e247]:
+            - generic [ref=f3e248]: +3,8 points sur ta moyenne
+            - link "Obtenir l'accès immédiat (3 900 FCFA) →" [ref=f3e251] [cursor=pointer]:
+              - /url: "#tarifs"
+    - generic [ref=f3e254]:
+      - img "Tes cours. Ton professeur. Ton rythme. Apprends avec le Système Prof IA" [ref=f3e257]
+      - generic [ref=f3e258]:
+        - generic [ref=f3e259]: COMMENT FONCTIONNE LE SYSTÈME DANS TON SMARTPHONE
+        - heading "Tes cours. Ton professeur. Opérationnel en 10 minutes chrono." [level=2] [ref=f3e263]
+        - paragraph [ref=f3e264]: "Transforme les IA gratuites en tuteur : sans programmer, sans abonnement."
+        - generic [ref=f3e265]:
+          - generic [ref=f3e266]:
+            - heading "Connexion de tous tes cours" [level=3] [ref=f3e270]
+            - paragraph [ref=f3e271]: "PDF ou photo de cours : l'IA connaît ton programme."
+          - generic [ref=f3e272]:
+            - heading "Méthode socratique intégrée" [level=3] [ref=f3e276]
+            - paragraph [ref=f3e277]: "Pas de réponse toute faite : la bonne question au bon moment."
+          - generic [ref=f3e278]:
+            - heading "Générateur de fiches & flashcards" [level=3] [ref=f3e282]
+            - paragraph [ref=f3e283]: "Quiz et flashcards : révision dans le bus ou au lit."
+          - generic [ref=f3e284]:
+            - heading "Simulateur d'examens et Bac" [level=3] [ref=f3e288]
+            - paragraph [ref=f3e289]: "Correction type correcteur : ta note avant l'examen."
+        - generic [ref=f3e290]:
+          - link "Je configure mon tuteur maintenant (3 900 FCFA) →" [ref=f3e291] [cursor=pointer]:
+            - /url: "#tarifs"
+          - generic [ref=f3e292]: Paiement unique • Accès instantané par e-mail
+    - generic [ref=f3e294]:
+      - generic [ref=f3e295]:
+        - text: MISE EN PLACE ÉCLAIR
+        - heading "Comment ça se passe concrètement ?" [level=2] [ref=f3e296]
+        - paragraph [ref=f3e297]: Un protocole en 4 étapes simples qui élimine toute difficulté technique.
+      - generic [ref=f3e298]:
+        - generic [ref=f3e299]:
+          - generic [ref=f3e300]: "1"
+          - heading "Accès immédiat au Pack" [level=3] [ref=f3e301]
+          - paragraph [ref=f3e302]: Reçu par e-mail. PC, Mac, iPhone, Android.
+          - generic [ref=f3e303]: Instantané (0 seconde d'attente)
+        - generic [ref=f3e304]:
+          - generic [ref=f3e305]: "2"
+          - heading "Installation en 10 minutes" [level=3] [ref=f3e306]
+          - paragraph [ref=f3e307]: "Vidéo 15 min : copier-coller les prompts, c'est prêt."
+          - generic [ref=f3e308]: Guidé pas-à-pas à l'écran
+        - generic [ref=f3e309]:
+          - generic [ref=f3e310]: "3"
+          - heading "Injection de tes cours" [level=3] [ref=f3e311]
+          - paragraph [ref=f3e312]: "Cours, exercices, photos : quiz interactifs en 10 s."
+          - generic [ref=f3e313]: Disponible 24h/24 dans ta poche
+        - generic [ref=f3e314]:
+          - generic [ref=f3e315]: "4"
+          - heading "Notes en hausse & Paix" [level=3] [ref=f3e316]
+          - paragraph [ref=f3e317]: +3,8 pts de moyenne. Dossier Parcoursup sécurisé.
+          - generic [ref=f3e318]: Système à vie
+    - generic [ref=f3e320]:
+      - generic [ref=f3e321]:
+        - generic [ref=f3e322]: EFFICACITÉ REDOUTABLE
+        - 'heading "Sans le système : la galère. Avec : le résultat." [level=2] [ref=f3e325]'
+        - paragraph [ref=f3e326]: Le même dimanche soir de révision, deux réalités.
+      - generic [ref=f3e327]:
+        - generic [ref=f3e328]:
+          - generic [ref=f3e329]:
+            - generic [ref=f3e330]: "Sans : la galère"
+            - generic [ref=f3e331]: Dimanche 23h
+          - generic [ref=f3e332]:
+            - paragraph [ref=f3e333]: Bloqué sur un exo, personne pour aider
+            - paragraph [ref=f3e334]: "• Cours particulier : 30 000 FCFA/h, budget impossible"
+            - paragraph [ref=f3e335]: • Contrôle demain, 300 pages jamais ouvertes
+            - paragraph [ref=f3e336]: • Nuit blanche, note au hasard
+        - generic [ref=f3e337]:
+          - generic [ref=f3e341]: Tuteur configuré en 10 min
+          - generic [ref=f3e342]: Résultat en 10 secondes
+        - generic [ref=f3e343]:
+          - generic [ref=f3e344]:
+            - generic [ref=f3e345]: "Avec : le résultat"
+            - generic [ref=f3e346]: 3 900 FCFA, une fois
+          - generic [ref=f3e347]:
+            - generic [ref=f3e348]:
+              - generic [ref=f3e349]: ✓
+              - paragraph [ref=f3e350]:
+                - strong [ref=f3e351]: "Tuteur à 23h30 :"
+                - text: explique sans juger.
+            - generic [ref=f3e352]:
+              - generic [ref=f3e353]: ✓
+              - paragraph [ref=f3e354]:
+                - strong [ref=f3e355]: "Quiz auto en 10 s :"
+                - text: comme le correcteur du Bac.
+            - generic [ref=f3e356]:
+              - generic [ref=f3e357]: ✓
+              - paragraph [ref=f3e358]:
+                - strong [ref=f3e359]: "À vie :"
+                - text: toute la scolarité, zéro abonnement.
+          - generic [ref=f3e360]:
+            - generic [ref=f3e361]: Mémorisation active
+            - generic [ref=f3e362]: +92% d'assimilation
+      - generic [ref=f3e363]:
+        - generic [ref=f3e364]:
+          - paragraph [ref=f3e365]: Cours particulier
+          - paragraph [ref=f3e366]: 30 000 FCFA/h
+          - paragraph [ref=f3e367]: ≈ 350 000 FCFA le trimestre
+        - generic [ref=f3e368]:
+          - paragraph [ref=f3e369]: Applis par abonnement
+          - paragraph [ref=f3e370]: 20 000 FCFA/mois
+          - paragraph [ref=f3e371]: ≈ 240 000 FCFA par an, à vie jamais à toi
+        - generic [ref=f3e372]:
+          - paragraph [ref=f3e373]: Système Prof IA
+          - paragraph [ref=f3e374]: 3 900 FCFA
+          - paragraph [ref=f3e375]: Une fois. À vie. 20× moins cher qu'un mois de cours.
+    - generic [ref=f3e378]:
+      - generic [ref=f3e379]:
+        - paragraph [ref=f3e380]: +3,8 pts
+        - paragraph [ref=f3e381]: Moyenne en hausse
+      - generic [ref=f3e382]:
+        - paragraph [ref=f3e383]: 94,2 %
+        - paragraph [ref=f3e384]: Réussite examens
+      - generic [ref=f3e385]:
+        - paragraph [ref=f3e386]: 10 min
+        - paragraph [ref=f3e387]: Installation chrono
+      - generic [ref=f3e388]:
+        - paragraph [ref=f3e389]: 350 000 FCFA
+        - paragraph [ref=f3e390]: Économisés / trimestre
+    - generic [ref=f3e392]:
+      - generic [ref=f3e393]:
+        - generic [ref=f3e394]: TÉMOIGNAGES VÉRIFIÉS
+        - heading "Ils appliquent le Système Prof IA au quotidien." [level=2] [ref=f3e397]
+        - paragraph [ref=f3e398]: Découvre comment ce pack digital à paiement unique a changé leurs révisions.
+      - generic [ref=f3e399]:
+        - generic [ref=f3e400]:
+          - generic [ref=f3e401]: Avis Lycéen
+          - generic [ref=f3e402]:
+            - generic [ref=f3e403]: ★★★★★
+            - paragraph [ref=f3e404]: « 3 900 FCFA, 10 minutes sur iPhone. À 23h mon tuteur me guide pas à pas. 17/20 au Bac. »
+          - generic [ref=f3e405]:
+            - generic [ref=f3e406]: MK
+            - generic [ref=f3e407]:
+              - paragraph [ref=f3e408]: Malik K.
+              - paragraph [ref=f3e409]: Terminale Générale (Mention Très Bien)
+        - generic [ref=f3e410]:
+          - generic [ref=f3e411]: Avis Parent d'Élève
+          - generic [ref=f3e412]:
+            - generic [ref=f3e413]: ★★★★★
+            - paragraph [ref=f3e414]: "« 130 000 FCFA/mois de prof sans progrès. Un samedi : téléphone configuré. Le soir, zéro dispute. »"
+          - generic [ref=f3e415]:
+            - generic [ref=f3e416]: CD
+            - generic [ref=f3e417]:
+              - paragraph [ref=f3e418]: Corinne D.
+              - paragraph [ref=f3e419]: Maman de Lucas (élève en 1ère générale)
+        - generic [ref=f3e420]:
+          - generic [ref=f3e421]: Avis Étudiante
+          - generic [ref=f3e422]:
+            - generic [ref=f3e423]: ★★★★★
+            - paragraph [ref=f3e424]: "« Syllabus de 300 pages ingérable. Prompts + flashcards : je révise dans le métro. »"
+          - generic [ref=f3e425]:
+            - generic [ref=f3e426]: SL
+            - generic [ref=f3e427]:
+              - paragraph [ref=f3e428]: Sarah L.
+              - paragraph [ref=f3e429]: Étudiante Licence 1 Économie
+    - generic [ref=f3e431]:
+      - generic [ref=f3e432]:
+        - generic [ref=f3e433]: OFFRE DE LANCEMENT À VIE
+        - heading "Un investissement unique. Zéro abonnement mensuel caché." [level=2] [ref=f3e437]: Un investissement unique.Zéro abonnement mensuel caché.
+        - paragraph [ref=f3e438]: "Une demi-heure de cours particulier = 15 000 FCFA. Ici : 3 900 FCFA, une fois, à vie."
+      - generic [ref=f3e440]:
+        - generic [ref=f3e441]: PACK COMPLET CLÉ-EN-MAIN • ACCÈS IMMÉDIAT À VIE
+        - generic [ref=f3e444]:
+          - heading "Le Système Prof IA" [level=3] [ref=f3e445]
+          - paragraph [ref=f3e446]: Guide pratique + Masterclass vidéo + Bibliothèque de prompts d'élite + Modèles
+          - generic [ref=f3e447]:
+            - generic [ref=f3e448]: 14 000 FCFA
+            - generic [ref=f3e449]: 3 900 FCFA
+            - generic [ref=f3e450]: Paiement unique
+          - paragraph [ref=f3e451]: ✓ Accès immédiat par e-mail • Aucun abonnement mensuel • Mises à jour incluses
+        - generic [ref=f3e452]:
+          - paragraph [ref=f3e453]: "Tout ce qui est inclus dans ton pack :"
+          - generic [ref=f3e454]:
+            - generic [ref=f3e455]: ✓
+            - generic [ref=f3e456]:
+              - strong [ref=f3e457]: "Guide complet :"
+              - text: tuteur prêt en 10 minutes.
+          - generic [ref=f3e458]:
+            - generic [ref=f3e459]: ✓
+            - generic [ref=f3e460]:
+              - strong [ref=f3e461]: "Masterclass 15 min :"
+              - text: iPhone, Android, ordi.
+          - generic [ref=f3e462]:
+            - generic [ref=f3e463]: ✓
+            - generic [ref=f3e464]:
+              - strong [ref=f3e465]: "60 prompts socratiques :"
+              - text: zéro triche.
+          - generic [ref=f3e466]:
+            - generic [ref=f3e467]: ✓
+            - generic [ref=f3e468]:
+              - strong [ref=f3e469]: "Quiz + flashcards :"
+              - text: révision active partout.
+          - generic [ref=f3e470]:
+            - generic [ref=f3e471]: ✓
+            - generic [ref=f3e472]:
+              - strong [ref=f3e473]: "Barème examen :"
+              - text: ta note avant le jour J.
+          - generic [ref=f3e474]:
+            - generic [ref=f3e475]: ✓
+            - generic [ref=f3e476]:
+              - strong [ref=f3e477]: "Modèles Notion/PDF :"
+              - text: toutes matières, 1 clic.
+        - generic [ref=f3e478]:
+          - link "Obtenir mon accès immédiat au Système Prof IA (Paiement unique 3 900 FCFA) →" [ref=f3e479] [cursor=pointer]:
+            - /url: https://buy.stripe.com/REPLACE_ME
+          - paragraph [ref=f3e480]:
+            - generic [ref=f3e481]: Paiement sécurisé Stripe 256 bits
+            - generic [ref=f3e484]: •
+            - generic [ref=f3e485]: Envoi instantané par e-mail
+      - generic [ref=f3e493]:
+        - heading "Garantie 30 jours satisfait ou remboursé à 100 %" [level=4] [ref=f3e494]
+        - paragraph [ref=f3e495]: 30 jours pour tester. Pas de résultat ? 1 e-mail, remboursé.
+      - generic [ref=f3e496]:
+        - text: Pourquoi nous avons refusé le modèle de l'abonnement mensuel ?
+        - paragraph [ref=f3e497]: Pas d'abonnement à 20 000 FCFA/mois. 3 900 FCFA une fois, pour toute la scolarité.
+    - generic [ref=f3e499]:
+      - generic [ref=f3e500]:
+        - generic [ref=f3e501]: QUESTIONS FRÉQUENTES
+        - heading "Tout ce que vous devez savoir sur le Pack Prof IA" [level=2] [ref=f3e504]
+      - generic [ref=f3e505]:
+        - group [ref=f3e506]:
+          - generic "Est-ce un abonnement mensuel ou un achat unique ?" [ref=f3e507] [cursor=pointer]
+          - paragraph [ref=f3e513]:
+            - strong [ref=f3e514]: Achat unique 3 900 FCFA, à vie.
+            - text: Zéro abonnement, zéro frais cachés.
+        - group [ref=f3e515]:
+          - 'generic "Pour les Parents : installation compliquée ?" [ref=f3e516] [cursor=pointer]'
+        - group [ref=f3e522]:
+          - 'generic "Pour les Parents : et la triche aux devoirs ?" [ref=f3e523] [cursor=pointer]'
+        - group [ref=f3e529]:
+          - 'generic "Pour les Élèves : gros cours gérés comment ?" [ref=f3e530] [cursor=pointer]'
+        - group [ref=f3e536]:
+          - 'generic "Garantie 30 jours : comment ça marche ?" [ref=f3e537] [cursor=pointer]'
+    - generic [ref=f3e544]:
+      - heading "Ce soir, ton tuteur peut déjà être configuré." [level=2] [ref=f3e545]
+      - paragraph [ref=f3e546]: Pas dans un mois. Pas « quand j'aurai le temps ». En 10 minutes, montre en main, avec la vidéo à côté de toi.
+      - link "Je configure mon tuteur maintenant (3 900 FCFA) →" [ref=f3e548] [cursor=pointer]:
+        - /url: "#tarifs"
+      - paragraph [ref=f3e549]: Paiement unique. Accès à vie. Remboursé à 100 % sous 30 jours si tu ne vois pas de différence.
+      - paragraph [ref=f3e550]: Accès immédiat par e-mail • Aucun abonnement mensuel • Garantie 30 jours satisfait ou remboursé
+  - contentinfo [ref=f3e551]:
+    - generic [ref=f3e552]:
+      - generic [ref=f3e553]:
+        - generic [ref=f3e554]:
+          - img "Prof IA Logo" [ref=f3e556]
+          - paragraph [ref=f3e557]: Tuteur IA en 10 min. 300+ pages digérées. Mention sans abonnement.
+          - generic [ref=f3e558]:
+            - generic [ref=f3e559]: Conforme RGPD
+            - generic [ref=f3e563]: •
+            - generic [ref=f3e564]: Paiement sécurisé Stripe 256 bits
+            - generic [ref=f3e567]: •
+            - generic [ref=f3e568]: Téléchargement immédiat
+        - generic [ref=f3e571]:
+          - heading "Le Pack Digital" [level=4] [ref=f3e572]
+          - list [ref=f3e573]:
+            - listitem [ref=f3e574]:
+              - link "Contenu du Pack" [ref=f3e575] [cursor=pointer]:
+                - /url: "#contenu-pack"
+            - listitem [ref=f3e576]:
+              - link "Pour Parents & Élèves" [ref=f3e577] [cursor=pointer]:
+                - /url: "#pourquoi"
+            - listitem [ref=f3e578]:
+              - link "Mise en place en 10 min" [ref=f3e579] [cursor=pointer]:
+                - /url: "#fonctionnalites"
+            - listitem [ref=f3e580]:
+              - link "Tarif Unique (3 900 FCFA)" [ref=f3e581] [cursor=pointer]:
+                - /url: "#tarifs"
+            - listitem [ref=f3e582]:
+              - link "Questions fréquentes" [ref=f3e583] [cursor=pointer]:
+                - /url: "#faq"
+        - generic [ref=f3e584]:
+          - heading "Informations" [level=4] [ref=f3e585]
+          - list [ref=f3e586]:
+            - listitem [ref=f3e587]:
+              - link "Mentions Légales" [ref=f3e588] [cursor=pointer]:
+                - /url: "#mentions-legales"
+            - listitem [ref=f3e589]:
+              - link "Conditions Générales de Vente (CGV)" [ref=f3e590] [cursor=pointer]:
+                - /url: "#cgv"
+            - listitem [ref=f3e591]:
+              - link "Politique de confidentialité" [ref=f3e592] [cursor=pointer]:
+                - /url: "#confidentialite"
+            - listitem [ref=f3e593]:
+              - link "Contact Support Client" [ref=f3e594] [cursor=pointer]:
+                - /url: mailto:support@prof-ia.example.com
+      - generic [ref=f3e595]:
+        - paragraph [ref=f3e596]: © 2026 Système Prof IA. Tous droits réservés.
+        - paragraph [ref=f3e597]: Produit d'accompagnement méthodologique indépendant, non affilié à l'Éducation Nationale.

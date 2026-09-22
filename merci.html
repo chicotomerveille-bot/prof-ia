@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Merci ! Vérification du paiement — Prof IA</title>
+<meta name="robots" content="noindex, nofollow"/>
+<meta name="theme-color" content="#0066FF"/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230066FF'/%3E%3Ctext x='32' y='44' font-family='Arial' font-size='32' font-weight='900' fill='white' text-anchor='middle'%3EIA%3C/text%3E%3C/svg%3E"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<style>
+  body { font-family: 'Plus Jakarta Sans', sans-serif; }
+  .btn-gradient { background: linear-gradient(135deg, #0066FF 0%, #00D2FF 100%); }
+</style>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased min-h-screen flex items-center justify-center p-4">
+<main class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-7 sm:p-8 text-center border border-slate-200">
+<div id="state-loading">
+<div class="mx-auto w-14 h-14 rounded-full bg-brand-100 text-brand-600 flex items-center justify-center mb-4 animate-pulse">
+<svg aria-hidden="true" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
+</div>
+<h1 class="text-2xl font-black tracking-tight">Vérification du paiement…</h1>
+<p class="text-sm text-slate-500 mt-2">Ne ferme pas cette page.</p>
+</div>
+<div id="state-success" class="hidden">
+<div class="mx-auto w-14 h-14 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mb-4">
+<svg aria-hidden="true" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+</div>
+<h1 class="text-2xl sm:text-3xl font-black tracking-tight">Paiement réussi !</h1>
+<p class="text-sm sm:text-base text-slate-600 mt-2">Ton Pack est prêt. Télécharge-le maintenant :</p>
+<div id="delivery-list" class="mt-4 space-y-2 text-left"></div>
+<p id="pay-ref" class="text-xs text-slate-400 mt-3 font-mono"></p>
+</div>
+<div id="state-fail" class="hidden">
+<h1 class="text-2xl font-black tracking-tight">Paiement non confirmé</h1>
+<p id="fail-msg" class="text-sm text-slate-600 mt-2">Le paiement n'a pas abouti ou est en cours.</p>
+<div class="mt-6 flex flex-col gap-2">
+<button id="retry-check" class="btn-gradient rounded-2xl px-5 py-3.5 text-white font-extrabold cursor-pointer">Revérifier mon paiement</button>
+<a href="/" class="rounded-2xl px-5 py-3.5 font-bold text-slate-600 border border-slate-300">Retour au site</a>
+</div>
+</div>
+</main>
+<script>
+var DELIVERY = [
+  { titre: 'Guide pratique pas-à-pas (PDF)', fichier: 'pack/guide-prof-ia.pdf' },
+  { titre: '60 prompts pédagogiques (PDF)', fichier: 'pack/prompts-prof-ia.pdf' },
+  { titre: 'Templates & fiches examen (PDF)', fichier: 'pack/templates-prof-ia.pdf' },
+  { titre: 'Lien Masterclass vidéo privée', fichier: 'https://REPLACE_PAR_LIEN_VIDEO' }
+];
+function qs(name) {
+  var m = new RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+  return m ? decodeURIComponent(m[1]) : '';
+}
+function show(id) {
+  ['state-loading', 'state-success', 'state-fail'].forEach(function (s) {
+    document.getElementById(s).classList.add('hidden');
+  });
+  document.getElementById(id).classList.remove('hidden');
+}
+function renderDelivery() {
+  var list = document.getElementById('delivery-list');
+  list.innerHTML = '';
+  DELIVERY.forEach(function (item) {
+    var a = document.createElement('a');
+    a.href = item.fichier;
+    a.setAttribute('download', '');
+    a.setAttribute('target', '_blank');
+    a.setAttribute('rel', 'noopener');
+    a.className = 'flex items-center gap-3 rounded-xl border border-emerald-200 bg-emerald-50 hover:bg-emerald-100 px-4 py-3 text-sm font-bold text-emerald-900 transition-colors';
+    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 24 24');
+    svg.setAttribute('fill', 'none');
+    svg.setAttribute('stroke', 'currentColor');
+    svg.setAttribute('stroke-width', '2');
+    svg.setAttribute('style', 'width:18px;height:18px;flex-shrink:0');
+    svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/>';
+    var sp = document.createElement('span');
+    sp.textContent = item.titre;
+    a.appendChild(svg);
+    a.appendChild(sp);
+    list.appendChild(a);
+  });
+}
+function check() {
+  var token = qs('token');
+  if (!token) {
+    document.getElementById('fail-msg').textContent = 'Lien invalide (référence manquante).';
+    show('state-fail');
+    return;
+  }
+  show('state-loading');
+  fetch('/api/mf-status?token=' + encodeURIComponent(token))
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      var st = d && d.data && d.data.statut;
+      if (d && d.statut && st === 'paid') {
+        document.getElementById('pay-ref').textContent = 'Réf : ' + (d.data.tokenPay || token);
+        renderDelivery();
+        show('state-success');
+      } else if (st === 'pending') {
+        document.getElementById('fail-msg').textContent = 'Paiement en cours de traitement. Attends 1 minute puis revérifie.';
+        show('state-fail');
+      } else {
+        show('state-fail');
+      }
+    })
+    .catch(function () {
+      document.getElementById('fail-msg').textContent = 'Vérification impossible. Revérifie dans un moment.';
+      show('state-fail');
+    });
+}
+document.getElementById('retry-check').addEventListener('click', check);
+check();
+</script>
+</body>
+</html>
