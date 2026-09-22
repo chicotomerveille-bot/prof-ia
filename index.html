@@ -231,10 +231,10 @@ Guide + méthode + 60 prompts pour transformer les IA gratuites (ChatGPT, Gemini
 </div>
 <!-- Conversion Action Box -->
 <div class="w-full sm:w-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mb-8">
-<a class="btn-primary-gradient px-8 py-4 text-white text-base sm:text-lg font-extrabold rounded-2xl shadow-glow transition-all text-center flex items-center justify-center gap-3 transform hover:-translate-y-0.5 min-h-[48px]" href="#tarifs">
+<button type="button" data-pay class="btn-primary-gradient px-8 py-4 text-white text-base sm:text-lg font-extrabold rounded-2xl shadow-glow transition-all text-center flex items-center justify-center gap-3 transform hover:-translate-y-0.5 min-h-[48px] w-full sm:w-auto cursor-pointer">
 <span>Je configure mon tuteur maintenant (3 900 FCFA)</span>
 <span class="text-brand-yellow font-black text-xl">→</span>
-</a>
+</button>
 <a class="px-6 py-4 bg-white hover:bg-slate-100 text-slate-700 font-bold rounded-2xl border border-slate-300 transition-all text-center flex items-center justify-center gap-2" href="#contenu-pack">
 <svg class="w-5 h-5 text-brand-500" fill="currentColor" viewbox="0 0 20 20">
 <path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" fill-rule="evenodd"></path>
@@ -436,9 +436,9 @@ Quiz, flashcards, barème : ta note anticipée avant le Bac.
 <p class="text-xs font-black uppercase tracking-wider text-brand-cyan">Valeur totale cumulée du Pack : <span class="line-through text-slate-400">106 000 FCFA</span></p>
 <p class="text-xl sm:text-2xl font-extrabold text-white mt-1">Le Système Complet : <span class="text-brand-yellow text-3xl font-black">3 900 FCFA</span> une fois.</p>
 </div>
-<a class="px-6 py-3.5 btn-primary-gradient text-white font-black text-sm sm:text-base rounded-xl shadow-glow transition-transform transform hover:-translate-y-0.5 whitespace-normal sm:whitespace-nowrap text-center min-h-[48px]" href="#tarifs">
+<button type="button" data-pay class="px-6 py-3.5 btn-primary-gradient text-white font-black text-sm sm:text-base rounded-xl shadow-glow transition-transform transform hover:-translate-y-0.5 whitespace-normal sm:whitespace-nowrap text-center min-h-[48px] cursor-pointer">
           Débloquer mon pack (3 900 FCFA) →
-        </a>
+        </button>
 </div>
 </div>
 </section>
@@ -573,9 +573,9 @@ Correction type correcteur : ta note avant l'examen.
 </div>
 <!-- In-section CTA -->
 <div class="mt-8 flex flex-col sm:flex-row items-center gap-4">
-<a class="w-full sm:w-auto px-7 py-3.5 btn-primary-gradient font-extrabold text-white rounded-xl shadow-glow text-center transition-all min-h-[48px]" href="#tarifs">
+<button type="button" data-pay class="w-full sm:w-auto px-7 py-3.5 btn-primary-gradient font-extrabold text-white rounded-xl shadow-glow text-center transition-all min-h-[48px] cursor-pointer">
                 Je configure mon tuteur maintenant (3 900 FCFA) →
-              </a>
+              </button>
 <span class="text-xs text-slate-400">Paiement unique • Accès instantané par e-mail</span>
 </div>
 </div>
@@ -865,12 +865,11 @@ Une demi-heure de cours particulier = 15 000 FCFA. Ici : 3 900 FCFA, une fois, �
 </div>
 <!-- CTA Button -->
 <div>
-<!-- TODO: remplace href par ton lien Stripe/Gumroad (ex: https://buy.stripe.com/xxxxx) -->
-<a class="w-full py-4 sm:py-5 text-center btn-primary-gradient text-white font-extrabold text-lg sm:text-xl rounded-2xl shadow-glow transition-all block transform hover:scale-[1.02] active:scale-100 min-h-[56px]" href="https://buy.stripe.com/REPLACE_ME">
+<button type="button" data-pay class="w-full py-4 sm:py-5 text-center btn-primary-gradient text-white font-extrabold text-lg sm:text-xl rounded-2xl shadow-glow transition-all block transform hover:scale-[1.02] active:scale-100 min-h-[56px] cursor-pointer">
           Obtenir mon accès immédiat au Système Prof IA (Paiement unique 3 900 FCFA) →
-        </a>
+        </button>
 <p class="text-center text-xs text-slate-400 mt-3 font-medium flex items-center justify-center gap-2">
-<span class="inline-flex items-center gap-1"><svg aria-hidden="true" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>Paiement sécurisé Stripe 256 bits</span>
+<span class="inline-flex items-center gap-1"><svg aria-hidden="true" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>Paiement sécurisé KKiaPay • Mobile Money</span>
 <span>•</span>
 <span class="inline-flex items-center gap-1"><svg aria-hidden="true" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>Envoi instantané par e-mail</span>
 </p>
@@ -965,9 +964,9 @@ PDF, poly, photo de cahier : importé en secondes, résumé en 3 points clés.
           Pas dans un mois. Pas « quand j'aurai le temps ». En 10 minutes, montre en main, avec la vidéo à côté de toi.
         </p>
 <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-<a class="w-full sm:w-auto px-10 py-5 bg-white hover:bg-slate-100 text-brand-600 text-lg font-black rounded-2xl shadow-2xl transition-all transform hover:-translate-y-1" href="#tarifs">
+<button type="button" data-pay class="w-full sm:w-auto px-10 py-5 bg-white hover:bg-slate-100 text-brand-600 text-lg font-black rounded-2xl shadow-2xl transition-all transform hover:-translate-y-1 cursor-pointer">
           Je configure mon tuteur maintenant (3 900 FCFA) →
-        </a>
+        </button>
 </div>
 <p class="text-xs text-brand-100 mt-4 font-semibold">
           Paiement unique. Accès à vie. Remboursé à 100 % sous 30 jours si tu ne vois pas de différence.
@@ -994,7 +993,7 @@ PDF, poly, photo de cahier : importé en secondes, résumé en 3 points clés.
 <div class="flex items-center gap-3 mt-4 text-xs text-slate-500">
 <span class="inline-flex items-center gap-1"><svg aria-hidden="true" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3l7.5 3v5.25c0 4.97-3.24 8.44-7.5 9.75-4.26-1.31-7.5-4.78-7.5-9.75V6L12 3z"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/></svg>Conforme RGPD</span>
 <span>•</span>
-<span class="inline-flex items-center gap-1"><svg aria-hidden="true" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>Paiement sécurisé Stripe 256 bits</span>
+<span class="inline-flex items-center gap-1"><svg aria-hidden="true" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>Paiement sécurisé KKiaPay • Mobile Money</span>
 <span>•</span>
 <span class="inline-flex items-center gap-1"><svg aria-hidden="true" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>Téléchargement immédiat</span>
 </div>
@@ -1053,8 +1052,76 @@ PDF, poly, photo de cahier : importé en secondes, résumé en 3 points clés.
 </div>
 <!-- Sticky mobile CTA (DESIGN: sticky bottom bar <640px) -->
 <div class="sm:hidden fixed bottom-3 inset-x-3 z-50">
-<a href="#tarifs" class="btn-primary-gradient flex items-center justify-center gap-2 rounded-2xl px-5 py-4 text-white font-extrabold shadow-glow min-h-[52px]">Je configure mon tuteur — 3 900 FCFA →</a>
+<button type="button" data-pay class="btn-primary-gradient flex items-center justify-center gap-2 rounded-2xl px-5 py-4 text-white font-extrabold shadow-glow min-h-[52px] w-full cursor-pointer">Je configure mon tuteur — 3 900 FCFA →</button>
 </div>
+<!-- Payment success modal -->
+<div id="pay-success-modal" class="fixed inset-0 z-[70] hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="pay-success-title">
+<div class="absolute inset-0 bg-slate-950/70 backdrop-blur-sm"></div>
+<div class="relative bg-white rounded-3xl shadow-2xl max-w-md w-full p-7 sm:p-8 text-center border border-slate-200">
+<div class="mx-auto w-14 h-14 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mb-4">
+<svg aria-hidden="true" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+</div>
+<h2 id="pay-success-title" class="text-2xl sm:text-3xl font-black text-slate-950 tracking-tight">Paiement réussi !</h2>
+<p class="text-sm sm:text-base text-slate-600 mt-3 leading-relaxed">Ton Pack arrive par e-mail dans ~2 minutes. Vérifie aussi tes spams.</p>
+<p id="pay-success-ref" class="text-xs text-slate-400 mt-2 font-mono"></p>
+<button id="pay-success-close" class="btn-primary-gradient mt-6 flex items-center justify-center gap-2 rounded-2xl px-5 py-4 text-white font-extrabold shadow-glow min-h-[52px] w-full cursor-pointer">Commencer la configuration →</button>
+</div>
+</div>
+<script src="https://cdn.kkiapay.me/k.js"></script>
+<script>
+/* KKiaPay — remplace la valeur ci-dessous par ta CLÉ PUBLIQUE (dashboard kkiapay.me).
+   sandbox: true pour tester sans encaisser, false pour encaisser réellement. */
+var KK_CONFIG = {
+  publicKey: 'REPLACE_PAR_CLE_PUBLIQUE_KKIAPAY',
+  amount: 3900,
+  sandbox: false,
+  theme: '#0066FF',
+  product: 'Pack Systeme Prof IA'
+};
+function openPayment() {
+  if (typeof openKkiapayWidget === 'undefined') {
+    var t = document.getElementById('tarifs');
+    if (t) t.scrollIntoView({ behavior: 'smooth' });
+    return;
+  }
+  openKkiapayWidget({
+    amount: KK_CONFIG.amount,
+    api_key: KK_CONFIG.publicKey,
+    key: KK_CONFIG.publicKey,
+    sandbox: KK_CONFIG.sandbox,
+    theme: KK_CONFIG.theme,
+    data: KK_CONFIG.product
+  });
+}
+(function () {
+  var btns = document.querySelectorAll('[data-pay]');
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].addEventListener('click', openPayment);
+  }
+  function showSuccess(ref) {
+    var m = document.getElementById('pay-success-modal');
+    if (ref) document.getElementById('pay-success-ref').textContent = 'Réf : ' + ref;
+    m.classList.remove('hidden');
+    m.classList.add('flex');
+  }
+  document.getElementById('pay-success-close').addEventListener('click', function () {
+    var m = document.getElementById('pay-success-modal');
+    m.classList.add('hidden');
+    m.classList.remove('flex');
+    document.body.style.overflow = '';
+  });
+  try {
+    if (typeof addSuccessListener !== 'undefined') {
+      addSuccessListener(function (res) {
+        var exit = document.getElementById('exit-modal');
+        if (exit) { exit.classList.add('hidden'); exit.classList.remove('flex'); }
+        document.body.style.overflow = 'hidden';
+        showSuccess(res && (res.transactionId || res.transaction_id));
+      });
+    }
+  } catch (e) {}
+})();
+</script>
 <!-- Exit-intent retention modal -->
 <div id="exit-modal" class="fixed inset-0 z-[60] hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="exit-title">
 <div id="exit-overlay" class="absolute inset-0 bg-slate-950/70 backdrop-blur-sm"></div>
@@ -1063,7 +1130,7 @@ PDF, poly, photo de cahier : importé en secondes, résumé en 3 points clés.
 <p class="text-xs font-black uppercase tracking-widest text-rose-600">Attends une seconde</p>
 <h2 id="exit-title" class="text-2xl sm:text-3xl font-black text-slate-950 tracking-tight mt-2">Tu veux vraiment partir ?</h2>
 <p class="text-sm sm:text-base text-slate-600 mt-3 leading-relaxed">Ton tuteur peut être configuré <strong>ce soir en 10 minutes</strong>. 3 900 FCFA une fois, à vie — remboursé 30 jours si ça ne marche pas pour toi.</p>
-<a href="#tarifs" id="exit-cta" class="btn-primary-gradient mt-6 flex items-center justify-center gap-2 rounded-2xl px-5 py-4 text-white font-extrabold shadow-glow min-h-[52px]">Je reste, je configure mon tuteur →</a>
+<button type="button" data-pay id="exit-cta" class="btn-primary-gradient mt-6 flex items-center justify-center gap-2 rounded-2xl px-5 py-4 text-white font-extrabold shadow-glow min-h-[52px] w-full cursor-pointer">Je reste, je configure mon tuteur →</button>
 <button id="exit-leave" class="mt-3 text-xs font-bold text-slate-400 hover:text-slate-600 underline underline-offset-2 transition-colors">Non, je préfère réviser seul</button>
 </div>
 </div>
