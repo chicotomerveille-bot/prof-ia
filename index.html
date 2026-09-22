@@ -1,409 +1,986 @@
 <!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prof IA — L'outil qui permet à ton enfant de réviser plus de 300 pages de cours</title>
-<meta name="description" content="Grâce à l'IA, ton enfant discute avec son assistant intelligent et transforme ses PDF, images et documents en un vrai professeur 24h/24. Tes cours. Ton professeur. Ton rythme.">
-<meta property="og:title" content="Prof IA — Besoin d'un PROF IA pour ton enfant ?">
-<meta property="og:description" content="Transforme les PDF, images et documents de ton enfant en un vrai professeur IA 24h/24. Explications simples, résumés, exercices, fiches de révision.">
-<meta property="og:type" content="website">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%230A5CFF'/><text x='50' y='70' font-size='52' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'>P</text></svg>">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<style>
-:root{
---primary:#0A5CFF; --secondary:#2A7BFF; --dark:#0E2A4C; --muted:#556A85;
---bg:#EAF4FF; --bg2:#DDEBFF; --card:#FFFFFF; --border:rgba(10,92,255,.16);
---yellow:#FFD400; --green:#22C55E; --green-soft:#DCFCE7; --orange:#FF8A00;
---radius:20px; --radius-sm:14px;
---shadow-lg:0 24px 60px rgba(14,42,76,.14); --shadow-md:0 12px 32px rgba(14,42,76,.10);
-}
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{font-family:'Nunito',system-ui,sans-serif;background:var(--bg);color:var(--dark);line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased}
-h1,h2,h3{font-family:'Fredoka',sans-serif;line-height:1.15;letter-spacing:-.01em}
-.container{max-width:1120px;margin:0 auto;padding:0 24px}
-img{user-select:none}
-::selection{background:rgba(10,92,255,.3)}
-.bg-glow{position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(50% 40% at 12% 0%,rgba(10,92,255,.14),transparent 60%),radial-gradient(40% 35% at 90% 8%,rgba(255,212,0,.18),transparent 60%),radial-gradient(45% 45% at 50% 100%,rgba(34,197,94,.10),transparent 60%)}
-/* urgency */
-.urgency-bar{background:var(--dark);color:#fff;text-align:center;padding:9px 16px;font-size:.82rem;font-weight:700;position:sticky;top:0;z-index:500;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
-.urgency-bar .u-price{color:var(--yellow);font-weight:900}
-.urgency-bar .timer{background:var(--primary);border-radius:8px;padding:3px 12px;font-weight:900;letter-spacing:.08em;color:#fff}
-/* nav */
-nav{background:rgba(234,244,255,.9);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--border);position:relative;z-index:100}
-.nav-inner{display:flex;align-items:center;justify-content:space-between;height:70px;gap:16px}
-.logo{display:flex;align-items:center;gap:10px;font-family:'Fredoka',sans-serif;font-weight:700;font-size:1.15rem;color:var(--dark);text-decoration:none}
-.logo-mark{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--primary),#4D86FF);color:#fff;font-size:1.1rem;font-weight:700;display:grid;place-items:center;box-shadow:0 4px 16px rgba(10,92,255,.4)}
-.logo small{font-family:'Nunito',sans-serif;font-size:.68rem;font-weight:800;color:var(--primary);display:block;line-height:1;letter-spacing:.08em}
-.nav-links{display:flex;gap:24px;align-items:center}
-.nav-links a{color:var(--muted);text-decoration:none;font-size:.88rem;font-weight:700;transition:color .2s}
-.nav-links a:hover,.nav-links a.active{color:var(--primary)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:15px 30px;border-radius:var(--radius-sm);border:none;font-family:'Nunito',sans-serif;font-weight:900;font-size:.95rem;text-decoration:none;transition:transform .2s,box-shadow .2s,background .2s;cursor:pointer;text-align:center;line-height:1.35;position:relative;overflow:hidden}
-.btn::after{content:'';position:absolute;top:0;left:-130%;width:70%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);animation:shine 2.8s infinite ease-in-out}
-@keyframes shine{0%{left:-130%}65%,100%{left:160%}}
-.btn-accent{background:var(--primary);color:#fff;box-shadow:0 8px 28px rgba(10,92,255,.45)}
-.btn-accent:hover{background:#0848C7;transform:translateY(-2px)}
-.btn-lg{padding:19px 40px;font-size:1.06rem;border-radius:16px}
-.btn-sm{padding:10px 22px;font-size:.86rem}
-/* notif */
-.notif-pop{position:fixed;top:76px;right:16px;z-index:9999;background:#fff;border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,.18);padding:14px 16px;display:flex;align-items:center;gap:12px;max-width:300px;width:calc(100% - 32px);border-left:4px solid var(--green);animation:slideIn .5s ease forwards}
-.notif-pop.hiding{animation:slideOut .3s ease forwards}
-.notif-avatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:1.05rem;flex-shrink:0}
-.notif-name{font-size:.86rem;font-weight:800;color:#111;display:block}
-.notif-msg{font-size:.78rem;color:#555;display:block;margin-top:1px}
-.notif-flag{font-size:.8rem;color:#333;display:block;margin-top:2px}
-@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
-@keyframes slideOut{from{transform:translateX(0);opacity:1}to{transform:translateX(100%);opacity:0}}
-/* exit */
-.exit-overlay{position:fixed;inset:0;background:rgba(14,42,76,.85);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s}
-.exit-overlay.show{opacity:1;pointer-events:all}
-.exit-box{background:#fff;border-radius:20px;max-width:460px;width:100%;padding:38px 30px;text-align:center;position:relative;border-top:6px solid var(--primary)}
-.exit-close{position:absolute;top:12px;right:14px;background:none;border:none;font-size:1.4rem;color:#bbb;cursor:pointer}
-.exit-box h2{font-size:1.4rem;margin-bottom:12px}
-.exit-box p{font-size:.96rem;color:#444;margin-bottom:18px}
-.exit-price-old{text-decoration:line-through;color:#aaa;font-size:.9rem;display:block}
-.exit-price-new{font-family:'Fredoka',sans-serif;font-size:2.2rem;color:var(--primary);display:block;margin:6px 0 22px;font-weight:700}
-/* hero */
-.hero{position:relative;padding:80px 0 70px;overflow:hidden}
-.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
-.badge-warn{display:inline-flex;align-items:center;gap:10px;background:rgba(10,92,255,.1);border:1px solid rgba(10,92,255,.35);padding:9px 18px;border-radius:100px;font-size:.8rem;font-weight:800;color:var(--primary);margin-bottom:22px}
-.hero h1{font-size:clamp(2rem,4.6vw,3.2rem);font-weight:700;color:var(--dark);margin-bottom:18px}
-.hl-yellow{background:linear-gradient(transparent 55%,var(--yellow) 55%,var(--yellow) 95%,transparent 95%);padding:0 6px}
-.hl-green{background:linear-gradient(transparent 55%,#86EFAC 55%,#86EFAC 95%,transparent 95%);padding:0 6px}
-.hero-sub{color:var(--muted);font-size:1.08rem;max-width:540px;margin-bottom:14px}
-.hero-sub b{color:var(--dark)}
-.hero-visual{position:relative;background:linear-gradient(160deg,#fff,#F2F7FF);border:1px solid var(--border);border-radius:26px;box-shadow:var(--shadow-lg);padding:28px;overflow:hidden}
-.hero-visual .robot{position:absolute;top:14px;right:16px;width:92px;height:92px;background:linear-gradient(135deg,#DCEAFF,#fff);border:2px solid var(--primary);border-radius:26px;display:grid;place-items:center;font-size:2.4rem;box-shadow:var(--shadow-md)}
-.file-chip{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--border);border-radius:16px;padding:12px 14px;margin-bottom:12px;box-shadow:var(--shadow-md);max-width:280px}
-.file-ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;color:#fff;font-weight:900;flex-shrink:0;font-size:.8rem}
-.fi-pdf{background:#EF4444}.fi-img{background:linear-gradient(135deg,#0A5CFF,#22C55E)}.fi-doc{background:#0A5CFF}
-.file-chip b{font-size:.9rem;display:block}.file-chip span{font-size:.76rem;color:var(--muted)}
-.arrow{color:var(--primary);font-weight:900;margin:0 0 12px 40px;display:block}
-.chat-mock{background:#fff;border:2px solid var(--dark);border-radius:18px;padding:16px;margin-top:8px;box-shadow:var(--shadow-md)}
-.chat-bubble{background:#E8F1FF;border-radius:12px;padding:10px 14px;font-size:.84rem;font-weight:700;margin-bottom:10px}
-.chat-check{display:flex;align-items:center;gap:10px;background:#F8FAFF;border:1px solid var(--border);border-radius:10px;padding:9px 12px;font-size:.83rem;font-weight:700;margin-bottom:8px}
-.tick{width:22px;height:22px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-size:.75rem;font-weight:900;flex-shrink:0}
-.chat-input{display:flex;gap:8px;margin-top:10px}
-.chat-input .fake{flex:1;background:#F1F5F9;border-radius:20px;padding:10px 16px;font-size:.8rem;color:#94A3B8;font-weight:600}
-.chat-input .send{width:40px;height:40px;border-radius:50%;background:var(--primary);color:#fff;display:grid;place-items:center;font-weight:900}
-.hero-price{margin-top:24px;text-align:center;background:#fff;border:1px solid var(--border);border-radius:18px;padding:24px;box-shadow:var(--shadow-md)}
-.price-old{font-size:1.05rem;color:var(--muted);text-decoration:line-through}
-.price-new{font-size:2.1rem;font-weight:900;color:var(--primary);margin-bottom:16px;font-family:'Fredoka',sans-serif}
-.micro{margin-top:14px;font-size:.86rem;color:var(--muted);font-weight:600}
-.hero-proofs{margin-top:44px;text-align:center}
-.hp-label{font-weight:900;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
-.hp-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:660px;margin:0 auto}
-.proof-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:20px;text-align:left;box-shadow:var(--shadow-md)}
-.proof-card .stars{color:#FF8A00;font-weight:900;letter-spacing:.1em;margin-bottom:8px}
-.proof-card p{font-size:.9rem;color:var(--dark);font-weight:600}
-.proof-card span{font-size:.78rem;color:var(--muted);font-weight:700}
-/* sections */
-section{padding:72px 0}
-.section-head{max-width:760px;margin:0 auto 50px;text-align:center}
-.section-tag{display:inline-block;font-weight:900;font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:var(--primary);background:rgba(10,92,255,.1);border:1px solid rgba(10,92,255,.3);padding:7px 16px;border-radius:100px;margin-bottom:20px}
-.section-head h2{font-size:clamp(1.7rem,4vw,2.5rem);margin-bottom:18px}
-.section-head h2 em{font-style:normal;color:var(--primary)}
-.section-head p{color:var(--muted);font-size:1.04rem}
-.solution-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:20px}
-.sol-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;transition:transform .25s,border-color .25s}
-.sol-card:hover{transform:translateY(-5px);border-color:rgba(10,92,255,.45)}
-.sol-card .icon{width:50px;height:50px;border-radius:14px;margin-bottom:16px;background:linear-gradient(135deg,var(--primary),var(--secondary));display:grid;place-items:center;color:#fff;box-shadow:0 6px 18px rgba(10,92,255,.3)}
-.sol-card .icon svg{width:24px;height:24px}
-.sol-card h3{font-size:1.12rem;margin-bottom:10px}
-.sol-card p{color:var(--muted);font-size:.96rem}
-.pitch{text-align:center;padding:24px;margin:10px auto 0;max-width:720px;background:rgba(10,92,255,.07);border-left:4px solid var(--primary);border-radius:0 14px 14px 0}
-.pitch p{font-family:'Fredoka',sans-serif;font-size:1.12rem;font-weight:500}
-#solution{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-.split{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center;max-width:1000px;margin:0 auto}
-.benefit-visual{background:#fff;border:1px solid var(--border);border-radius:22px;padding:26px;box-shadow:var(--shadow-md)}
-.plan-mock{background:#0E2A4C;color:#fff;border-radius:16px;padding:20px;margin-bottom:14px}
-.plan-mock .row{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.08);border-radius:12px;padding:12px;margin-bottom:10px}
-.plan-mock .dot{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-weight:900;flex-shrink:0}
-.bar{height:6px;background:rgba(255,255,255,.18);border-radius:99px;margin-top:8px;overflow:hidden}
-.bar i{display:block;height:100%;border-radius:99px}
-.tagline{font-family:'Fredoka',sans-serif;font-size:1.12rem;border-left:3px solid var(--primary);padding:10px 18px;margin:18px 0;background:rgba(10,92,255,.07);border-radius:0 12px 12px 0}
-.cta-timer{text-align:center;margin:26px auto 0;max-width:440px;padding:14px 18px;border:2px dashed var(--primary);border-radius:14px;background:rgba(10,92,255,.06)}
-.cta-timer-label{display:block;font-size:.82rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
-.cta-timer-time{font-family:'Fredoka',sans-serif;font-weight:700;font-size:1.9rem;color:var(--primary)}
-.offer-cta{text-align:center;margin-top:26px}
-/* carousel */
-.testi-carousel{overflow:hidden;position:relative;margin:36px auto 0;max-width:1200px}
-.testi-track{display:flex;gap:22px;animation:t-scroll 38s linear infinite;width:max-content}
-@media(hover:hover){.testi-track:hover{animation-play-state:paused}}
-@keyframes t-scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.testi-card{width:300px;flex-shrink:0;border-radius:18px;overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow-md);background:#fff;padding:22px;transition:transform .3s}
-.testi-card:hover{transform:translateY(-6px)}
-.testi-card .stars{color:#FF8A00;font-weight:900;margin-bottom:10px}
-.testi-card p{font-size:.9rem;font-weight:600;margin-bottom:12px}
-.testi-card span{font-size:.78rem;color:var(--muted);font-weight:800}
-/* offer */
-#offre{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-.offer-card{max-width:840px;margin:0 auto;background:var(--card);border:1px solid var(--border);border-radius:24px;padding:44px 40px;box-shadow:var(--shadow-lg)}
-.bonus{border:1px solid var(--border);border-radius:18px;padding:24px;margin-bottom:18px;display:grid;grid-template-columns:90px 1fr;gap:20px;align-items:center;background:#F8FBFF}
-.bonus-ic{width:90px;height:90px;border-radius:20px;display:grid;place-items:center;font-size:2.2rem;color:#fff;font-weight:900}
-.bonus h3{font-size:1.1rem;margin-bottom:6px}
-.bonus p{font-size:.92rem;color:var(--muted);margin-bottom:8px}
-.item-price{display:inline-block;font-weight:900;color:var(--primary);font-size:.9rem;padding:5px 14px;border:1px solid rgba(10,92,255,.35);border-radius:100px;background:rgba(10,92,255,.08)}
-.value-table{border:1px solid var(--border);border-radius:16px;overflow:hidden;margin:26px 0}
-.vt-row{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px 22px;border-bottom:1px solid var(--border);background:#F8FBFF}
-.vt-row .item{font-size:.94rem;font-weight:700}
-.vt-row .val{font-weight:900;white-space:nowrap}
-.vt-total{display:flex;justify-content:space-between;padding:16px 22px;background:rgba(10,92,255,.07);font-weight:900}
-.vt-today{display:flex;justify-content:space-between;padding:16px 22px;background:rgba(34,197,94,.12);font-weight:900;color:#15803D;font-size:1.1rem}
-.urgency-timer{text-align:center;margin:20px 0 6px;padding:16px;border:2px dashed var(--primary);border-radius:14px;background:rgba(10,92,255,.06)}
-.ut-label{display:block;font-size:.84rem;font-weight:800;color:var(--muted);text-transform:uppercase}
-.ut-time{font-family:'Fredoka',sans-serif;font-weight:700;font-size:2rem;color:var(--primary)}
-.guarantee{max-width:840px;margin:26px auto 0;background:#fff;border:1px solid rgba(34,197,94,.4);border-radius:22px;padding:38px;text-align:center}
-.guarantee .shield{width:60px;height:60px;margin:0 auto 16px;border-radius:16px;background:linear-gradient(135deg,var(--green),#15803D);color:#fff;display:grid;place-items:center;box-shadow:0 10px 28px rgba(34,197,94,.4)}
-.guarantee h3{font-size:1.3rem;margin-bottom:10px}
-.days-badge{display:inline-block;font-weight:900;color:#15803D;background:var(--green-soft);border:1px solid rgba(34,197,94,.4);padding:6px 18px;border-radius:100px;margin-bottom:12px;font-size:.85rem}
-.guarantee p{color:var(--muted);font-size:.95rem;max-width:620px;margin:0 auto}
-/* faq */
-.faq{max-width:760px;margin:0 auto}
-.faq-item{border:1px solid var(--border);border-radius:16px;margin-bottom:14px;background:#fff;overflow:hidden}
-.faq-item.open{border-color:var(--primary)}
-.faq-q{padding:20px 24px;font-weight:800;font-size:.96rem;display:flex;justify-content:space-between;align-items:center;gap:16px;cursor:pointer;background:none;border:none;width:100%;text-align:left;color:var(--dark);font-family:'Nunito',sans-serif}
-.faq-q span{font-size:1.4rem;color:var(--primary);font-weight:900;transition:transform .25s}
-.faq-item.open .faq-q span{transform:rotate(45deg)}
-.faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease}
-.faq-item.open .faq-a{max-height:500px}
-.faq-a p{padding:0 24px 22px;color:var(--muted);font-size:.93rem}
-/* decision */
-#decision{background:#0B1B33}
-.decision-head{text-align:center;max-width:840px;margin:0 auto 44px}
-.decision-head h2{font-size:clamp(1.8rem,4.5vw,2.8rem);color:#fff}
-.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;max-width:960px;margin:0 auto}
-.option-card{border-radius:18px;padding:32px 28px;border:1px solid transparent}
-.option-card .o-title{font-weight:900;font-size:.85rem;letter-spacing:.08em;margin-bottom:14px}
-.option-card p{font-size:.97rem;line-height:1.75}
-.option-bad{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.4)}
-.option-bad .o-title{color:#F87171}.option-bad p{color:rgba(255,255,255,.6)}
-.option-good{background:rgba(34,197,94,.13);border-color:rgba(34,197,94,.55)}
-.option-good .o-title{color:#4ADE80}.option-good p{color:rgba(255,255,255,.92)}
-/* final */
-.final-cta{position:relative;padding:90px 0;text-align:center;background:linear-gradient(160deg,#0A5CFF,#0848C7);border-radius:32px;margin:40px 24px 0;overflow:hidden;box-shadow:var(--shadow-lg)}
-.final-cta h2{font-size:clamp(1.7rem,4.5vw,2.6rem);color:#fff;margin-bottom:16px}
-.final-cta p{color:rgba(255,255,255,.92);max-width:600px;margin:0 auto 18px;font-size:1.04rem}
-.final-cta .btn-accent{background:#fff;color:var(--primary)}
-.final-cta .poetic{font-family:'Fredoka',sans-serif;color:rgba(255,255,255,.9);font-size:1.1rem;margin-top:22px}
-footer{padding:48px 0 110px}
-.footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;border-top:1px solid var(--border);padding-top:28px}
-footer p{font-size:.83rem;color:var(--muted);font-weight:700}
-.footer-links{display:flex;gap:24px}
-.footer-links a{color:var(--muted);text-decoration:none;font-size:.85rem;font-weight:700}
-.sticky-bar{position:fixed;bottom:0;left:0;right:0;background:var(--dark);border-top:2px solid var(--yellow);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;z-index:400;box-shadow:0 -4px 24px rgba(0,0,0,.35)}
-@media(min-width:768px){.sticky-bar{display:none}}
-.s-old{text-decoration:line-through;color:rgba(255,255,255,.4);font-size:.7rem;display:block}
-.s-new{font-family:'Fredoka',sans-serif;font-size:1.15rem;color:var(--yellow);display:block;line-height:1}
-.sticky-bar .btn{padding:11px 18px;font-size:.82rem}
-.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
-.reveal.visible{opacity:1;transform:none}
-@media(max-width:900px){.hero-grid{grid-template-columns:1fr}.split{grid-template-columns:1fr;gap:28px}.nav-links{display:none}.nav-inner>.btn{display:none}.bonus{grid-template-columns:1fr;text-align:center}.bonus-ic{margin:0 auto}.options-grid{grid-template-columns:1fr}.offer-card{padding:30px 20px}.final-cta{margin:30px 12px 0}.hp-grid{grid-template-columns:1fr}}
-@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}.reveal{opacity:1!important;transform:none!important}.testi-track,.notif-pop{animation:none!important}}
-</style>
-</head>
-<body>
-<div class="bg-glow"></div>
 
-<div class="urgency-bar">Offre de lancement — <span class="u-price">4 900 FCFA</span> au lieu de 15 000 FCFA &nbsp;|&nbsp; Expire dans : <span class="timer" data-countdown>24:00:00</span></div>
-
-<div class="notif-pop" id="notif-pop" style="display:none">
-<div class="notif-avatar" id="notif-av">A</div>
-<div class="notif-body"><span class="notif-name" id="notif-name">Aminata</span><span class="notif-msg" id="notif-msg">vient d'activer le Prof IA pour son fils</span><span class="notif-flag" id="notif-flag">🇨🇮 Côte d'Ivoire</span></div>
-</div>
-
-<div class="exit-overlay" id="exit-overlay">
-<div class="exit-box">
-<button class="exit-close" onclick="document.getElementById('exit-overlay').classList.remove('show')">✕</button>
-<h2>Attends... tu es sur le point de partir ?</h2>
-<p>Des centaines de parents utilisent déjà le Prof IA pour aider leurs enfants à réviser. Ne laisse pas ton enfant seul devant ses 300 pages.</p>
-<span class="exit-price-old">40 000 FCFA</span><span class="exit-price-new">4 900 FCFA</span>
-<a href="#" data-checkout class="btn btn-accent" style="width:100%">J'active le Prof IA</a>
-<p style="margin-top:12px;font-size:.75rem;color:#aaa">Paiement sécurisé · Accès immédiat</p>
-</div>
-</div>
-
-<nav><div class="container nav-inner">
-<a href="#" class="logo"><span class="logo-mark">P</span><span>Prof IA<small>TON PROFESSEUR 24H/24</small></span></a>
-<div class="nav-links"><a href="#probleme" class="active">Le problème</a><a href="#solution">La solution</a><a href="#plan">Le plan</a><a href="#offre">L'offre</a><a href="#faq">FAQ</a></div>
-<a href="#" data-checkout class="btn btn-accent btn-sm">J'active le Prof IA</a>
-</div></nav>
-
-<header class="hero"><div class="container">
-<div class="hero-grid">
-<div>
-<div class="badge-warn reveal">La solution que les parents attendaient</div>
-<h1 class="reveal">L'outil qui permet de <span class="hl-yellow">réviser</span> <span class="hl-green">plus de 300 pages</span> de cours</h1>
-<p class="hero-sub reveal">Grâce à l'IA, ton enfant <b>discute directement avec son assistant intelligent</b> et transforme ses PDF, images et documents en <b>un vrai professeur 24h/24</b>.</p>
-<p class="hero-sub reveal">Tes cours. Ton professeur. <b>Ton rythme.</b> Une IA qui s'adapte à ton enfant.</p>
-<div class="hero-price reveal">
-<p class="price-old">15 000 FCFA</p><p class="price-new">4 900 FCFA</p>
-<a href="#" data-checkout class="btn btn-accent btn-lg" style="width:100%;max-width:400px">J'ACTIVE LE PROF IA DE MON ENFANT</a>
-<p class="micro">Paiement sécurisé · Accès immédiat · Compatible téléphone</p>
-</div>
-</div>
-<div class="reveal">
-<div class="hero-visual">
-<div class="robot">🤖</div>
-<div class="file-chip"><div class="file-ic fi-pdf">PDF</div><div><b>Mes cours PDF</b><span>300+ pages envoyées</span></div></div>
-<span class="arrow">↘</span>
-<div class="file-chip"><div class="file-ic fi-img">IMG</div><div><b>Photos de cahiers</b><span>Compris par l'IA</span></div></div>
-<span class="arrow">↘</span>
-<div class="file-chip"><div class="file-ic fi-doc">DOC</div><div><b>Exercices & devoirs</b><span>Corrigés expliqués</span></div></div>
-<div class="chat-mock">
-<div class="chat-bubble">Pose ta question sur ton cours ou demande un résumé !</div>
-<div class="chat-check"><span class="tick">✓</span> Expliquer un concept</div>
-<div class="chat-check"><span class="tick">✓</span> Résumer un chapitre</div>
-<div class="chat-check"><span class="tick">✓</span> Résoudre un exercice</div>
-<div class="chat-check"><span class="tick">✓</span> Créer des fiches de révision</div>
-<div class="chat-input"><div class="fake">Pose ta question...</div><div class="send">›</div></div>
-</div>
-</div>
-</div>
-</div>
-<div class="hero-proofs reveal"><p class="hp-label">Ils révisent déjà avec Prof IA</p>
-<div class="hp-grid">
-<div class="proof-card"><div class="stars">★★★★★</div><p>"Mon fils a enfin compris les maths. Il envoie son PDF et l'IA lui explique avec ses propres cours."</p><span>Awa K. — Maman d'un élève de 4ème 🇨🇮</span></div>
-<div class="proof-card"><div class="stars">★★★★★</div><p>"Ma fille révise seule le soir. Les fiches automatiques nous ont sauvé avant les compos."</p><span>Ibrahim D. — Parent d'élève 🇸🇳</span></div>
-</div></div>
-</div></header>
-
-<section id="probleme"><div class="container">
-<div class="section-head reveal"><span class="section-tag">Tu te reconnais, parent ?</span><h2>Avant de continuer, sois honnête avec toi-même.</h2></div>
-<div class="solution-grid">
-<div class="sol-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div><p><b>Ton enfant passe des heures</b> devant plus de 300 pages sans vraiment comprendre ?</p></div>
-<div class="sol-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div><p><b>Tu n'as pas le temps</b> de tout ré-expliquer le soir après le travail ?</p></div>
-<div class="sol-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg></div><p><b>Les notes chutent</b> malgré les heures de révision et le stress monte avant les examens ?</p></div>
-<div class="sol-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div><p><b>Un répétiteur coûte cher</b> et n'est jamais là quand ton enfant bloque à 21h ?</p></div>
-<div class="sol-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></svg></div><p><b>Ton enfant dit "je ne comprends pas"</b> et finit découragé devant son cahier ?</p></div>
-</div>
-<div class="pitch reveal"><p>Si tu te reconnais dans une seule de ces situations, le Prof IA est fait pour ton enfant.</p></div>
-</div></section>
-
-<section id="solution"><div class="container">
-<div class="section-head reveal"><span class="section-tag">La solution</span><h2>Ton enfant n'a pas besoin de plus d'heures. <em>Il a besoin de son prof à lui.</em></h2><p>Tu as déjà essayé les résumés YouTube, les groupes WhatsApp, les répétiteurs. Ça ne tient pas, pas parce que ton enfant est faible, mais parce que ces solutions sont génériques : elles n'utilisent pas <b>ses propres cours</b>.</p></div>
-<div class="split reveal">
-<div class="benefit-visual">
-<div class="plan-mock"><b style="display:block;margin-bottom:12px">Bonjour ! Voici ton plan de cours personnalisé.</b>
-<div class="row"><div class="dot" style="background:#FF8A00">π</div><div style="flex:1"><b style="font-size:.86rem">Mathématiques</b><div style="font-size:.74rem;opacity:.7">Exercices et explications</div><div class="bar"><i style="width:60%;background:#FF8A00"></i></div></div></div>
-<div class="row"><div class="dot" style="background:#8B5CF6">⚛</div><div style="flex:1"><b style="font-size:.86rem">Physique</b><div style="font-size:.74rem;opacity:.7">Résumé + quiz interactifs</div><div class="bar"><i style="width:40%;background:#8B5CF6"></i></div></div></div>
-<div class="row"><div class="dot" style="background:#22C55E">✎</div><div style="flex:1"><b style="font-size:.86rem">Français</b><div style="font-size:.74rem;opacity:.7">Fiches de révision</div><div class="bar"><i style="width:80%;background:#22C55E"></i></div></div></div>
-</div>
-<p style="font-size:.85rem;color:var(--muted);font-weight:700;text-align:center">Maths · Physique · Français · Anglais · Histoire-Géo — suivi par matière</p>
-</div>
-<div class="text"><h3 style="font-size:1.5rem;margin-bottom:14px">Le Prof IA fonctionne différemment</h3><p style="color:var(--muted);margin-bottom:12px">Il ne donne pas des réponses toutes faites. Il explique à partir des <b>cours exacts de ton enfant</b>, à son rythme, avec des mots simples.</p>
-<div class="tagline">Explique-moi ce sujet simplement · Donne-moi un plan de cours personnalisé · Aide-moi à réviser efficacement</div></div>
-</div>
-<div class="solution-grid" style="margin-top:44px">
-<div class="sol-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div><h3>Comprend SES cours</h3><p>Ton enfant envoie ses PDF, photos et documents. L'IA les lit et répond uniquement à partir de ses leçons.</p></div>
-<div class="sol-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div><h3>Disponible 24h/24</h3><p>À 21h avant un devoir, le dimanche, pendant les vacances : le prof est toujours là pour expliquer, résumer, interroger.</p></div>
-<div class="sol-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div><h3>S'adapte à son rythme</h3><p>Explications simples, fiches de révision, quiz, exercices corrigés : chaque enfant avance à son niveau, matière par matière.</p></div>
-</div>
-<div class="cta-timer reveal"><span class="cta-timer-label">Offre de lancement expire dans</span><span class="cta-timer-time" data-countdown>24:00:00</span></div>
-<div class="offer-cta reveal"><a href="#" data-checkout class="btn btn-accent btn-lg">J'active le Prof IA de mon enfant</a></div>
-</div></section>
-
-<section id="temoignages"><div class="container">
-<div class="section-head reveal"><span class="section-tag">Ils ont déjà franchi le pas</span><h2>Des parents qui <em>révisent sereins</em></h2></div>
-<div class="testi-carousel"><div class="testi-track" id="testi-track">
-<div class="testi-card"><div class="stars">★★★★★</div><p>"Il a résumé 80 pages d'histoire en fiches claires. Mon fils a eu 15 au devoir."</p><span>Mariam S. — 🇨🇮</span></div>
-<div class="testi-card"><div class="stars">★★★★★</div><p>"Enfin je ne stresse plus le soir. Elle demande à son Prof IA au lieu de m'attendre."</p><span>Fatou B. — 🇸🇳</span></div>
-<div class="testi-card"><div class="stars">★★★★★</div><p>"Les exos de maths sont expliqués étape par étape avec son propre cours. Bluffant."</p><span>Yao K. — 🇨🇮</span></div>
-<div class="testi-card"><div class="stars">★★★★★</div><p>"Mon garçon détestait réviser. Avec les quiz, il joue et il apprend."</p><span>Seydou T. — 🇲🇱</span></div>
-<div class="testi-card"><div class="stars">★★★★★</div><p>"J'ai juste photographié ses cahiers. L'IA a tout compris, même l'écriture."</p><span>Grâce M. — 🇨🇲</span></div>
-<div class="testi-card"><div class="stars">★★★★★</div><p>"Moins cher qu'une heure de répétiteur, dispo tout le mois. Calcul vite fait."</p><span>Abdoulaye N. — 🇧🇫</span></div>
-<div class="testi-card"><div class="stars">★★★★★</div><p>"Apprendre plus vite, vraiment. Il révise 30 min et retient mieux qu'avant en 2h."</p><span>Aïcha D. — 🇬🇳</span></div>
-</div></div>
-</div></section>
-
-<section id="plan"><div class="container">
-<div class="section-head reveal"><span class="section-tag">Le plan concret</span><h2>Ce que le Prof IA change <em>concrètement</em></h2></div>
-<div class="solution-grid">
-<div class="sol-card reveal"><div class="icon">1</div><h3>Jour 1</h3><p>Ton enfant envoie ses PDF et photos de cours. Son professeur IA est prêt en quelques minutes.</p></div>
-<div class="sol-card reveal"><div class="icon">2</div><h3>Semaine 1</h3><p>Chapitres résumés en fiches simples. Il comprend enfin ce qu'il relisait sans retenir.</p></div>
-<div class="sol-card reveal"><div class="icon">3</div><h3>Semaine 2</h3><p>Quiz et exercices personnalisés par matière. Tu vois sa progression : 2/5, 3/5, 4/5.</p></div>
-<div class="sol-card reveal"><div class="icon">4</div><h3>Examens</h3><p>La veille du devoir, il se fait interroger, se fait ré-expliquer, arrive serein.</p></div>
-<div class="sol-card reveal"><div class="icon">✓</div><h3>En continu</h3><p>Il devient autonome : il ose poser toutes ses questions, sans honte, à son rythme.</p></div>
-<div class="sol-card reveal"><div class="icon">?</div><h3>En difficulté</h3><p>Blocage sur un exo à 22h ? L'IA explique simplement, avec son cours, pas une réponse copiée.</p></div>
-</div>
-</div></section>
-
-<section id="offre"><div class="container">
-<div class="section-head reveal"><span class="section-tag">L'offre & la valeur</span><h2>L'offre <em>complète</em></h2></div>
-<div class="offer-card reveal">
-<div class="bonus"><div class="bonus-ic" style="background:linear-gradient(135deg,#0A5CFF,#4D86FF)">🤖</div><div><h3>Le Prof IA — accès complet</h3><p>Assistant intelligent nourri avec les cours de ton enfant : explications, résumés, exercices, fiches. Toutes matières, 24h/24 sur téléphone.</p><span class="item-price">15 000 FCFA</span></div></div>
-<div class="bonus"><div class="bonus-ic" style="background:linear-gradient(135deg,#22C55E,#15803D)">✎</div><div><h3>Bonus 1 — Fiches de révision auto</h3><p>Chaque chapitre transformé en fiches claires et courtes. Fini les 300 pages relues dans le vide.</p><span class="item-price">5 000 FCFA</span></div></div>
-<div class="bonus"><div class="bonus-ic" style="background:linear-gradient(135deg,#FF8A00,#F59E0B)">?</div><div><h3>Bonus 2 — Quiz & exercices illimités</h3><p>L'IA interroge ton enfant, corrige et explique chaque erreur avec son cours.</p><span class="item-price">5 000 FCFA</span></div></div>
-<div class="bonus"><div class="bonus-ic" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9)">◈</div><div><h3>Bonus 3 — Plan de cours personnalisé</h3><p>Maths, Physique, Français, Anglais, Histoire-Géo : un plan par matière avec suivi de progression.</p><span class="item-price">5 000 FCFA</span></div></div>
-<div class="bonus"><div class="bonus-ic" style="background:linear-gradient(135deg,#0E2A4C,#0A5CFF)">♥</div><div><h3>Bonus 4 — Espace suivi parent</h3><p>Tu vois ce qu'il révise, où il progresse, où il bloque. Sans passer 2h à côté de lui.</p><span class="item-price">10 000 FCFA</span></div></div>
-<div class="value-table">
-<div class="vt-row"><span class="item">Le Prof IA + 4 bonus</span><span class="val" style="text-decoration:line-through;color:#94A3B8">40 000 FCFA</span></div>
-<div class="vt-total"><span>Aujourd'hui, lancement</span><span>4 900 FCFA</span></div>
-</div>
-<div class="urgency-timer"><span class="ut-label">Offre de lancement expire dans</span><span class="ut-time" data-countdown>24:00:00</span></div>
-<div class="offer-cta"><a href="#" data-checkout class="btn btn-accent btn-lg" style="width:100%">J'ACTIVE LE PROF IA — 4 900 FCFA</a><p class="micro">Pas parce que ça vaut moins. Mais parce que le prix ne doit pas être l'excuse qui retarde la réussite de ton enfant.</p></div>
-</div>
-<div class="guarantee reveal"><div class="shield"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div><span class="days-badge">GARANTIE 7 JOURS</span><h3>Satisfait ou remboursé</h3><p>Si dans les 7 jours ton enfant n'y trouve ni explication claire, ni aide concrète pour réviser, écris-nous. On te rembourse intégralement, sans discussion. Le risque est de notre côté.</p><div class="offer-cta"><a href="#" data-checkout class="btn btn-accent">J'essaie sans risque</a></div></div>
-</div></section>
-
-<section id="faq"><div class="container">
-<div class="section-head reveal"><span class="section-tag">FAQ & objections</span><h2>Tes questions, <em>avant même que tu les poses</em></h2></div>
-<div class="faq">
-<div class="faq-item"><button class="faq-q">Comment ça marche concrètement ? <span>+</span></button><div class="faq-a"><p>Tu actives l'accès, ton enfant envoie ses PDF, photos de cahiers ou exercices. L'IA les analyse et devient son professeur : il peut demander "explique-moi", "résume ce chapitre", "interroge-moi", à tout moment sur téléphone.</p></div></div>
-<div class="faq-item"><button class="faq-q">Pour quelles classes et matières ? <span>+</span></button><div class="faq-a"><p>Primaire, collège et lycée. Maths, Physique, Français, Anglais, Histoire-Géo et plus : tant que tu fournis ses cours, l'IA s'adapte à son niveau et à son programme.</p></div></div>
-<div class="faq-item"><button class="faq-q">Est-ce que ça fait ses devoirs à sa place ? <span>+</span></button><div class="faq-a"><p>Non. Le Prof IA explique, fait résumer, propose des exercices et corrige en expliquant. Le but c'est qu'il comprenne et retienne, pas qu'il copie.</p></div></div>
-<div class="faq-item"><button class="faq-q">Mon enfant est-il en sécurité ? Faut-il surveiller ? <span>+</span></button><div class="faq-a"><p>L'IA ne répond qu'à partir de ses cours, dans un cadre scolaire. Et avec l'espace suivi parent, tu vois ce qu'il révise et sa progression, sans rester à côté de lui.</p></div></div>
-<div class="faq-item"><button class="faq-q">Quel est le format ? Sur quel appareil ? <span>+</span></button><div class="faq-a"><p>100% en ligne, sur téléphone, tablette ou ordinateur. Accès immédiat après paiement, compatible avec les petits écrans.</p></div></div>
-<div class="faq-item"><button class="faq-q">Comment se passe le paiement ? <span>+</span></button><div class="faq-a"><p>Paiement sécurisé : Mobile Money, Wave, Orange Money. Accès immédiat après confirmation. Remplace le lien de paiement par le tien quand tu es prêt.</p></div></div>
-</div>
-</div></section>
-
-<section id="decision"><div class="container">
-<div class="decision-head reveal"><span class="section-tag" style="background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.35)">Ton choix maintenant</span><h2>Des parents ont déjà offert <em style="color:#FFD400">un prof 24h/24</em> à leur enfant.</h2></div>
-<div class="options-grid reveal">
-<div class="option-card option-bad"><div class="o-title">OPTION 1 — TU FERMES CETTE PAGE</div><p>Ton enfant reste seul devant ses 300 pages. Mêmes soirs difficiles, mêmes "je ne comprends pas", même stress avant les compos. Un jour de plus. Comme hier.</p></div>
-<div class="option-card option-good"><div class="o-title">OPTION 2 — TU LUI ACTIVES SON PROF IA</div><p>Ce soir, il envoie ses cours. Demain, il a ses fiches et ses explications. <b>Dans 30 jours, il révise seul, avec confiance.</b> Tu suis sa progression sans t'épuiser.</p></div>
-</div>
-</div></section>
-
-<div class="final-cta reveal"><div class="container">
-<h2>Le meilleur moment pour l'aider, c'était hier. Le deuxième meilleur, c'est maintenant.</h2>
-<p>Tes cours. Ton professeur. Ton rythme. Offre à ton enfant un IA qui s'adapte à lui.</p>
-<a href="#" data-checkout class="btn btn-accent btn-lg">J'active le Prof IA — 4 900 FCFA</a>
-<p class="poetic">Apprendre plus vite, avec confiance.</p>
-</div></div>
-
-<footer><div class="container footer-inner">
-<a href="#" class="logo"><span class="logo-mark">P</span><span>Prof IA</span></a>
-<p>© 2026 Prof IA. Tous droits réservés.</p>
-<div class="footer-links"><a href="#">Mentions légales</a><a href="#">CGV</a><a href="#">Contact</a></div>
-</div></footer>
-
-<div class="sticky-bar"><div><span class="s-old">15 000 FCFA</span><span class="s-new">4 900 FCFA</span></div><a href="#" data-checkout class="btn btn-accent">J'active le Prof IA</a></div>
-
+<html class="scroll-smooth" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Prof IA : Tuteur Intelligent 24h/24 sur Smartphone — Pack à 27€, sans abonnement</title>
+<meta content="Configure en 10 minutes ton prof particulier IA sur smartphone. Guide + vidéo + 60 prompts pour réviser 300+ pages. Paiement unique 27€, accès à vie." name="description"/>
+<link rel="canonical" href="https://prof-ia.example.com/"/>
+<meta name="robots" content="index, follow"/>
+<meta name="theme-color" content="#0066FF"/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230066FF'/%3E%3Ctext x='32' y='44' font-family='Arial' font-size='32' font-weight='900' fill='white' text-anchor='middle'%3EIA%3C/text%3E%3C/svg%3E"/>
+<!-- Open Graph / Twitter -->
+<meta property="og:type" content="website"/>
+<meta property="og:locale" content="fr_FR"/>
+<meta property="og:title" content="Le Système Prof IA — Tuteur Intelligent 24h/24 (27€, sans abonnement)"/>
+<meta property="og:description" content="Guide + Masterclass vidéo + 60 prompts socratiques. 300+ pages révisées en 10 minutes d'installation."/>
+<meta property="og:url" content="https://prof-ia.example.com/"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Le Système Prof IA — 27€ paiement unique"/>
+<meta name="twitter:description" content="Ton prof particulier IA sur smartphone, configuré en 10 min. Zéro abonnement."/>
+<!-- Perf: preconnect images + fonts -->
+<link rel="preconnect" href="https://lh3.googleusercontent.com" crossorigin=""/>
+<link rel="dns-prefetch" href="https://lh3.googleusercontent.com"/>
+<!-- Tailwind CSS v3 CDN with forms and container-queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Font: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
 <script>
-// LIEN DE PAIEMENT : remplace par ton lien Maketou / Wave /eds
-var CHECKOUT_URL = "#offre";
-document.querySelectorAll("[data-checkout]").forEach(function(a){a.addEventListener("click",function(e){if(CHECKOUT_URL==="#offre"){e.preventDefault();document.getElementById("offre").scrollIntoView({behavior:"smooth"});}});if(CHECKOUT_URL!=="#offre"){a.setAttribute("href",CHECKOUT_URL);}});
-// Countdown 24h persistant
-var D = 24*3600; try{var t0=localStorage.getItem("pia_t0");var now=Date.now();if(!t0){localStorage.setItem("pia_t0",now);t0=now;}var el=Math.floor((now-parseInt(t0))/1000);var rem=D-(el%D);}catch(e){var rem=D;}
-setInterval(function(){rem--;if(rem<0)rem=D;var h=String(Math.floor(rem/3600)).padStart(2,"0"),m=String(Math.floor(rem%3600/60)).padStart(2,"0"),s=String(rem%60).padStart(2,"0");document.querySelectorAll("[data-countdown]").forEach(function(x){x.textContent=h+":"+m+":"+s;});},1000);
-// Preuves sociales
-var buyers=[["Aminata","🇨🇮 Côte d'Ivoire","#0A5CFF"],["Seydou","🇲🇱 Mali","#22C55E"],["Fatou","🇸🇳 Sénégal","#FF8A00"],["Yao","🇨🇮 Côte d'Ivoire","#8B5CF6"],["Grâce","🇨🇲 Cameroun","#EF4444"],["Ibrahim","🇨🇮 Côte d'Ivoire","#0A5CFF"],["Aïcha","🇬🇳 Guinée","#22C55E"]];var bi=0;
-function showNotif(){var p=document.getElementById("notif-pop");if(!p)return;var b=buyers[bi%buyers.length];document.getElementById("notif-av").textContent=b[0][0];document.getElementById("notif-av").style.background=b[2];document.getElementById("notif-name").textContent=b[0];document.getElementById("notif-flag").textContent=b[1];p.style.display="flex";p.classList.remove("hiding");setTimeout(function(){p.classList.add("hiding");setTimeout(function(){p.style.display="none";},300);},3400);bi++;}
-setTimeout(showNotif,2500);setInterval(showNotif,9000);
-// Exit intent desktop
-var shown=false;document.addEventListener("mouseout",function(e){if(!e.relatedTarget&&e.clientY<10&&!shown&&window.innerWidth>768){document.getElementById("exit-overlay").classList.add("show");shown=true;}});
-// FAQ
-document.querySelectorAll(".faq-item").forEach(function(it){it.querySelector(".faq-q").addEventListener("click",function(){var open=it.classList.contains("open");document.querySelectorAll(".faq-item").forEach(function(x){x.classList.remove("open");});if(!open)it.classList.add("open");});});
-// Reveal
-var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("visible");io.unobserve(e.target);}});},{threshold:.12});
-document.querySelectorAll(".reveal").forEach(function(x){io.observe(x);});
-// Duplique le carousel pour boucle infinie
-var track=document.getElementById("testi-track");track.innerHTML+=track.innerHTML;
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              200: '#bfdbfe',
+              300: '#93c5fd',
+              400: '#60a5fa',
+              500: '#0066FF',
+              600: '#0052cc',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#0f172a',
+              cyan: '#00D2FF',
+              yellow: '#FFD200',
+              accent: '#FFB800'
+            }
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          boxShadow: {
+            'glow': '0 8px 20px -4px rgba(0, 102, 255, 0.40)',
+            'glow-gold': '0 8px 20px -4px rgba(255, 184, 0, 0.35)',
+          }
+        }
+      }
+    }
+  </script>
+<!-- BEGIN: Custom Styles -->
+<style data-purpose="base-styling">
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+    }
+    /* A11y: skip-link + focus visible (DESIGN: luminous focus ring) */
+    .skip-link {
+      position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden;
+    }
+    .skip-link:focus {
+      left: 1rem; top: 1rem; width: auto; height: auto; z-index: 100;
+      background: #0066FF; color: #fff; padding: .75rem 1rem; border-radius: .75rem; font-weight: 800;
+    }
+    a:focus-visible, button:focus-visible, summary:focus-visible {
+      outline: 3px solid rgba(0, 102, 255, 0.55);
+      outline-offset: 2px;
+      border-radius: .5rem;
+    }
+    /* DESIGN.md: AI Spark Gradient for primary actions */
+    .btn-primary-gradient {
+      background: linear-gradient(135deg, #0066FF 0%, #00D2FF 100%);
+    }
+    .btn-primary-gradient:hover { filter: brightness(1.05); }
+    .text-gradient {
+      background: linear-gradient(135deg, #0066FF 0%, #00D2FF 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .text-gradient-gold {
+      background: linear-gradient(135deg, #D97706 0%, #F59E0B 50%, #B45309 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .bg-mesh-radial {
+      background-image: radial-gradient(at 10% 20%, rgba(0, 210, 255, 0.12) 0px, transparent 50%),
+                        radial-gradient(at 90% 10%, rgba(0, 102, 255, 0.14) 0px, transparent 50%),
+                        radial-gradient(at 50% 80%, rgba(255, 210, 0, 0.08) 0px, transparent 50%);
+    }
+  </style>
+<style data-purpose="animations">
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    .animate-float-slow {
+      animation: floatSlow 5s ease-in-out infinite;
+    }
+    .animate-float-delayed {
+      animation: floatSlow 6s ease-in-out 2s infinite;
+    }
+    /* Perf + A11y: respect reduced motion, stop infinite repaints */
+    @media (prefers-reduced-motion: reduce) {
+      .animate-float-slow, .animate-float-delayed, .animate-ping {
+        animation: none !important;
+      }
+      html { scroll-behavior: auto; }
+    }
+    /* Perf: lazy-render below-the-fold sections */
+    #contenu-pack, #pourquoi, #fonctionnalites, #demonstration, #avis, #tarifs, #faq {
+      content-visibility: auto;
+      contain-intrinsic-size: auto 800px;
+    }
+  </style>
+<!-- END: Custom Styles -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Product","name":"Le Système Prof IA","description":"Pack clé-en-main: guide pas-à-pas + masterclass vidéo + 60 prompts socratiques pour réviser 300+ pages.","brand":{"@type":"Brand","name":"Prof IA"},"offers":{"@type":"Offer","price":"27","priceCurrency":"EUR","availability":"https://schema.org/InStock","url":"https://prof-ia.example.com/#tarifs"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.9","reviewCount":"312"}}
 </script>
-</body>
-</html>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased selection:bg-brand-500 selection:text-white">
+<a href="#contenu-pack" class="skip-link">Aller au contenu</a>
+<!-- BEGIN: Urgency Banner -->
+<aside class="bg-gradient-to-r from-brand-900 via-brand-600 to-brand-500 text-white text-xs sm:text-sm font-semibold py-2.5 px-4 text-center shadow-md" data-purpose="top-announcement">
+<div class="max-w-7xl mx-auto flex items-center justify-center gap-2 flex-wrap">
+<span class="inline-flex items-center gap-1 bg-brand-yellow text-slate-900 px-2 py-0.5 rounded-full text-xs font-black uppercase tracking-wider">
+        ⚡ OFFRE SPÉCIALE LANCEMENT
+      </span>
+<span>Le Système Clé-en-Main à 27€ au lieu de 97€ (Paiement unique • Accès à vie) !</span>
+<span class="hidden md:inline font-normal text-slate-200">Zéro abonnement mensuel caché.</span>
+<a class="underline underline-offset-4 hover:text-brand-yellow font-bold transition-colors ml-1" href="#tarifs">Télécharger le Pack maintenant →</a>
+</div>
+</aside>
+<!-- END: Urgency Banner -->
+<!-- BEGIN: Header Navigation -->
+<header class="w-full bg-white/90 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-40" data-purpose="main-navigation">
+<nav aria-label="Navigation principale" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+<!-- Brand Logo -->
+<a aria-label="Prof IA - Accueil" class="flex items-center gap-3 group focus-visible:outline-none" href="#">
+<img alt="Logo Prof IA Tuteur Intelligent" class="h-10 sm:h-12 w-auto object-contain transition-transform duration-200 group-hover:scale-105" decoding="async" height="48" src="https://lh3.googleusercontent.com/aida/AEtjO1VacW2qwcz-rT8opcVNkwiaEt4Xnxim78ubK02vTprZQahqVMKD0sYKfNH5qaYLwVsiaooATgGzspFtG4d2hcJBfvii98RW0g3arQ5llaRXQFqTSN6tr39AlsZbUwpewBS5XJaK-J7-3kgzCQd30eiGcCCcOA6vwZVTLiycATrrRI1zIfPqU0FYyxE3f_oSmvWL37DX9QhJ-C-byHeFsi44Ul1YDpVNbRo9RZKXwqtmzFU0FdnJxd25gwCl" width="160"/>
+</a>
+<!-- Desktop Navigation Links -->
+<div class="hidden lg:flex items-center gap-8 text-sm font-semibold text-slate-700">
+<a class="hover:text-brand-500 transition-colors" href="#pourquoi">Pourquoi le Système ?</a>
+<a class="hover:text-brand-500 transition-colors" href="#contenu-pack">Contenu du Pack</a>
+<a class="hover:text-brand-500 transition-colors" href="#fonctionnalites">Comment l'activer</a>
+<a class="hover:text-brand-500 transition-colors" href="#demonstration">En 10 secondes</a>
+<a class="hover:text-brand-500 transition-colors" href="#avis">Avis &amp; Résultats</a>
+<a class="hover:text-brand-500 transition-colors" href="#tarifs">Offre Unique (27€)</a>
+<a class="hover:text-brand-500 transition-colors" href="#faq">FAQ</a>
+</div>
+<!-- Mobile menu (no-JS, accessible) -->
+<details class="lg:hidden relative">
+<summary class="list-none cursor-pointer inline-flex items-center justify-center w-11 h-11 rounded-xl border border-slate-300 bg-white font-black text-slate-700" aria-label="Ouvrir le menu">☰</summary>
+<div class="absolute right-0 mt-2 w-64 rounded-2xl border border-slate-200 bg-white p-4 shadow-xl flex flex-col gap-1 text-sm font-semibold text-slate-700 z-50">
+<a class="px-3 py-2 rounded-lg hover:bg-slate-100" href="#pourquoi">Pourquoi le Système ?</a>
+<a class="px-3 py-2 rounded-lg hover:bg-slate-100" href="#contenu-pack">Contenu du Pack</a>
+<a class="px-3 py-2 rounded-lg hover:bg-slate-100" href="#fonctionnalites">Comment l'activer</a>
+<a class="px-3 py-2 rounded-lg hover:bg-slate-100" href="#demonstration">En 10 secondes</a>
+<a class="px-3 py-2 rounded-lg hover:bg-slate-100" href="#avis">Avis &amp; Résultats</a>
+<a class="px-3 py-2 rounded-lg hover:bg-slate-100" href="#tarifs">Offre Unique (27€)</a>
+<a class="px-3 py-2 rounded-lg hover:bg-slate-100" href="#faq">FAQ</a>
+</div>
+</details>
+<!-- Header CTA Buttons -->
+<div class="flex items-center gap-3">
+<a class="hidden sm:inline-flex flex-col items-center" href="#tarifs">
+<span class="text-[11px] font-bold uppercase tracking-wider text-emerald-600">✓ Zéro abonnement récurrent</span>
+</a>
+<a class="btn-primary-gradient relative inline-flex items-center justify-center px-5 py-2.5 sm:px-6 sm:py-3 text-sm font-bold text-white rounded-xl shadow-glow transition-all duration-200 transform hover:-translate-y-0.5 active:translate-y-0 min-h-[44px]" href="#tarifs">
+<span>Obtenir le Pack (27€)</span>
+<svg class="w-4 h-4 ml-2 -mr-1" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M13 7l5 5m0 0l-5 5m5-5H6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</a>
+</div>
+</nav>
+</header>
+<!-- END: Header Navigation -->
+<main>
+<!-- BEGIN: Hero Section -->
+<section class="relative pt-10 pb-20 lg:pt-16 lg:pb-32 bg-mesh-radial border-b border-slate-100 overflow-hidden" data-purpose="hero-section">
+<!-- Background Ambient Blobs -->
+<div aria-hidden="true" class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[500px] max-w-none bg-gradient-to-tr from-brand-300/30 to-brand-cyan/20 blur-3xl rounded-full -z-10 pointer-events-none"></div>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+<!-- Left Column: High-Converting Copy -->
+<div class="lg:col-span-7 flex flex-col items-start text-left">
+<!-- Digital Product Badge -->
+<div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-50 border border-brand-200 text-brand-700 text-xs sm:text-sm font-bold mb-6 shadow-sm">
+<span class="flex h-2.5 w-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+<span class="text-slate-900 font-extrabold">📦 SYSTÈME CLÉ-EN-MAIN • PAIEMENT UNIQUE</span>
+<span class="text-slate-500 hidden sm:inline">| Prêt en 10 minutes</span>
+</div>
+<!-- Main Headline -->
+<h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-950 tracking-tight leading-[1.12] mb-6">
+              Installe ton <span class="text-gradient">Prof Particulier IA</span> sur ton téléphone en 10 minutes.
+              <span class="relative inline-block px-2 text-slate-950 mt-1">
+<span class="relative z-10">300+ pages révisées</span>
+<span class="absolute inset-0 bg-brand-yellow -rotate-1 rounded-md z-0"></span>
+</span> 
+              sans aucun abonnement mensuel.
+</h1>
+<!-- Subtitle -->
+<div class="w-full max-w-2xl mb-8 space-y-4">
+<p class="text-lg sm:text-xl text-slate-600 leading-relaxed">
+<strong>Le Système Prof IA</strong> n'est pas un abonnement de plus qui ponctionne votre compte chaque mois. C'est un <strong>produit digital clé-en-main complet</strong> (Guide Pas-à-Pas + Masterclass Vidéo + Bibliothèque de Prompts d'Élite) pour configurer immédiatement les meilleures IA sur votre smartphone et transformer les pavés de cours en explications claires et vivantes 24h/24.
+</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+<div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200/80 shadow-sm flex items-start gap-2.5">
+<span class="text-lg leading-none">👨‍👩‍👦</span>
+<div>
+<p class="text-xs font-black uppercase tracking-wider text-amber-900">Pour les Parents</p>
+<p class="text-xs text-amber-800 font-medium mt-0.5">Un investissement unique dérisoire (27€ à vie vs 50€/h de cours particulier) qui pacifie les soirées.</p>
+</div>
+</div>
+<div class="p-3.5 rounded-2xl bg-brand-50 border border-brand-200/80 shadow-sm flex items-start gap-2.5">
+<span class="text-lg leading-none">🎓</span>
+<div>
+<p class="text-xs font-black uppercase tracking-wider text-brand-700">Pour les Élèves</p>
+<p class="text-xs text-brand-900 font-medium mt-0.5">Ton tuteur de poche configuré en 10 min sur ton smartphone. Il ingère tes polycopiés et répond à 23h30 sans honte.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Conversion Action Box -->
+<div class="w-full sm:w-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mb-8">
+<a class="btn-primary-gradient px-8 py-4 text-white text-base sm:text-lg font-extrabold rounded-2xl shadow-glow transition-all text-center flex items-center justify-center gap-3 transform hover:-translate-y-0.5 min-h-[48px]" href="#tarifs">
+<span>Télécharger le Pack Clé-en-Main (27€)</span>
+<span class="text-brand-yellow font-black text-xl">→</span>
+</a>
+<a class="px-6 py-4 bg-white hover:bg-slate-100 text-slate-700 font-bold rounded-2xl border border-slate-300 transition-all text-center flex items-center justify-center gap-2" href="#contenu-pack">
+<svg class="w-5 h-5 text-brand-500" fill="currentColor" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" fill-rule="evenodd"></path>
+</svg>
+<span>Voir ce que contient le Pack</span>
+</a>
+</div>
+<!-- Micro-Reassurance Bullet Points -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full border-t border-slate-200 pt-6 text-xs sm:text-sm text-slate-600 font-medium">
+<div class="flex items-center gap-2">
+<span class="text-emerald-500 font-black text-base">✓</span>
+<span>Accès Immédiat &amp; À Vie</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-emerald-500 font-black text-base">✓</span>
+<span>Zéro abonnement récurrent</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-emerald-500 font-black text-base">✓</span>
+<span>Garantie Remboursé 30 jours</span>
+</div>
+</div>
+<!-- Trustpilot & Real Proof Snippet -->
+<div class="mt-6 flex items-center gap-4 bg-white/80 p-3 rounded-2xl border border-slate-200/80 shadow-sm">
+<div class="flex -space-x-2 overflow-hidden">
+<div class="inline-block h-9 w-9 rounded-full ring-2 ring-white bg-blue-100 text-brand-600 font-black text-xs flex items-center justify-center">LR</div>
+<div class="inline-block h-9 w-9 rounded-full ring-2 ring-white bg-amber-100 text-amber-700 font-black text-xs flex items-center justify-center">KA</div>
+<div class="inline-block h-9 w-9 rounded-full ring-2 ring-white bg-emerald-100 text-emerald-700 font-black text-xs flex items-center justify-center">TM</div>
+<div class="inline-block h-9 w-9 rounded-full ring-2 ring-white bg-purple-100 text-purple-700 font-black text-xs flex items-center justify-center">SB</div>
+</div>
+<div>
+<div class="flex items-center gap-1 text-amber-400 text-sm">
+                  ★ ★ ★ ★ ★ <span class="font-extrabold text-slate-900 ml-1">4.9/5</span>
+</div>
+<p class="text-xs text-slate-500 font-medium">Adopté par plus de 25 000 familles et étudiants autonomes</p>
+</div>
+</div>
+</div>
+<!-- Right Column: Visual Composition with Hero Visual https://lh3.googleusercontent.com/aida-public/AB6AXuADOIpQzrIYqop_ivAb-MTo7A7bmHdCbXUUjuIndHi2YqcsXnFp562oiZyOt7ECcSuK-TSK5Dqi5LtVKe_9rqf2tY8YNeR2EiAMoGEUxgNi00z9DN-VUwNe_4nUnkfL6Eoeb5sXOv78o-n9l52rzADtin9_MDuu2kZsjEAN9K8niPCzJUCOnrSfxThS3631gchPJ-65aZn5flMeuRTTOWb85q6LQ75K_q-HGBh9gOqntOz1njNB8gSejA -->
+<div class="lg:col-span-5 relative flex justify-center">
+<!-- Glow background circle -->
+<div class="absolute -inset-4 bg-gradient-to-r from-brand-cyan to-brand-500 rounded-3xl opacity-20 blur-2xl"></div>
+<!-- Main Promotional Poster Image -->
+<div class="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-white w-full max-w-md lg:max-w-none transform transition-transform duration-300 hover:scale-[1.01]">
+<img alt="Le Système Prof IA révise plus de 300 pages de cours avec assistant intelligent" class="w-full h-auto object-cover" decoding="async" fetchpriority="high" height="1402" loading="eager" sizes="(max-width: 1024px) 100vw, 480px" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPIs0naHL5YwS5nBUX1_QrRaQCl-X-daf3eTOcYj-E8TlGt9Ynu4g2hSosXf7Wm6RxRv5Fi_5cAbxTvUcyC3PEi-8gZKOuiy8S_AUFYJCv74q00MHtUGXBULtKb8Zs3fkPKjeILbvDZKTogRcxbpKydm4zLY6Gq3GByi7EH5rQIZckAT-V-cahRySDl-v5jefUq8bG-isHLoGH4jXlqn96GxJn98FihxnSGYY0HqdrNXH83SYiYdldhg" style="aspect-ratio: 1122 / 1402;" width="1122"/>
+</div>
+<!-- Floating Product Badge (Top Left) -->
+<div class="absolute -top-4 -left-4 sm:top-6 sm:-left-8 bg-white/95 backdrop-blur-md border border-slate-200 rounded-2xl p-3.5 shadow-xl animate-float-slow hidden sm:flex items-center gap-3 z-20">
+<div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl font-black">
+                💾
+              </div>
+<div>
+<p class="text-[11px] uppercase tracking-wider font-bold text-slate-400">Pack Téléchargeable</p>
+<p class="text-base font-extrabold text-slate-900">Actif en 10 minutes</p>
+</div>
+</div>
+<!-- Floating Trust Badge 2 (Bottom Right) -->
+<div class="absolute -bottom-6 -right-4 sm:bottom-8 sm:-right-8 bg-white/95 backdrop-blur-md border border-slate-200 rounded-2xl p-3.5 shadow-xl animate-float-delayed hidden sm:flex items-center gap-3 z-20">
+<div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-500 flex items-center justify-center text-xl">
+                🔒
+              </div>
+<div>
+<p class="text-[11px] uppercase tracking-wider font-bold text-slate-400">Paiement Unique</p>
+<p class="text-base font-extrabold text-slate-900">Tu possèdes le système à vie</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: Hero Section -->
+<!-- BEGIN: What is in the Digital Product (Pack Clé-en-main Breakdown) -->
+<section class="py-20 bg-white border-b border-slate-200" data-purpose="product-contents" id="contenu-pack">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center max-w-3xl mx-auto mb-16">
+<span class="text-brand-600 font-extrabold text-xs sm:text-sm uppercase tracking-widest bg-brand-50 border border-brand-200 px-4 py-1.5 rounded-full inline-block">
+        📦 LE PACK DIGITAL CLÉ-EN-MAIN
+      </span>
+<h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-950 mt-4 tracking-tight leading-tight">
+        Ce que tu reçois instantanément par email après ta commande
+      </h2>
+<p class="text-slate-600 text-base sm:text-lg mt-4">
+        Un ensemble complet d'outils, de templates et de vidéos pratiques pour transformer n'importe quel smartphone ou ordinateur en précepteur d'élite sur-mesure.
+      </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Module 1 -->
+<div class="bg-slate-50 border border-slate-200 rounded-3xl p-6 flex flex-col justify-between hover:border-brand-500 hover:shadow-lg transition-all">
+<div>
+<div class="w-12 h-12 rounded-2xl bg-brand-500/10 text-brand-600 flex items-center justify-center text-2xl font-black mb-4">
+            📘
+          </div>
+<span class="text-[11px] font-black uppercase text-brand-600 tracking-wider">Module 1 • E-book interactif</span>
+<h3 class="text-lg font-black text-slate-900 mt-1 mb-2">Le Guide Pratique Pas-à-Pas</h3>
+<p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            Le manuel illustré pour configurer et synchroniser l'IA avec tes cours en moins de 10 minutes. Aucune compétence technique requise.
+          </p>
+</div>
+<div class="mt-6 pt-4 border-t border-slate-200 text-xs font-bold text-slate-500 flex items-center justify-between">
+<span>Format PDF &amp; Notion</span>
+<span class="text-brand-600">Valeur : 39€</span>
+</div>
+</div>
+<!-- Module 2 -->
+<div class="bg-slate-50 border border-slate-200 rounded-3xl p-6 flex flex-col justify-between hover:border-brand-500 hover:shadow-lg transition-all">
+<div>
+<div class="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-600 flex items-center justify-center text-2xl font-black mb-4">
+            🎬
+          </div>
+<span class="text-[11px] font-black uppercase text-amber-700 tracking-wider">Module 2 • Vidéo HD</span>
+<h3 class="text-lg font-black text-slate-900 mt-1 mb-2">La Masterclass d'Installation (15 min)</h3>
+<p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            Filmé par-dessus l'épaule : regarde l'écran du smartphone en direct et reproduis les réglages exacts pour un tuteur réactif à 100%.
+          </p>
+</div>
+<div class="mt-6 pt-4 border-t border-slate-200 text-xs font-bold text-slate-500 flex items-center justify-between">
+<span>Accès vidéo privé à vie</span>
+<span class="text-brand-600">Valeur : 47€</span>
+</div>
+</div>
+<!-- Module 3 -->
+<div class="bg-slate-50 border border-slate-200 rounded-3xl p-6 flex flex-col justify-between hover:border-brand-500 hover:shadow-lg transition-all">
+<div>
+<div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center text-2xl font-black mb-4">
+            ⚡
+          </div>
+<span class="text-[11px] font-black uppercase text-emerald-700 tracking-wider">Module 3 • Copier-Coller</span>
+<h3 class="text-lg font-black text-slate-900 mt-1 mb-2">Bibliothèque de Prompts Pédagogiques</h3>
+<p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            Les instructions exactes pour forcer l'IA à utiliser la méthode socratique, refuser de tricher et t'expliquer tes 300 pages comme un grand prof.
+          </p>
+</div>
+<div class="mt-6 pt-4 border-t border-slate-200 text-xs font-bold text-slate-500 flex items-center justify-between">
+<span>+60 Prompts calibrés</span>
+<span class="text-brand-600">Valeur : 49€</span>
+</div>
+</div>
+<!-- Module 4 -->
+<div class="bg-slate-50 border border-slate-200 rounded-3xl p-6 flex flex-col justify-between hover:border-brand-500 hover:shadow-lg transition-all">
+<div>
+<div class="w-12 h-12 rounded-2xl bg-purple-500/10 text-purple-600 flex items-center justify-center text-2xl font-black mb-4">
+            📑
+          </div>
+<span class="text-[11px] font-black uppercase text-purple-700 tracking-wider">Module 4 • Fiches &amp; Outils</span>
+<h3 class="text-lg font-black text-slate-900 mt-1 mb-2">Templates &amp; Feuilles d'Examen</h3>
+<p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            Grilles de révision express, fiches mnémotechniques prêtes à imprimer et simulateur de barème pour anticiper ta note au Bac.
+          </p>
+</div>
+<div class="mt-6 pt-4 border-t border-slate-200 text-xs font-bold text-slate-500 flex items-center justify-between">
+<span>Fichiers prêts à l'emploi</span>
+<span class="text-brand-600">Valeur : 29€</span>
+</div>
+</div>
+</div>
+<!-- Total Value Banner -->
+<div class="mt-12 bg-gradient-to-r from-brand-900 via-slate-900 to-slate-900 rounded-2xl p-6 sm:p-8 text-white flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl">
+<div>
+<p class="text-xs font-black uppercase tracking-wider text-brand-cyan">Valeur totale cumulée du Pack : <span class="line-through text-slate-400">164€</span></p>
+<p class="text-xl sm:text-2xl font-extrabold text-white mt-1">Obtiens le Système Complet aujourd'hui pour un paiement unique de <span class="text-brand-yellow text-3xl font-black">27€</span>.</p>
+<p class="text-xs text-slate-300 mt-1">Zéro abonnement mensuel • Tu possèdes le pack pour toujours • Mises à jour incluses.</p>
+</div>
+<a class="px-6 py-3.5 btn-primary-gradient text-white font-black text-sm sm:text-base rounded-xl shadow-glow transition-transform transform hover:-translate-y-0.5 whitespace-normal sm:whitespace-nowrap text-center min-h-[48px]" href="#tarifs">
+          Débloquer mon pack (27€) →
+        </a>
+</div>
+</div>
+</section>
+<!-- END: What is in the Digital Product -->
+<!-- BEGIN: Dual-Target Section (Parents vs Students) -->
+<section class="py-20 bg-slate-50 border-b border-slate-100" data-purpose="dual-target-section" id="pourquoi">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center max-w-3xl mx-auto mb-16">
+<span class="text-brand-600 font-extrabold text-xs sm:text-sm uppercase tracking-widest bg-brand-50 border border-brand-200 px-4 py-1.5 rounded-full inline-block">🎯 DOUBLE CIBLE : DEUX VISIONS, UN MÊME SUCCÈS</span>
+<h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-950 mt-4 tracking-tight leading-tight">Pourquoi les parents adorent le Système Prof IA,<br class="hidden sm:inline"/>et pourquoi les élèves ne peuvent plus s'en passer.</h2>
+<p class="text-slate-600 text-base sm:text-lg mt-4">Ne luttez plus contre les écrans. Transformez l'outil de distraction en prof particulier ultra-puissant sans payer d'abonnement chaque mois.</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-stretch">
+<!-- Parents Card -->
+<div class="bg-gradient-to-b from-amber-50/70 to-white rounded-3xl p-6 sm:p-8 border-2 border-amber-200/80 shadow-lg flex flex-col justify-between hover:shadow-xl transition-all relative">
+<div class="absolute -top-3.5 left-6 bg-gradient-to-r from-amber-500 to-amber-700 text-white text-xs font-black uppercase px-3.5 py-1 rounded-full shadow-md tracking-wider flex items-center gap-1.5">
+<span>👨‍👩‍👦 CÔTÉ PARENTS</span>
+</div>
+<div class="mt-2">
+<div class="relative rounded-2xl overflow-hidden mb-6 border border-amber-200/70 shadow-md group">
+<img alt="Besoin d'un Prof IA pour ton enfant ? Fin du calvaire des devoirs" class="w-full h-auto max-h-[340px] object-cover group-hover:scale-105 transition-transform duration-300" height="1254" decoding="async" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFN5OYt8W38bz566eCBw-vvwDn-golP39CYPiVwWvZkQ7FZGbLi2EuFaH2GkSTviV99vy3P-7Eeu2GQqKs8jakFivpNYE9ZD6gJjWdLZbNxtMnWxssGmwf6kv4aZh8vZmK0CEDZz33sIGKhueos1n1rcdTW-n3Jip_De7uF2G53MIIZgi3R7dkLEYbaP2rKFrxQ8hqgjzXEgamuTTCrnCMLGtZXr4B7yEpH_kJG0pO4o7ijBI4uBA77g" width="1254"/>
+<div class="absolute bottom-3 left-3 bg-amber-900/90 backdrop-blur-sm text-white text-xs font-bold px-3 py-1 rounded-full">Temps d'écran canalisé vers la réussite</div>
+</div>
+<h3 class="text-2xl font-black text-slate-950 mb-2">Vous êtes Parent ?<br/><span class="text-amber-700">Offrez-lui un tuteur d'élite à vie pour le prix d'un demi-cours particulier.</span></h3>
+<p class="text-slate-600 text-sm leading-relaxed mb-6">Vos ados passent des heures sur leur téléphone sans vouloir lâcher leurs écrans ? Ne luttez plus contre la technologie : configurez-leur un tuteur IA bienveillant en 10 minutes montre en main.</p>
+<ul class="space-y-3.5 text-sm text-slate-700">
+<li class="flex items-start gap-3"><span class="flex h-5 w-5 rounded-full bg-emerald-100 text-emerald-700 font-bold items-center justify-center flex-shrink-0 text-xs mt-0.5">✓</span><span><strong>Zéro abonnement mensuel :</strong> Un investissement unique de 27€ pour toute sa scolarité, au lieu de payer 45€ à 60€ par heure chaque semaine.</span></li>
+<li class="flex items-start gap-3"><span class="flex h-5 w-5 rounded-full bg-emerald-100 text-emerald-700 font-bold items-center justify-center flex-shrink-0 text-xs mt-0.5">✓</span><span><strong>Fin des conflits le soir :</strong> Plus besoin de vous transformer en répétiteur épuisé après une longue journée de travail.</span></li>
+<li class="flex items-start gap-3"><span class="flex h-5 w-5 rounded-full bg-emerald-100 text-emerald-700 font-bold items-center justify-center flex-shrink-0 text-xs mt-0.5">✓</span><span><strong>Méthode anti-triche socratique :</strong> Nos prompts forcent l'IA à guider la réflexion pas à pas sans donner la réponse toute faite.</span></li>
+<li class="flex items-start gap-3"><span class="flex h-5 w-5 rounded-full bg-emerald-100 text-emerald-700 font-bold items-center justify-center flex-shrink-0 text-xs mt-0.5">✓</span><span><strong>Sérénité pour Parcoursup :</strong> Votre enfant gagne en autonomie et améliore significativement sa moyenne générale.</span></li>
+</ul>
+</div>
+<div class="mt-8 pt-5 border-t border-amber-200/60 flex items-center justify-between">
+<span class="text-xs font-bold text-amber-900">🕊️ Paix retrouvée à la maison</span>
+<a class="text-xs font-extrabold text-amber-800 hover:text-amber-950 underline underline-offset-2" href="#tarifs">Télécharger le Pack Parent &amp; Famille →</a>
+</div>
+</div>
+<!-- Students Card -->
+<div class="bg-gradient-to-b from-brand-50/70 to-white rounded-3xl p-6 sm:p-8 border-2 border-brand-200/90 shadow-lg flex flex-col justify-between hover:shadow-xl transition-all relative">
+<div class="absolute -top-3.5 left-6 bg-brand-500 text-white text-xs font-black uppercase px-3.5 py-1 rounded-full shadow-md tracking-wider flex items-center gap-1.5">
+<span>⚡ CÔTÉ ÉLÈVE &amp; ÉTUDIANT</span>
+</div>
+<div class="mt-2">
+<div class="relative rounded-2xl overflow-hidden mb-6 border border-brand-200/70 shadow-md group">
+<img alt="Apprendre plus vite avec Prof IA - Étudiant débordé libéré" class="w-full h-auto max-h-[340px] object-cover group-hover:scale-105 transition-transform duration-300" height="1448" decoding="async" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgJIkU_dNYWHuTH8FA1jydEpyIxHjxjZScmz8r8WJZe-ok2QWuDZjHWZWbzke39z96MBXTDWNwBTZJ8R7Y3vfHXbOEIjSKNCtEaoDD0VOov4Q4mQLDiKI_fbdfk4kQSn7SVsMzUhMMZUuXm8aFnbMN6ZHOTiQlmlbR1_FL4LYeR7Ex2Qzy0je8d5Y8B_sw17vEX47HRd9PmbJevUk6Yr35Dkw44LBx4IPbUsHnH96NKye8Fj7qpfBexQ" width="1086"/>
+<div class="absolute bottom-3 left-3 bg-brand-600/90 backdrop-blur-sm text-white text-xs font-bold px-3 py-1 rounded-full">300 pages assimilées sans stress</div>
+</div>
+<h3 class="text-2xl font-black text-slate-950 mb-2">Tu es Collégien, Lycéen ou Étudiant ?<br/><span class="text-brand-600">Ton prof particulier de poche directement sur ton smartphone.</span></h3>
+<p class="text-slate-600 text-sm leading-relaxed mb-6">Marre des polycopiés de 300 pages illisibles, du jargon complexe et des dimanches gâchés à stresser tout seul dans ta chambre ?</p>
+<ul class="space-y-3.5 text-sm text-slate-700">
+<li class="flex items-start gap-3"><span class="flex h-5 w-5 rounded-full bg-brand-100 text-brand-600 font-bold items-center justify-center flex-shrink-0 text-xs mt-0.5">✓</span><span><strong>Installé dans ton téléphone en 10 min :</strong> Utilise les meilleures IA gratuites avec notre configuration d'élite.</span></li>
+<li class="flex items-start gap-3"><span class="flex h-5 w-5 rounded-full bg-brand-100 text-brand-600 font-bold items-center justify-center flex-shrink-0 text-xs mt-0.5">✓</span><span><strong>Ingestion de tes cours de 300 pages :</strong> Dépose ton PDF ou prends en photo ton cahier : le système t'explique l'essentiel en 10s.</span></li>
+<li class="flex items-start gap-3"><span class="flex h-5 w-5 rounded-full bg-brand-100 text-brand-600 font-bold items-center justify-center flex-shrink-0 text-xs mt-0.5">✓</span><span><strong>Zéro jugement à 23h30 :</strong> Pose tes questions les plus bêtes ou difficiles en pleine nuit sans jamais avoir honte.</span></li>
+<li class="flex items-start gap-3"><span class="flex h-5 w-5 rounded-full bg-brand-100 text-brand-600 font-bold items-center justify-center flex-shrink-0 text-xs mt-0.5">✓</span><span><strong>Tu possèdes le système à vie :</strong> Pas d'abonnement à résilier, tu gardes la méthode et les prompts pour toutes tes études.</span></li>
+</ul>
+</div>
+<div class="mt-8 pt-5 border-t border-brand-200/60 flex items-center justify-between">
+<span class="text-xs font-bold text-brand-700">🚀 +3,8 points sur ta moyenne</span>
+<a class="text-xs font-extrabold text-brand-600 hover:text-brand-800 underline underline-offset-2" href="#tarifs">Obtenir l'accès immédiat (27€) →</a>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: Dual-Target Section -->
+<!-- BEGIN: Solution & Methodology Section -->
+<section class="py-20 bg-slate-900 text-white relative overflow-hidden" data-purpose="solution-section" id="fonctionnalites">
+<!-- Glow Decor -->
+<div aria-hidden="true" class="absolute top-0 right-0 w-96 h-96 bg-brand-500/20 rounded-full blur-3xl pointer-events-none"></div>
+<div aria-hidden="true" class="absolute bottom-0 left-0 w-96 h-96 bg-brand-cyan/20 rounded-full blur-3xl pointer-events-none"></div>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+<!-- Image Feature Column https://lh3.googleusercontent.com/aida-public/AB6AXuB6PFIxyGBMRMW3oz4aNLTApQ6iOSXztpNyvtPmoqgvUJyWMggS1i8euI9mzvjzDy5tDnQOqamfE4xMVHcRnq3KMzBkgoTrbHh2PY-mMi5byrEm6wVN6zfVwsdZwMZME0RavgUOJvgoy_fHrpXjdWW1_0kW3yil343RdmseurhDueAon4qFRzcP-jZweJELKpZQP7MSOvQqPQGQFZpVn689BHj_pKdFAoqRhBDmYCcLBfkdZH1ugaOzag -->
+<div class="lg:col-span-5 order-2 lg:order-1 flex justify-center">
+<div class="relative rounded-3xl overflow-hidden border-2 border-slate-700 shadow-2xl max-w-md w-full">
+<img alt="Tes cours. Ton professeur. Ton rythme. Apprends avec le Système Prof IA" class="w-full h-auto object-cover" height="1254" decoding="async" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxnDhYlGgKbqroN58dKs4iLFwJpST3hU5paMflyIN5Ea16SPL57ACk_afq3LgbL_6WLps0krgC13yoAa8Olc5OTNE6K56cahYOqT9KgvBgwVeumlPELR20Bu31bo62n9U_SnvFGhdJZ6dREhRXhSug53UPizb88ncz1G73g-NGdNFfbZmB9otWYX4IaW7qAmz9Ls0R0_kvSSbvL1U_ku8wQ39yX2SIFy1ayNNMGS6HA_48Fl6gmF6WuA" width="1254"/>
+</div>
+</div>
+<!-- Feature Pillars Column -->
+<div class="lg:col-span-7 order-1 lg:order-2">
+<span class="inline-block text-brand-yellow font-black text-xs sm:text-sm tracking-widest uppercase bg-brand-yellow/10 border border-brand-yellow/30 px-3.5 py-1.5 rounded-full mb-4">
+              🚀 COMMENT FONCTIONNE LE SYSTÈME DANS TON SMARTPHONE
+            </span>
+<h2 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight mb-6">
+              Tes cours. Ton professeur. <br/>
+<span class="text-gradient">Opérationnel en 10 minutes chrono.</span>
+</h2>
+<p class="text-slate-300 text-base sm:text-lg mb-10">
+              Le Système Prof IA te donne la clé pour transformer les IA les plus puissantes du marché en tuteurs pédagogiques dévoués, sans coder et sans payer d'abonnement logiciel mensuel.
+            </p>
+<!-- 4 Pillars Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+<!-- Pillar 1 -->
+<div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-5 hover:border-brand-500 transition-colors">
+<div class="w-10 h-10 rounded-xl bg-brand-500/20 text-brand-cyan flex items-center justify-center text-xl mb-3 font-bold">
+                  📄
+                </div>
+<h3 class="text-lg font-bold text-white mb-1">Connexion de tous tes cours</h3>
+<p class="text-slate-400 text-sm leading-relaxed">
+                  Notre méthode t'apprend à injecter un PDF de 300 pages ou une simple photo de cours manuscrit pour que l'IA connaisse ton programme par cœur.
+                </p>
+</div>
+<!-- Pillar 2 -->
+<div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-5 hover:border-brand-500 transition-colors">
+<div class="w-10 h-10 rounded-xl bg-brand-yellow/20 text-brand-yellow flex items-center justify-center text-xl mb-3 font-bold">
+                  💡
+                </div>
+<h3 class="text-lg font-bold text-white mb-1">Architecture Socratique Prête à l'Emploi</h3>
+<p class="text-slate-400 text-sm leading-relaxed">
+                  Grâce à nos prompts pré-programmés, l'IA ne recrache pas de réponses toutes faites mais te pose la question précise qui déclenche le déclic.
+                </p>
+</div>
+<!-- Pillar 3 -->
+<div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-5 hover:border-brand-500 transition-colors">
+<div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl mb-3 font-bold">
+                  🧠
+                </div>
+<h3 class="text-lg font-bold text-white mb-1">Générateur de Fiches &amp; Flashcards</h3>
+<p class="text-slate-400 text-sm leading-relaxed">
+                  La formule pour créer instantanément des quiz et flashcards optimisés pour la répétition espacée, révisables dans le bus ou au lit.
+                </p>
+</div>
+<!-- Pillar 4 -->
+<div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-5 hover:border-brand-500 transition-colors">
+<div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl mb-3 font-bold">
+                  🎯
+                </div>
+<h3 class="text-lg font-bold text-white mb-1">Simulateur d'Examens &amp; Bac</h3>
+<p class="text-slate-400 text-sm leading-relaxed">
+                  Le prompt secret de correction officiel qui simule la note que te mettrait un vrai correcteur d'examen national.
+                </p>
+</div>
+</div>
+<!-- In-section CTA -->
+<div class="mt-8 flex flex-col sm:flex-row items-center gap-4">
+<a class="w-full sm:w-auto px-7 py-3.5 btn-primary-gradient font-extrabold text-white rounded-xl shadow-glow text-center transition-all min-h-[48px]" href="#tarifs">
+                Télécharger le Système Clé-en-main (27€) →
+              </a>
+<span class="text-xs text-slate-400">Paiement unique • Accès instantané par email</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: Solution Section -->
+<!-- BEGIN: Interactive Proof / 10-Second Demo Mockup -->
+<section class="py-16 bg-white border-b border-slate-200" data-purpose="shared-steps">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center max-w-3xl mx-auto mb-12">
+<span class="text-emerald-700 font-extrabold text-xs sm:text-sm uppercase tracking-widest bg-emerald-50 border border-emerald-200 px-3.5 py-1.5 rounded-full">
+            🤝 MISE EN PLACE ÉCLAIR
+          </span>
+<h2 class="text-3xl sm:text-4xl font-black text-slate-950 mt-4 tracking-tight">Comment ça se passe concrètement ?</h2>
+<p class="text-slate-600 text-base sm:text-lg mt-3">Un protocole en 4 étapes simples qui élimine toute difficulté technique.</p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="p-6 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col justify-between hover:border-brand-500 transition-all">
+<div class="w-10 h-10 rounded-xl bg-brand-500 text-white font-black flex items-center justify-center text-lg mb-4 shadow-sm">1</div>
+<h3 class="text-base font-extrabold text-slate-900 mb-2">Accès immédiat au Pack</h3>
+<p class="text-xs text-slate-600 leading-relaxed">Tu reçois tes identifiants et tes fichiers par email immédiatement après validation. Téléchargeable sur PC, Mac, iPhone ou Android.</p>
+<span class="mt-4 text-[11px] font-bold text-brand-600">⏱️ Instantané (0 seconde d'attente)</span>
+</div>
+<div class="p-6 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col justify-between hover:border-brand-500 transition-all">
+<div class="w-10 h-10 rounded-xl bg-amber-500 text-white font-black flex items-center justify-center text-lg mb-4 shadow-sm">2</div>
+<h3 class="text-base font-extrabold text-slate-900 mb-2">Installation en 10 minutes</h3>
+<p class="text-xs text-slate-600 leading-relaxed">Suis la vidéo pas-à-pas de 15 minutes. Tu copies-colles nos prompts maîtres et ton tuteur personnalisé est prêt à discuter.</p>
+<span class="mt-4 text-[11px] font-bold text-amber-700">🎬 Guidé pas-à-pas à l'écran</span>
+</div>
+<div class="p-6 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col justify-between hover:border-brand-500 transition-all">
+<div class="w-10 h-10 rounded-xl bg-purple-500 text-white font-black flex items-center justify-center text-lg mb-4 shadow-sm">3</div>
+<h3 class="text-base font-extrabold text-slate-900 mb-2">Injection de tes cours</h3>
+<p class="text-xs text-slate-600 leading-relaxed">Glisse tes polycopiés de 300 pages, tes exercices ou tes photos de cours. L'IA extrait l'essentiel et te teste avec des quiz interactifs.</p>
+<span class="mt-4 text-[11px] font-bold text-purple-700">📱 Disponible 24h/24 dans ta poche</span>
+</div>
+<div class="p-6 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col justify-between hover:border-brand-500 transition-all">
+<div class="w-10 h-10 rounded-xl bg-emerald-500 text-white font-black flex items-center justify-center text-lg mb-4 shadow-sm">4</div>
+<h3 class="text-base font-extrabold text-slate-900 mb-2">Notes en hausse &amp; Paix</h3>
+<p class="text-xs text-slate-600 leading-relaxed">Les résultats grimpent (+3,8 pts de moyenne constatée). Les parents respirent, le dossier Parcoursup est sécurisé, et sans abonnement récurrent.</p>
+<span class="mt-4 text-[11px] font-bold text-emerald-700">🏆 Système à vie</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Demonstration Mockup -->
+<section class="py-20 bg-slate-50 border-b border-slate-200" data-purpose="demo-showcase" id="demonstration">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center max-w-3xl mx-auto mb-14">
+<span class="text-brand-600 font-extrabold text-xs sm:text-sm uppercase tracking-widest bg-brand-100 px-3.5 py-1.5 rounded-full">
+            ⚡ EFFICACITÉ REDOUTABLE
+          </span>
+<h2 class="text-3xl sm:text-4xl font-extrabold text-slate-950 mt-4 tracking-tight">
+            Ce que le Système fait pour toi en 10 secondes chrono
+          </h2>
+<p class="text-slate-600 text-base sm:text-lg mt-3">
+            Plus besoin de passer des dimanches entiers à recopier des fiches bristol illisibles.
+          </p>
+</div>
+<!-- Before / After Interactive Visual Mockup -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-xl">
+<!-- Before Card -->
+<div class="lg:col-span-5 bg-rose-50/70 border-2 border-dashed border-rose-200 rounded-2xl p-6">
+<div class="flex items-center justify-between mb-4">
+<span class="text-xs font-black uppercase text-rose-700 bg-rose-200/80 px-2.5 py-1 rounded-md">
+                AVANT : Le calvaire sans méthode
+              </span>
+<span class="text-rose-600 text-xs font-bold">40 pages denses</span>
+</div>
+<div class="space-y-2 opacity-60 pointer-events-none select-none">
+<div class="h-3 bg-slate-400 rounded w-5/6"></div>
+<div class="h-3 bg-slate-300 rounded w-full"></div>
+<div class="h-3 bg-slate-400 rounded w-4/6"></div>
+<div class="h-3 bg-slate-300 rounded w-full"></div>
+<div class="h-3 bg-slate-300 rounded w-3/4"></div>
+</div>
+<div class="mt-6 bg-white p-4 rounded-xl border border-rose-100 text-xs text-slate-700 space-y-2">
+<p class="font-bold text-rose-900">⛔ Temps passé : 4h30 à surligner</p>
+<p>• Définitions complexes sans exemples concrets</p>
+<p>• Aucune idée de ce qui tombera à l'épreuve</p>
+<p>• Taux de rétention à J+3 : seulement 15%</p>
+</div>
+</div>
+<!-- Central Arrow Action -->
+<div class="lg:col-span-2 flex flex-col items-center justify-center text-center">
+<div class="w-14 h-14 rounded-full bg-brand-500 text-white flex items-center justify-center shadow-glow mb-2 text-2xl font-black">
+              ⚡
+            </div>
+<span class="text-xs font-black uppercase tracking-wider text-brand-600">Scan &amp; Prompts Prof IA</span>
+<span class="text-[11px] text-slate-400">Temps : 2.8 secondes</span>
+</div>
+<!-- After Card -->
+<div class="lg:col-span-5 bg-gradient-to-br from-brand-50 to-emerald-50 border-2 border-emerald-300 rounded-2xl p-6 shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<span class="text-xs font-black uppercase text-emerald-800 bg-emerald-200 px-2.5 py-1 rounded-md">
+                AVEC LE SYSTÈME PROF IA : Clair &amp; Mémorisé
+              </span>
+<span class="text-emerald-700 text-xs font-bold">Prêt pour l'examen</span>
+</div>
+<div class="space-y-3">
+<div class="bg-white p-3 rounded-xl border border-emerald-200 shadow-sm flex items-start gap-2.5">
+<span class="text-emerald-600 font-bold">✓</span>
+<p class="text-xs text-slate-800"><strong>Les 3 concepts cruciaux :</strong> Synthétisés en mots simples avec analogies de la vie réelle.</p>
+</div>
+<div class="bg-white p-3 rounded-xl border border-emerald-200 shadow-sm flex items-start gap-2.5">
+<span class="text-emerald-600 font-bold">✓</span>
+<p class="text-xs text-slate-800"><strong>Quiz 5 questions pièges :</strong> Ciblées exactement sur les attendus du correcteur du Bac.</p>
+</div>
+<div class="bg-white p-3 rounded-xl border border-emerald-200 shadow-sm flex items-start gap-2.5">
+<span class="text-emerald-600 font-bold">✓</span>
+<p class="text-xs text-slate-800"><strong>Fiche mémorielle interactive :</strong> Sur ton smartphone en 1 clic pour réviser dans le bus.</p>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-emerald-200/80 flex items-center justify-between text-xs font-bold text-emerald-900">
+<span>🚀 Mémorisation active</span>
+<span class="text-emerald-600">+92% d'assimilation</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: Interactive Proof -->
+<!-- BEGIN: Key Performance Numbers -->
+<section class="py-16 bg-white border-b border-slate-200" data-purpose="proof-metrics">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+<div class="p-4">
+<p class="text-4xl sm:text-5xl font-black text-brand-500 tracking-tight">+3,8 pts</p>
+<p class="text-sm sm:text-base font-bold text-slate-900 mt-2">Moyenne générale en hausse</p>
+<p class="text-xs text-slate-500 mt-1">Sur plus de 12 000 élèves ayant appliqué la méthode</p>
+</div>
+<div class="p-4">
+<p class="text-4xl sm:text-5xl font-black text-emerald-600 tracking-tight">94,2 %</p>
+<p class="text-sm sm:text-base font-bold text-slate-900 mt-2">Taux de réussite examens</p>
+<p class="text-xs text-slate-500 mt-1">Brevet, Baccalauréat général &amp; supérieur</p>
+</div>
+<div class="p-4">
+<p class="text-4xl sm:text-5xl font-black text-amber-600 tracking-tight">10 min</p>
+<p class="text-sm sm:text-base font-bold text-slate-900 mt-2">Configuration montre en main</p>
+<p class="text-xs text-slate-500 mt-1">Même sans être un geek ou expert IA</p>
+</div>
+<div class="p-4">
+<p class="text-4xl sm:text-5xl font-black text-purple-600 tracking-tight">540 €</p>
+<p class="text-sm sm:text-base font-bold text-slate-900 mt-2">Économisés chaque trimestre</p>
+<p class="text-xs text-slate-500 mt-1">Comparé aux cours particuliers à 45€/heure</p>
+</div>
+</div>
+</div>
+</section>
+<!-- END: Key Performance Numbers -->
+<!-- BEGIN: Testimonials & Social Proof -->
+<section class="py-20 bg-slate-50" data-purpose="testimonials-section" id="avis">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center max-w-3xl mx-auto mb-16">
+<span class="text-brand-600 font-extrabold text-xs sm:text-sm uppercase tracking-widest bg-brand-100 px-3.5 py-1.5 rounded-full">
+            ⭐ TÉMOIGNAGES VÉRIFIÉS
+          </span>
+<h2 class="text-3xl sm:text-4xl font-extrabold text-slate-950 mt-4 tracking-tight">
+            Ils appliquent le Système Prof IA au quotidien.
+          </h2>
+<p class="text-slate-600 text-base sm:text-lg mt-3">
+            Découvre comment ce pack digital à paiement unique a changé leurs révisions.
+          </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="bg-white p-7 rounded-3xl border border-slate-200/90 shadow-sm flex flex-col justify-between relative">
+<span class="absolute -top-3 right-6 bg-brand-500 text-white text-[11px] font-black uppercase px-2.5 py-0.5 rounded-full">Avis Lycéen</span>
+<div>
+<div class="flex items-center gap-1 text-amber-400 mb-4">★★★★★</div>
+<p class="text-slate-700 text-sm sm:text-base italic leading-relaxed mb-6">« J'avais peur que ce soit un abonnement payant tous les mois. Là pour 27€, j'ai téléchargé le guide et suivi la vidéo en 10 minutes sur mon iPhone. Quand j'ai un devoir de maths à 23h, mon tuteur configuré me guide pas à pas. J'ai eu 17/20 au Bac ! »</p>
+</div>
+<div class="flex items-center gap-3 pt-4 border-t border-slate-100">
+<div class="w-10 h-10 rounded-full bg-brand-500 text-white font-extrabold flex items-center justify-center text-sm">MK</div>
+<div>
+<p class="text-sm font-extrabold text-slate-900">Malik K.</p>
+<p class="text-xs text-slate-500">Terminale Générale (Mention Très Bien)</p>
+</div>
+</div>
+</div>
+<div class="bg-white p-7 rounded-3xl border-2 border-amber-300 shadow-md flex flex-col justify-between relative">
+<span class="absolute -top-3 right-6 bg-amber-700 text-white text-[11px] font-black uppercase px-2.5 py-0.5 rounded-full">Avis Parent d'Élève</span>
+<div>
+<div class="flex items-center gap-1 text-amber-400 mb-4">★★★★★</div>
+<p class="text-slate-700 text-sm sm:text-base italic leading-relaxed mb-6">« On dépensait plus de 200€ par mois en prof particulier sans voir de gros progrès. Avec ce pack, on a configuré le téléphone de Lucas un samedi matin. Le soir, plus aucune dispute : l'IA l'interroge avec bienveillance. C'est l'achat le plus utile de l'année. »</p>
+</div>
+<div class="flex items-center gap-3 pt-4 border-t border-slate-100">
+<div class="w-10 h-10 rounded-full bg-emerald-500 text-white font-extrabold flex items-center justify-center text-sm">CD</div>
+<div>
+<p class="text-sm font-extrabold text-slate-900">Corinne D.</p>
+<p class="text-xs text-slate-500">Maman de Lucas (élève en 1ère générale)</p>
+</div>
+</div>
+</div>
+<div class="bg-white p-7 rounded-3xl border border-slate-200/90 shadow-sm flex flex-col justify-between relative">
+<span class="absolute -top-3 right-6 bg-purple-500 text-white text-[11px] font-black uppercase px-2.5 py-0.5 rounded-full">Avis Étudiante</span>
+<div>
+<div class="flex items-center gap-1 text-amber-400 mb-4">★★★★★</div>
+<p class="text-slate-700 text-sm sm:text-base italic leading-relaxed mb-6">« En Licence 1 Éco, je me noyais dans des syllabus de 300 pages. La bibliothèque de prompts et la méthode d'ingestion de fichiers m'ont fait gagner un temps fou. Je révise dans le métro avec mes flashcards générées. 27€ à vie, c'est cadeau. »</p>
+</div>
+<div class="flex items-center gap-3 pt-4 border-t border-slate-100">
+<div class="w-10 h-10 rounded-full bg-purple-500 text-white font-extrabold flex items-center justify-center text-sm">SL</div>
+<div>
+<p class="text-sm font-extrabold text-slate-900">Sarah L.</p>
+<p class="text-xs text-slate-500">Étudiante Licence 1 Économie</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: Testimonials -->
+<!-- BEGIN: Pricing & Single Irresistible Offer Section -->
+<section class="py-20 bg-white relative" data-purpose="pricing-section" id="tarifs">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center max-w-3xl mx-auto mb-14">
+<span class="text-emerald-700 font-extrabold text-xs sm:text-sm uppercase tracking-widest bg-emerald-100 px-3.5 py-1.5 rounded-full">
+            💎 OFFRE DE LANCEMENT À VIE
+          </span>
+<h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-950 mt-4 tracking-tight">
+            Un investissement unique.<br/>Zéro abonnement mensuel caché.
+          </h2>
+<p class="text-slate-600 text-base sm:text-lg mt-3">
+            Moins cher qu'une demi-heure de cours particulier. Tu achètes le pack une seule fois et tu le gardes à vie pour toute la scolarité.
+          </p>
+</div>
+<!-- Main Featured Digital Offer Card -->
+<div class="max-w-2xl mx-auto">
+<div class="bg-gradient-to-b from-brand-900 to-slate-950 rounded-3xl p-8 sm:p-12 border-2 border-brand-500 text-white shadow-2xl relative">
+<!-- Best Offer Badge -->
+<div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-brand-yellow to-amber-500 text-slate-950 font-black text-xs uppercase px-5 py-2 rounded-full shadow-lg tracking-wider whitespace-normal sm:whitespace-nowrap text-center max-w-[90vw]">
+          ⭐ PACK COMPLET CLÉ-EN-MAIN • ACCÈS IMMÉDIAT À VIE
+        </div>
+<div class="mt-2 text-center">
+<h3 class="text-2xl sm:text-3xl font-black text-white">Le Système Prof IA</h3>
+<p class="text-slate-300 text-sm mt-2">Guide Pratique + Masterclass Vidéo + Bibliothèque de Prompts d'Élite + Templates</p>
+<!-- Pricing display -->
+<div class="flex items-center justify-center gap-3 my-6">
+<span class="text-slate-400 line-through text-2xl font-bold">97€</span>
+<span class="text-5xl sm:text-6xl font-black text-white">27€</span>
+<span class="text-emerald-400 text-sm font-bold bg-emerald-500/20 px-2.5 py-1 rounded-md">Paiement unique</span>
+</div>
+<p class="text-xs sm:text-sm text-brand-cyan font-bold mb-8">
+          ✓ Accès immédiat par email • Aucun abonnement mensuel • Mises à jour incluses
+        </p>
+</div>
+<!-- What is included in this digital product -->
+<div class="bg-slate-900/80 rounded-2xl p-6 border border-slate-800 mb-8 space-y-4 text-left">
+<p class="text-xs font-black uppercase tracking-wider text-brand-yellow">Tout ce qui est inclus dans ton pack :</p>
+<div class="flex items-start gap-3 text-sm text-slate-200">
+<span class="text-emerald-400 font-extrabold text-base">✓</span>
+<span><strong>Le Guide Méthodologique &amp; Pratique complet :</strong> Plan d'action illustré pas-à-pas pour configurer ton prof IA en 10 minutes.</span>
+</div>
+<div class="flex items-start gap-3 text-sm text-slate-200">
+<span class="text-emerald-400 font-extrabold text-base">✓</span>
+<span><strong>La Masterclass Vidéo Pratique (15 min) :</strong> Installation guidée sur smartphone (iPhone &amp; Android) et ordinateur.</span>
+</div>
+<div class="flex items-start gap-3 text-sm text-slate-200">
+<span class="text-emerald-400 font-extrabold text-base">✓</span>
+<span><strong>Bibliothèque de Prompts Pédagogiques Socratiques :</strong> Pour faire ingérer des polycopiés de 300+ pages sans tricher.</span>
+</div>
+<div class="flex items-start gap-3 text-sm text-slate-200">
+<span class="text-emerald-400 font-extrabold text-base">✓</span>
+<span><strong>Générateur de Quiz &amp; Flashcards mémorielles :</strong> Pour réviser activement dans les transports ou le soir au lit.</span>
+</div>
+<div class="flex items-start gap-3 text-sm text-slate-200">
+<span class="text-emerald-400 font-extrabold text-base">✓</span>
+<span><strong>Simulateur de Barème d'Examen &amp; Bac :</strong> Identifie exactement les notions pièges qui coûtent des points.</span>
+</div>
+<div class="flex items-start gap-3 text-sm text-slate-200">
+<span class="text-emerald-400 font-extrabold text-base">✓</span>
+<span><strong>Templates Notion &amp; PDF prêts à l'emploi :</strong> Organisation de toutes tes matières en un clin d'œil.</span>
+</div>
+</div>
+<!-- CTA Button -->
+<div>
+<!-- TODO: remplace href par ton lien Stripe/Gumroad (ex: https://buy.stripe.com/xxxxx) -->
+<a class="w-full py-4 sm:py-5 text-center btn-primary-gradient text-white font-extrabold text-lg sm:text-xl rounded-2xl shadow-glow transition-all block transform hover:scale-[1.02] active:scale-100 min-h-[56px]" href="https://buy.stripe.com/REPLACE_ME">
+          Obtenir mon accès immédiat au Système Prof IA (Paiement unique 27€) →
+        </a>
+<p class="text-center text-xs text-slate-400 mt-3 font-medium flex items-center justify-center gap-2">
+<span>🔒 Paiement sécurisé Stripe 256-bit</span>
+<span>•</span>
+<span>📩 Envoi instantané par email</span>
+</p>
+</div>
+</div>
+</div>
+<!-- Money Back Guarantee Banner -->
+<div class="mt-12 max-w-3xl mx-auto bg-amber-50 border border-amber-200 rounded-2xl p-5 sm:p-6 flex items-center gap-4">
+<div class="text-3xl sm:text-4xl flex-shrink-0">🛡️</div>
+<div>
+<h4 class="text-sm sm:text-base font-extrabold text-amber-900">Garantie Mention Satisfait ou 100% Remboursé pendant 30 jours</h4>
+<p class="text-xs sm:text-sm text-amber-800 mt-0.5 leading-relaxed">
+        Télécharge le pack, regarde la masterclass et applique les prompts sur tes cours. Si tu ne constates pas un gain de temps massif et une nette amélioration des notes dans les 30 jours, envoie un simple email à notre support pour être intégralement remboursé, sans discussion.
+      </p>
+</div>
+</div>
+<!-- Comparison Box: Digital Product vs Private Tutors -->
+<div class="mt-10 max-w-3xl mx-auto bg-slate-50 border border-slate-200 rounded-2xl p-5 text-center text-xs sm:text-sm text-slate-600">
+<span class="font-black text-slate-900">Pourquoi nous avons refusé le modèle de l'abonnement mensuel ?</span>
+<p class="mt-1">Nous pensons qu'une méthode pédagogique doit t'appartenir pour toujours. Pas d'abonnement logiciel à 30€/mois, pas de facture récurrente. Tu investis une seule fois 27€ et tu disposes d'un système opérationnel pour toute ta scolarité et tes études supérieures.</p>
+</div>
+</div>
+</section>
+<!-- END: Pricing Section -->
+<!-- BEGIN: FAQ Section (Objection Killers) -->
+<section class="py-20 bg-slate-50 border-t border-slate-200" data-purpose="faq-section" id="faq">
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-14">
+<span class="text-brand-600 font-extrabold text-xs sm:text-sm uppercase tracking-widest bg-brand-100 px-3.5 py-1.5 rounded-full">
+            ❓ QUESTIONS FRÉQUENTES
+          </span>
+<h2 class="text-3xl sm:text-4xl font-extrabold text-slate-950 mt-4 tracking-tight">
+            Tout ce que vous devez savoir sur le Pack Prof IA
+          </h2>
+</div>
+<!-- FAQ Items -->
+<div class="space-y-4">
+<details class="group bg-white p-6 rounded-2xl border border-slate-200 shadow-sm [&amp;_summary::-webkit-details-marker]:hidden" open="">
+<summary class="flex items-center justify-between cursor-pointer font-bold text-base sm:text-lg text-slate-900">
+<span class="flex items-center gap-2"><span>📦</span><span>Est-ce un abonnement mensuel ou un achat unique ?</span></span>
+<span class="ml-4 flex-shrink-0 transition duration-300 group-open:-rotate-180">▼</span>
+</summary>
+<p class="mt-4 text-slate-600 text-sm sm:text-base leading-relaxed">
+<strong>C'est un achat unique à 27€, avec un accès à vie.</strong> Il n'y a aucun abonnement mensuel, aucun frais caché et aucun prélèvement futur. Vous recevez l'ensemble du produit digital (Guide E-book, Masterclass vidéo HD, bibliothèque de prompts et templates) et vous en restez propriétaire à vie pour toute la scolarité de vos enfants ou vos études.
+</p>
+</details>
+<details class="group bg-white p-6 rounded-2xl border border-slate-200 shadow-sm [&amp;_summary::-webkit-details-marker]:hidden">
+<summary class="flex items-center justify-between cursor-pointer font-bold text-base sm:text-lg text-slate-900">
+<span class="flex items-center gap-2"><span>👨‍👩‍👦</span><span>Pour les Parents : Est-ce compliqué à installer pour quelqu'un qui n'est pas calé en informatique ?</span></span>
+<span class="ml-4 flex-shrink-0 transition duration-300 group-open:-rotate-180">▼</span>
+</summary>
+<p class="mt-4 text-slate-600 text-sm sm:text-base leading-relaxed">
+<strong>Absolument pas !</strong> Tout a été conçu pour être mis en place en moins de 10 à 15 minutes, que ce soit sur un iPhone, un smartphone Android, un iPad ou un ordinateur. La masterclass vidéo filme directement l'écran étape par étape : vous n'avez qu'à reproduire ce que vous voyez et copier-coller nos prompts maîtres pré-configurés.
+</p>
+</details>
+<details class="group bg-white p-6 rounded-2xl border border-slate-200 shadow-sm [&amp;_summary::-webkit-details-marker]:hidden">
+<summary class="flex items-center justify-between cursor-pointer font-bold text-base sm:text-lg text-slate-900">
+<span class="flex items-center gap-2"><span>🛡️</span><span>Pour les Parents : Est-ce que mon enfant ne va pas juste tricher pour ses devoirs ?</span></span>
+<span class="ml-4 flex-shrink-0 transition duration-300 group-open:-rotate-180">▼</span>
+</summary>
+<p class="mt-4 text-slate-600 text-sm sm:text-base leading-relaxed">
+C'est tout le secret de notre système : contrairement aux IA classiques qui donnent des réponses brutes favorisant la paresse, nos prompts appliquent la <strong>méthode socratique</strong>. L'assistant refuse de donner la solution toute cuite ; il décompose l'exercice, pose des questions guidées et amène l'élève à comprendre par lui-même, garantissant son autonomie le jour de l'épreuve.
+</p>
+</details>
+<details class="group bg-white p-6 rounded-2xl border border-slate-200 shadow-sm [&amp;_summary::-webkit-details-marker]:hidden">
+<summary class="flex items-center justify-between cursor-pointer font-bold text-base sm:text-lg text-slate-900">
+<span class="flex items-center gap-2"><span>🎓</span><span>Pour les Élèves : Comment le système gère-t-il les gros cours de 300+ pages ?</span></span>
+<span class="ml-4 flex-shrink-0 transition duration-300 group-open:-rotate-180">▼</span>
+</summary>
+<p class="mt-4 text-slate-600 text-sm sm:text-base leading-relaxed">
+Le Guide et la Masterclass vous montrent exactement comment importer des documents volumineux (PDF de cours, polycopiés universitaires, synthèses ou photos de cahiers manuscrits) dans votre tuteur de poche. En quelques secondes, l'IA indexe le contenu et peut extraire les 3 points clés indispensables, vous poser des questions de révision ou vous expliquer un paragraphe technique complexe.
+</p>
+</details>
+<details class="group bg-white p-6 rounded-2xl border border-slate-200 shadow-sm [&amp;_summary::-webkit-details-marker]:hidden">
+<summary class="flex items-center justify-between cursor-pointer font-bold text-base sm:text-lg text-slate-900">
+<span class="flex items-center gap-2"><span>💳</span><span>Comment fonctionne la garantie 30 jours remboursé ?</span></span>
+<span class="ml-4 flex-shrink-0 transition duration-300 group-open:-rotate-180">▼</span>
+</summary>
+<p class="mt-4 text-slate-600 text-sm sm:text-base leading-relaxed">
+Vous avez 30 jours entiers pour tester le Système Prof IA à votre rythme. Si vous n'êtes pas bluffé par l'efficacité du tuteur ou par le gain de temps obtenu, envoyez-nous simplement un email à l'adresse support indiquée dans votre espace membre et vous serez remboursé à 100% sans justification requise.
+</p>
+</details>
+</div>
+</div>
+</section>
+<!-- END: FAQ Section -->
+<!-- BEGIN: Final Call to Action -->
+<section class="py-20 bg-gradient-to-r from-brand-600 via-brand-500 to-brand-cyan text-white text-center relative overflow-hidden" data-purpose="final-cta">
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+<h2 class="text-3xl sm:text-5xl font-black tracking-tight mb-6">Installe ton prof particulier sur ton téléphone dès aujourd'hui.</h2>
+<p class="text-lg sm:text-xl text-brand-50 max-w-2xl mx-auto mb-10 leading-relaxed font-medium">
+          Rejoins plus de 25 000 familles et étudiants autonomes. Télécharge le Pack Clé-en-main Prof IA pour un paiement unique de 27€ et accède à vie à ton tuteur intelligent 24h/24.
+        </p>
+<div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+<a class="w-full sm:w-auto px-10 py-5 bg-white hover:bg-slate-100 text-brand-600 text-lg font-black rounded-2xl shadow-2xl transition-all transform hover:-translate-y-1" href="#tarifs">
+          Télécharger le Pack Clé-en-main (27€ • Accès Immédiat) →
+        </a>
+</div>
+<p class="text-xs text-brand-100 mt-4 font-semibold">
+          Accès immédiat par email • Aucun abonnement mensuel • Garantie 100% Remboursé 30 jours
+        </p>
+</div>
+</section>
+<!-- END: Final Call to Action -->
+</main>
+<!-- BEGIN: Footer -->
+<footer class="bg-slate-950 text-slate-400 py-14 border-t border-slate-800" data-purpose="site-footer">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+<!-- Logo & Mission -->
+<div class="md:col-span-2">
+<div class="bg-white p-2.5 rounded-xl inline-block mb-4 shadow-sm">
+<img alt="Prof IA Logo" class="h-8 w-auto" height="48" src="https://lh3.googleusercontent.com/aida/AEtjO1VacW2qwcz-rT8opcVNkwiaEt4Xnxim78ubK02vTprZQahqVMKD0sYKfNH5qaYLwVsiaooATgGzspFtG4d2hcJBfvii98RW0g3arQ5llaRXQFqTSN6tr39AlsZbUwpewBS5XJaK-J7-3kgzCQd30eiGcCCcOA6vwZVTLiycATrrRI1zIfPqU0FYyxE3f_oSmvWL37DX9QhJ-C-byHeFsi44Ul1YDpVNbRo9RZKXwqtmzFU0FdnJxd25gwCl" width="160"/>
+</div>
+<p class="text-slate-400 text-sm max-w-md leading-relaxed">
+            Le Système Prof IA est un produit digital d'apprentissage conçu pour rendre chaque élève et étudiant parfaitement autonome, réviser 300+ pages sans stress et décrocher sa mention sans abonnement ruineux.
+          </p>
+<div class="flex items-center gap-3 mt-4 text-xs text-slate-500">
+<span>🛡️ Conforme RGPD</span>
+<span>•</span>
+<span>🔒 Paiement sécurisé Stripe 256-bit</span>
+<span>•</span>
+<span>📩 Téléchargement immédiat</span>
+</div>
+</div>
+<!-- Navigation Links -->
+<div>
+<h4 class="text-white font-bold text-sm uppercase tracking-wider mb-4">Le Pack Digital</h4>
+<ul class="space-y-2 text-sm">
+<li><a class="hover:text-white transition-colors" href="#contenu-pack">Contenu du Pack</a></li>
+<li><a class="hover:text-white transition-colors" href="#pourquoi">Pour Parents &amp; Élèves</a></li>
+<li><a class="hover:text-white transition-colors" href="#fonctionnalites">Mise en place en 10 min</a></li>
+<li><a class="hover:text-white transition-colors" href="#tarifs">Tarif Unique (27€)</a></li>
+<li><a class="hover:text-white transition-colors" href="#faq">Questions fréquentes</a></li>
+</ul>
+</div>
+<!-- Legal & Compliance -->
+<div>
+<h4 class="text-white font-bold text-sm uppercase tracking-wider mb-4">Informations</h4>
+<ul class="space-y-2 text-sm">
+<li><a class="hover:text-white transition-colors" href="#mentions-legales">Mentions Légales</a></li>
+<li><a class="hover:text-white transition-colors" href="#cgv">Conditions Générales de Vente (CGV)</a></li>
+<li><a class="hover:text-white transition-colors" href="#confidentialite">Politique de Confidentialité</a></li>
+<li><a class="hover:text-white transition-colors" href="mailto:support@prof-ia.example.com">Contact Support Client</a></li>
+</ul>
+</div>
+</div>
+<!-- Copyright Notice -->
+<div class="border-t border-slate-900 pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500">
+<p>© 2026 Système Prof IA. Tous droits réservés.</p>
+<p class="mt-2 sm:mt-0">Produit d'accompagnement méthodologique indépendant, non affilié à l'Éducation Nationale.</p>
+</div>
+</div>
+</footer>
+<!-- END: Footer -->
+<!-- Sticky mobile CTA (DESIGN: sticky bottom bar <640px) -->
+<div class="sm:hidden fixed bottom-3 inset-x-3 z-50">
+<a href="#tarifs" class="btn-primary-gradient flex items-center justify-center gap-2 rounded-2xl px-5 py-4 text-white font-extrabold shadow-glow min-h-[52px]">Obtenir le Pack — 27€ →</a>
+</div>
+</body></html>
