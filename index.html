@@ -131,6 +131,8 @@
 <!-- END: Custom Styles -->
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Product","name":"Le Système Prof IA","description":"Pack clé-en-main: guide pas-à-pas + masterclass vidéo + 60 prompts socratiques pour réviser 300+ pages.","brand":{"@type":"Brand","name":"Prof IA"},"offers":{"@type":"Offer","price":"3900","priceCurrency":"XOF","availability":"https://schema.org/InStock","url":"https://prof-ia.example.com/#tarifs"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.9","reviewCount":"312"}}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Est-ce un abonnement mensuel ou un achat unique ?","acceptedAnswer":{"@type":"Answer","text":"Achat unique 3 900 FCFA, accès à vie. Zéro abonnement."}},{"@type":"Question","name":"L'installation est-elle compliquée ?","acceptedAnswer":{"@type":"Answer","text":"Non. 10 minutes, vidéo écran, copier-coller. iPhone, Android, ordinateur."}},{"@type":"Question","name":"Comment fonctionne la garantie 30 jours ?","acceptedAnswer":{"@type":"Answer","text":"30 jours pour tester. Pas de résultat ? Un e-mail, remboursé à 100 %."}}]}
 </script>
 </head>
 <body class="bg-slate-50 text-slate-900 antialiased selection:bg-brand-500 selection:text-white">
@@ -1012,9 +1014,9 @@ PDF, poly, photo de cahier : importé en secondes, résumé en 3 points clés.
 <div>
 <h4 class="text-white font-bold text-sm uppercase tracking-wider mb-4">Informations</h4>
 <ul class="space-y-2 text-sm">
-<li><a class="hover:text-white transition-colors" href="#mentions-legales">Mentions Légales</a></li>
-<li><a class="hover:text-white transition-colors" href="#cgv">Conditions Générales de Vente (CGV)</a></li>
-<li><a class="hover:text-white transition-colors" href="#confidentialite">Politique de confidentialité</a></li>
+<li><button class="hover:text-white transition-colors legal-open" data-legal="mentions">Mentions Légales</button></li>
+<li><button class="hover:text-white transition-colors legal-open" data-legal="cgv">Conditions Générales de Vente (CGV)</button></li>
+<li><button class="hover:text-white transition-colors legal-open" data-legal="confidentialite">Politique de confidentialité</button></li>
 <li><a class="hover:text-white transition-colors" href="mailto:support@prof-ia.example.com">Contact Support Client</a></li>
 </ul>
 </div>
@@ -1027,6 +1029,28 @@ PDF, poly, photo de cahier : importé en secondes, résumé en 3 points clés.
 </div>
 </footer>
 <!-- END: Footer -->
+<!-- Legal info modal -->
+<div id="legal-modal" class="fixed inset-0 z-[60] hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="legal-title">
+<div id="legal-overlay" class="absolute inset-0 bg-slate-950/70 backdrop-blur-sm"></div>
+<div class="relative bg-white rounded-3xl shadow-2xl max-w-lg w-full p-7 sm:p-8 text-left border border-slate-200 max-h-[85vh] overflow-y-auto">
+<button id="legal-close" aria-label="Fermer" class="absolute top-3 right-3 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 font-black transition-colors">✕</button>
+<h2 id="legal-title" class="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">Informations légales</h2>
+<div id="legal-mentions" class="legal-pane mt-4 text-sm text-slate-600 space-y-3 leading-relaxed">
+<p><strong>Produit :</strong> Le Système Prof IA — pack digital (guide + vidéo + prompts), 3 900 FCFA paiement unique, accès à vie.</p>
+<p><strong>Éditeur :</strong> à compléter (nom, adresse, contact support).</p>
+<p>Produit d'accompagnement méthodologique indépendant, non affilié à l'Éducation Nationale.</p>
+</div>
+<div id="legal-cgv" class="legal-pane hidden mt-4 text-sm text-slate-600 space-y-3 leading-relaxed">
+<p><strong>Prix :</strong> 3 900 FCFA, paiement unique. Aucun abonnement, aucun prélèvement récurrent.</p>
+<p><strong>Livraison :</strong> envoi par e-mail en 2 minutes après validation du paiement.</p>
+<p><strong>Garantie :</strong> satisfait ou remboursé à 100 % sous 30 jours, sur simple e-mail au support.</p>
+</div>
+<div id="legal-confidentialite" class="legal-pane hidden mt-4 text-sm text-slate-600 space-y-3 leading-relaxed">
+<p>Ce site ne crée pas de compte et ne collecte aucun formulaire. Aucune donnée personnelle n'est stockée ici.</p>
+<p>Le paiement est traité par le prestataire sécurisé au moment de l'achat. Contact : support indiqué dans l'e-mail de commande.</p>
+</div>
+</div>
+</div>
 <!-- Sticky mobile CTA (DESIGN: sticky bottom bar <640px) -->
 <div class="sm:hidden fixed bottom-3 inset-x-3 z-50">
 <a href="#tarifs" class="btn-primary-gradient flex items-center justify-center gap-2 rounded-2xl px-5 py-4 text-white font-extrabold shadow-glow min-h-[52px]">Je configure mon tuteur — 3 900 FCFA →</a>
@@ -1074,6 +1098,32 @@ PDF, poly, photo de cahier : importé en secondes, résumé en 3 points clés.
   document.addEventListener('mouseout', function (e) {
     if (!e.relatedTarget && e.clientY <= 0) show();
   });
+})();
+(function () {
+  var modal = document.getElementById('legal-modal');
+  var titles = { mentions: 'Mentions Légales', cgv: 'Conditions Générales de Vente', confidentialite: 'Politique de confidentialité' };
+  function open(name) {
+    var panes = modal.querySelectorAll('.legal-pane');
+    for (var i = 0; i < panes.length; i++) panes[i].classList.add('hidden');
+    var pane = document.getElementById('legal-' + name);
+    if (pane) pane.classList.remove('hidden');
+    document.getElementById('legal-title').textContent = titles[name] || 'Informations légales';
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+  }
+  function close() {
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    document.body.style.overflow = '';
+  }
+  var btns = document.querySelectorAll('.legal-open');
+  for (var i = 0; i < btns.length; i++) {
+    (function (b) { b.addEventListener('click', function () { open(b.getAttribute('data-legal')); }); })(btns[i]);
+  }
+  document.getElementById('legal-close').addEventListener('click', close);
+  document.getElementById('legal-overlay').addEventListener('click', close);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
 })();
 </script>
 </body></html>
