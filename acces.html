@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ton Pack Prof IA est prêt — Accès immédiat</title>
+<meta name="robots" content="noindex, nofollow"/>
+<meta name="theme-color" content="#0066FF"/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230066FF'/%3E%3Ctext x='32' y='44' font-family='Arial' font-size='32' font-weight='900' fill='white' text-anchor='middle'%3EIA%3C/text%3E%3C/svg%3E"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<style>
+  body { font-family: 'Plus Jakarta Sans', sans-serif; }
+  .btn-gradient { background: linear-gradient(135deg, #0066FF 0%, #00D2FF 100%); }
+</style>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased min-h-screen flex items-center justify-center p-4">
+<main class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-7 sm:p-8 text-center border border-slate-200">
+<div class="mx-auto w-14 h-14 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mb-4">
+<svg aria-hidden="true" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+</div>
+<p class="text-xs font-black uppercase tracking-widest text-emerald-700">Paiement confirmé • Accès à vie</p>
+<h1 class="text-2xl sm:text-3xl font-black tracking-tight mt-2">Ton Pack est prêt !</h1>
+<p class="text-sm sm:text-base text-slate-600 mt-2">Télécharge chaque fichier ci-dessous. Garde cette page : ton accès est à vie.</p>
+<div id="delivery-list" class="mt-5 space-y-2 text-left"></div>
+<div class="mt-6 rounded-2xl bg-brand-50 border border-brand-200 p-4 text-left">
+<p class="text-sm font-extrabold text-slate-900">Par où commencer ? (10 min)</p>
+<ol class="text-xs text-slate-600 mt-2 space-y-1 list-decimal list-inside">
+<li>Ouvre le <strong>guide pas-à-pas</strong>.</li>
+<li>Lance la <strong>masterclass vidéo</strong> à côté de ton téléphone.</li>
+<li>Copie-colle les <strong>prompts</strong>. Ton tuteur est prêt.</li>
+</ol>
+</div>
+<p class="text-xs text-slate-400 mt-4">Un souci ? Réponds à l'e-mail de commande, on règle ça sous 24 h.<br/>Garantie 30 jours satisfait ou remboursé.</p>
+</main>
+<script>
+var DELIVERY = [
+  { titre: 'Guide pratique pas-à-pas (PDF)', fichier: 'pack/guide-prof-ia.pdf' },
+  { titre: '60 prompts pédagogiques (PDF)', fichier: 'pack/prompts-prof-ia.pdf' },
+  { titre: 'Templates & fiches examen (PDF)', fichier: 'pack/templates-prof-ia.pdf' },
+  { titre: 'Lien Masterclass vidéo privée', fichier: 'https://REPLACE_PAR_LIEN_VIDEO' }
+];
+(function () {
+  var list = document.getElementById('delivery-list');
+  DELIVERY.forEach(function (item) {
+    var a = document.createElement('a');
+    a.href = item.fichier;
+    a.setAttribute('download', '');
+    a.setAttribute('target', '_blank');
+    a.setAttribute('rel', 'noopener');
+    a.className = 'flex items-center gap-3 rounded-xl border border-emerald-200 bg-emerald-50 hover:bg-emerald-100 px-4 py-3 text-sm font-bold text-emerald-900 transition-colors';
+    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 24 24');
+    svg.setAttribute('fill', 'none');
+    svg.setAttribute('stroke', 'currentColor');
+    svg.setAttribute('stroke-width', '2');
+    svg.setAttribute('style', 'width:18px;height:18px;flex-shrink:0');
+    svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/>';
+    var sp = document.createElement('span');
+    sp.textContent = item.titre;
+    a.appendChild(svg);
+    a.appendChild(sp);
+    list.appendChild(a);
+  });
+})();
+</script>
+</body>
+</html>
