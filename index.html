@@ -1151,6 +1151,120 @@ PDF, poly, photo de cahier : importé en secondes, résumé en 3 points clés.
   });
 })();
 </script>
+<!-- Sales assistant chat -->
+<button id="chat-fab" aria-label="Discuter avec l'assistant" class="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-50 w-14 h-14 rounded-full btn-primary-gradient text-white shadow-glow flex items-center justify-center transform hover:scale-105 transition-transform">
+<svg id="chat-ico-open" aria-hidden="true" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm3.75 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm3.75 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z"/></svg>
+<svg id="chat-ico-close" aria-hidden="true" class="w-6 h-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+<span id="chat-dot" class="hidden absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-rose-500 border-2 border-white"></span>
+</button>
+<div id="chat-panel" class="fixed z-50 bottom-36 sm:bottom-24 right-4 sm:right-6 w-[calc(100vw-2rem)] max-w-sm bg-white rounded-3xl shadow-2xl border border-slate-200 hidden flex-col overflow-hidden" role="dialog" aria-label="Assistant de vente" style="max-height:min(480px,60vh)">
+<div class="btn-primary-gradient text-white px-5 py-4">
+<p class="font-black text-sm">Assistant Prof IA</p>
+<p class="text-xs text-brand-50 flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-300 animate-pulse"></span>En ligne — répond en quelques secondes</p>
+</div>
+<div id="chat-msgs" class="flex-1 overflow-y-auto px-4 py-4 space-y-3 text-sm" style="min-height:180px"></div>
+<div id="chat-quick" class="px-4 pb-2 flex flex-wrap gap-1.5"></div>
+<form id="chat-form" class="border-t border-slate-200 p-3 flex gap-2">
+<input id="chat-input" type="text" autocomplete="off" placeholder="Écris ta question…" class="flex-1 rounded-xl border-slate-300 focus:border-brand-500 focus:ring-brand-500 text-sm px-3 py-2.5 min-h-[44px]"/>
+<button type="submit" aria-label="Envoyer" class="btn-primary-gradient text-white w-11 h-11 rounded-xl flex items-center justify-center shrink-0">
+<svg aria-hidden="true" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg>
+</button>
+</form>
+</div>
+<script>
+/* Assistant de vente (sans IA externe) : réponses depuis l'argumentaire + objections. */
+(function () {
+  var fab = document.getElementById('chat-fab');
+  var panel = document.getElementById('chat-panel');
+  var msgs = document.getElementById('chat-msgs');
+  var form = document.getElementById('chat-form');
+  var input = document.getElementById('chat-input');
+  var quick = document.getElementById('chat-quick');
+  var dot = document.getElementById('chat-dot');
+  var opened = false, greeted = false;
+  var CTA = '<br/><br/><a href="#tarifs" data-chat-link class="inline-block btn-primary-gradient text-white font-extrabold text-xs px-4 py-2.5 rounded-xl">Je configure mon tuteur — 3 900 FCFA →</a>';
+  var RULES = [
+    { k: ['prix', 'tarif', 'combien', 'coût', 'cout', 'cher', 'fcfa', 'payer', 'paiement', 'paye', 'mobile money', 'wave', 'orange', 'mtn'], t: 'Le Pack coûte <strong>3 900 FCFA, une fois</strong> — accès à vie, zéro abonnement. Pour comparer : une demi-heure de cours particulier = 15 000 FCFA.' + CTA },
+    { k: ['garantie', 'rembours', 'satisfait', 'risque', 'peur'], t: 'Tu es couvert : <strong>30 jours satisfait ou remboursé à 100 %</strong>, sur simple e-mail. Tu ne risques rien.' + CTA },
+    { k: ['install', 'compliqu', 'difficile', 'technique', 'configurer', 'marche', 'fonctionne'], t: 'C\u2019est fait pour les non-techniques : <strong>10 minutes</strong>, vidéo qui filme l\u2019écran, tu copies-colles. iPhone, Android, ordi.' },
+    { k: ['arnaque', 'vrai', 'confiance', 'croire', 'fake', 'mensonge', 'preuve'], t: 'Bonne question : on ne te vend <strong>ni abonnement, ni logiciel, ni IA magique</strong> — juste la méthode exacte pour configurer les IA gratuites (ChatGPT, Gemini…) en vrai tuteur. Transparent, + garantie 30 jours.' },
+    { k: ['triche', 'devoir', 'exercice', 'solution', 'réponse'], t: 'Justement non : les prompts appliquent la <strong>méthode socratique</strong> — l\u2019IA interroge et guide au lieu de donner la réponse. Autonomie garantie le jour du contrôle.' },
+    { k: ['matière', 'matiere', 'niveau', 'filière', 'filiere', 'droit', 'médecine', 'medecine', 'maths', 'svt', 'collège', 'college', 'lycée', 'lycee', 'fac', 'université'], t: '<strong>Toutes matières, tous niveaux</strong> : maths, SVT, droit, médecine… Collège, lycée, fac, concours. Le tuteur s\u2019adapte à ton programme.' },
+    { k: ['reçoi', 'recoi', 'recevoir', 'email', 'e-mail', 'télécharg', 'telecharg', 'livraison', 'accès', 'acces', 'fichier'], t: 'Après paiement : <strong>accès immédiat</strong> — guide + vidéo + 60 prompts + templates, à vie. Lien envoyé aussi par e-mail.' + CTA },
+    { k: ['quoi', 'comprend', 'contient', 'inclus', 'pack', 'offre', 'produit'], t: 'Le Pack = <strong>guide pas-à-pas + masterclass vidéo 15 min + 60 prompts + quiz/flashcards + barème examen</strong>. Valeur 106 000 FCFA, aujourd\u2019hui 3 900 FCFA.' + CTA },
+    { k: ['abonnement', 'mensuel', 'mois', 'résilier'], t: '<strong>Zéro abonnement.</strong> Un seul paiement de 3 900 FCFA, le système est à toi pour toute la scolarité.' },
+    { k: ['bonjour', 'salut', 'hello', 'bonsoir', 'cc'], t: 'Salut ! Pose-moi tes questions : prix, garantie, installation, matières… Je réponds cash.' },
+    { k: ['merci'], t: 'Avec plaisir ! Quand tu es prêt : le tuteur se configure ce soir en 10 minutes.' + CTA },
+    { k: ['parent', 'enfant', 'fils', 'fille', 'ado'], t: 'Pour les parents : fini les soirées devoirs dans la douleur. <strong>3 900 FCFA une fois</strong> au lieu de 30 000 FCFA/h de cours particulier.' + CTA },
+    { k: ['étudiant', 'etudiant', 'élève', 'eleve', 'fac', 'bac'], t: 'Pour toi : tuteur de poche à <strong>23h30 sans jugement</strong>, quiz auto sur tes cours en 10 secondes.' + CTA }
+  ];
+  var FALLBACK = 'Bonne question ! Le plus simple : <strong>10 min d\u2019installation, 3 900 FCFA une fois, remboursé 30 jours</strong>. Regarde la <a href="#faq" data-chat-link class="font-bold text-brand-600 underline">FAQ</a> ou l\u2019<a href="#tarifs" data-chat-link class="font-bold text-brand-600 underline">offre</a>. Autre question ?';
+  function bubble(html, me) {
+    var d = document.createElement('div');
+    d.className = me
+      ? 'ml-8 rounded-2xl rounded-br-md btn-primary-gradient text-white px-3.5 py-2.5'
+      : 'mr-8 rounded-2xl rounded-bl-md bg-slate-100 text-slate-800 px-3.5 py-2.5';
+    d.innerHTML = html;
+    msgs.appendChild(d);
+    msgs.scrollTop = msgs.scrollHeight;
+    return d;
+  }
+  function typing(cb) {
+    var t = bubble('<span class="inline-flex gap-1"><span class="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce"></span><span class="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce" style="animation-delay:.15s"></span><span class="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce" style="animation-delay:.3s"></span></span>', false);
+    setTimeout(function () { t.remove(); cb(); }, 600);
+  }
+  function answer(q) {
+    var s = ' ' + q.toLowerCase() + ' ';
+    for (var i = 0; i < RULES.length; i++) {
+      var keys = RULES[i].k;
+      for (var j = 0; j < keys.length; j++) {
+        if (s.indexOf(keys[j]) !== -1) return RULES[i].t;
+      }
+    }
+    return FALLBACK;
+  }
+  function quickBtns() {
+    quick.innerHTML = '';
+    ['C\u2019est combien ?', 'Garantie ?', 'Compliqué à installer ?', 'C\u2019est quoi exactement ?'].forEach(function (q) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = q;
+      b.className = 'text-xs font-bold text-brand-700 bg-brand-50 border border-brand-200 rounded-full px-3 py-1.5 hover:bg-brand-100 transition-colors';
+      b.addEventListener('click', function () { bubble(q, true); typing(function () { bubble(answer(q), false); }); });
+      quick.appendChild(b);
+    });
+  }
+  function toggle(force) {
+    opened = typeof force === 'boolean' ? force : !opened;
+    panel.classList.toggle('hidden', !opened);
+    panel.classList.toggle('flex', opened);
+    document.getElementById('chat-ico-open').classList.toggle('hidden', opened);
+    document.getElementById('chat-ico-close').classList.toggle('hidden', !opened);
+    dot.classList.add('hidden');
+    if (opened && !greeted) {
+      greeted = true;
+      quickBtns();
+      typing(function () { bubble('Salut ! Je réponds à tes questions sur le Pack : prix, garantie, installation… Vas-y, teste-moi.', false); });
+    }
+  }
+  fab.addEventListener('click', function () { toggle(); });
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var q = input.value.trim();
+    if (!q) return;
+    input.value = '';
+    bubble(q.replace(/</g, '&lt;'), true);
+    typing(function () { bubble(answer(q), false); });
+  });
+  msgs.addEventListener('click', function (e) {
+    var a = e.target.closest('[data-chat-link]');
+    if (a) toggle(false);
+  });
+  setTimeout(function () {
+    if (!opened && !greeted) dot.classList.remove('hidden');
+  }, 25000);
+})();
+</script>
 <!-- Exit-intent retention modal -->
 <div id="exit-modal" class="fixed inset-0 z-[60] hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="exit-title">
 <div id="exit-overlay" class="absolute inset-0 bg-slate-950/70 backdrop-blur-sm"></div>
