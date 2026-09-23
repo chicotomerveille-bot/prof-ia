@@ -1223,6 +1223,16 @@ PDF, poly, photo de cahier : importé en secondes, résumé en 3 points clés.
     }
     return bestScore >= 2 ? best : FALLBACK;
   }
+  function bubble(html, me) {
+    var d = document.createElement('div');
+    d.className = me
+      ? 'ml-8 rounded-2xl rounded-br-md btn-primary-gradient text-white px-3.5 py-2.5'
+      : 'mr-8 rounded-2xl rounded-bl-md bg-slate-100 text-slate-800 px-3.5 py-2.5';
+    d.innerHTML = html;
+    msgs.appendChild(d);
+    msgs.scrollTop = msgs.scrollHeight;
+    return d;
+  }
   function typing(cb) {
     var t = bubble('<span class="inline-flex gap-1"><span class="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce"></span><span class="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce" style="animation-delay:.15s"></span><span class="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce" style="animation-delay:.3s"></span></span>', false);
     setTimeout(function () { t.remove(); cb(); }, 600);
