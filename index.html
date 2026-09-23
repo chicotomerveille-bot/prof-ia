@@ -1183,45 +1183,49 @@ PDF, poly, photo de cahier : importé en secondes, résumé en 3 points clés.
   var dot = document.getElementById('chat-dot');
   var opened = false, greeted = false;
   var CTA = '<br/><br/><a href="#tarifs" data-chat-link class="inline-block btn-primary-gradient text-white font-extrabold text-xs px-4 py-2.5 rounded-xl">Je configure mon tuteur — 3 900 FCFA →</a>';
+  /* Moteur strict : mots entiers, accents ignorés, score minimum.
+     Score < 2 = repli honnête. Jamais d'invention. */
+  function norm(s) {
+    return ' ' + s.toLowerCase()
+      .replace(/[éèêë]/g, 'e').replace(/[àâä]/g, 'a').replace(/[îï]/g, 'i')
+      .replace(/[ôö]/g, 'o').replace(/[ùûü]/g, 'u').replace(/ç/g, 'c')
+      .replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ') + ' ';
+  }
+  function hit(s, w) { return s.indexOf(' ' + w + ' ') !== -1; }
   var RULES = [
-    { k: ['prix', 'tarif', 'combien', 'coût', 'cout', 'cher', 'fcfa', 'payer', 'paiement', 'paye', 'mobile money', 'wave', 'orange', 'mtn'], t: 'Le Pack coûte <strong>3 900 FCFA, une fois</strong> — accès à vie, zéro abonnement. Pour comparer : une demi-heure de cours particulier = 15 000 FCFA.' + CTA },
-    { k: ['garantie', 'rembours', 'satisfait', 'risque', 'peur'], t: 'Tu es couvert : <strong>30 jours satisfait ou remboursé à 100 %</strong>, sur simple e-mail. Tu ne risques rien.' + CTA },
-    { k: ['install', 'compliqu', 'difficile', 'technique', 'configurer', 'marche', 'fonctionne'], t: 'C\u2019est fait pour les non-techniques : <strong>10 minutes</strong>, vidéo qui filme l\u2019écran, tu copies-colles. iPhone, Android, ordi.' },
-    { k: ['arnaque', 'vrai', 'confiance', 'croire', 'fake', 'mensonge', 'preuve'], t: 'Bonne question : on ne te vend <strong>ni abonnement, ni logiciel, ni IA magique</strong> — juste la méthode exacte pour configurer les IA gratuites (ChatGPT, Gemini…) en vrai tuteur. Transparent, + garantie 30 jours.' },
-    { k: ['triche', 'devoir', 'exercice', 'solution', 'réponse'], t: 'Justement non : les prompts appliquent la <strong>méthode socratique</strong> — l\u2019IA interroge et guide au lieu de donner la réponse. Autonomie garantie le jour du contrôle.' },
-    { k: ['matière', 'matiere', 'niveau', 'filière', 'filiere', 'droit', 'médecine', 'medecine', 'maths', 'svt', 'collège', 'college', 'lycée', 'lycee', 'fac', 'université'], t: '<strong>Toutes matières, tous niveaux</strong> : maths, SVT, droit, médecine… Collège, lycée, fac, concours. Le tuteur s\u2019adapte à ton programme.' },
-    { k: ['reçoi', 'recoi', 'recevoir', 'email', 'e-mail', 'télécharg', 'telecharg', 'livraison', 'accès', 'acces', 'fichier'], t: 'Après paiement : <strong>accès immédiat</strong> — guide + vidéo + 60 prompts + templates, à vie. Lien envoyé aussi par e-mail.' + CTA },
-    { k: ['quoi', 'comprend', 'contient', 'inclus', 'pack', 'offre', 'produit'], t: 'Le Pack = <strong>guide pas-à-pas + masterclass vidéo 15 min + 60 prompts + quiz/flashcards + barème examen</strong>. Valeur 106 000 FCFA, aujourd\u2019hui 3 900 FCFA.' + CTA },
-    { k: ['abonnement', 'mensuel', 'mois', 'résilier'], t: '<strong>Zéro abonnement.</strong> Un seul paiement de 3 900 FCFA, le système est à toi pour toute la scolarité.' },
-    { k: ['bonjour', 'salut', 'hello', 'bonsoir', 'cc'], t: 'Salut ! Pose-moi tes questions : prix, garantie, installation, matières… Je réponds cash.' },
-    { k: ['merci'], t: 'Avec plaisir ! Quand tu es prêt : le tuteur se configure ce soir en 10 minutes.' + CTA },
-    { k: ['parent', 'enfant', 'fils', 'fille', 'ado'], t: 'Pour les parents : fini les soirées devoirs dans la douleur. <strong>3 900 FCFA une fois</strong> au lieu de 30 000 FCFA/h de cours particulier.' + CTA },
-    { k: ['étudiant', 'etudiant', 'élève', 'eleve', 'fac', 'bac'], t: 'Pour toi : tuteur de poche à <strong>23h30 sans jugement</strong>, quiz auto sur tes cours en 10 secondes.' + CTA }
+    { w: { fcfa: 3, combien: 2, prix: 2, tarif: 2, payer: 2, paiement: 2, paye: 2, paie: 2, 'mobile money': 2, wave: 2, cout: 1, cher: 1 }, t: 'Le Pack coûte <strong>3 900 FCFA, une fois</strong> — accès à vie, zéro abonnement. Pour comparer : une demi-heure de cours particulier = 15 000 FCFA.' + CTA },
+    { w: { garantie: 3, rembourse: 3, risque: 1 }, t: 'Tu es couvert : <strong>30 jours satisfait ou remboursé à 100 %</strong>, sur simple e-mail. Tu ne risques rien.' + CTA },
+    { w: { installation: 2, installer: 2, configurer: 2, configure: 1, complique: 2, difficile: 1, technique: 1, marche: 2, fonctionne: 2 }, t: 'C\u2019est fait pour les non-techniques : <strong>10 minutes</strong>, vidéo qui filme l\u2019écran, tu copies-colles. iPhone, Android, ordi.' },
+    { w: { arnaque: 3, fake: 2, mensonge: 2, confiance: 1, croire: 1 }, t: 'Bonne question : on ne te vend <strong>ni abonnement, ni logiciel, ni IA magique</strong> — juste la méthode exacte pour configurer les IA gratuites (ChatGPT, Gemini…) en vrai tuteur. Transparent, + garantie 30 jours.' },
+    { w: { triche: 3, tricher: 2 }, t: 'Justement non : les prompts appliquent la <strong>méthode socratique</strong> — l\u2019IA interroge et guide au lieu de donner la réponse. Autonomie garantie le jour du contrôle.' },
+    { w: { matiere: 2, matieres: 2, filiere: 2, filieres: 2, droit: 2, medecine: 2, maths: 2, svt: 2, physique: 1, niveau: 1, college: 1, lycee: 1, bac: 1 }, t: '<strong>Toutes matières, tous niveaux</strong> : maths, SVT, droit, médecine… Collège, lycée, fac, concours. Le tuteur s\u2019adapte à ton programme.' },
+    { w: { recevoir: 2, recoit: 1, telecharger: 2, livraison: 2, acces: 2, email: 2, mail: 1, fichier: 1, envoi: 1 }, t: 'Après paiement : <strong>accès immédiat</strong> — guide + vidéo + 60 prompts + templates, à vie. Lien envoyé aussi par e-mail.' + CTA },
+    { w: { contient: 2, inclus: 2, inclut: 1, offre: 1, produit: 1, guide: 1, video: 1, prompts: 2, masterclass: 2, exactement: 2, quoi: 1 }, t: 'Le Pack = <strong>guide pas-à-pas + masterclass vidéo 15 min + 60 prompts + quiz/flashcards + barème examen</strong>. Valeur 106 000 FCFA, aujourd\u2019hui 3 900 FCFA.' + CTA },
+    { w: { abonnement: 3, resilier: 2, mensuel: 1 }, t: '<strong>Zéro abonnement.</strong> Un seul paiement de 3 900 FCFA, le système est à toi pour toute la scolarité.' },
+    { w: { contact: 2, support: 2, telephone: 2, tel: 1, humain: 2, aide: 1, personne: 1 }, t: 'Je suis un <strong>assistant automatique</strong> : je réponds sur le prix, la garantie, l\u2019installation et le contenu. Pour un humain, écris au support indiqué dans l\u2019e-mail de commande — réponse sous 24 h.' },
+    { w: { robot: 2, ia: 2, 'qui es': 2, 'qui etes': 2, assistant: 1 }, t: 'Je suis l\u2019<strong>assistant automatique</strong> du site Prof IA : je réponds uniquement sur le Pack (prix, garantie, installation, contenu). Teste-moi !' },
+    { w: { pays: 2, ville: 2, situe: 2, situes: 2, situez: 2, local: 1, ligne: 1, distance: 1, site: 1, ou: 1 }, t: 'Tout est <strong>100 % en ligne</strong> : tu paies sur ton téléphone et tu reçois le Pack aussitôt, où que tu sois.' },
+    { w: { 'combien de temps': 3, delai: 2, duree: 2, quand: 1, temps: 1, vite: 1, rapide: 1 }, t: '<strong>2 minutes</strong> pour recevoir le Pack après paiement, <strong>10 minutes</strong> pour configurer ton tuteur. Ce soir, c\u2019est prêt.' },
+    { w: { bonjour: 2, salut: 2, hello: 2, bonsoir: 2, cc: 2 }, t: 'Salut ! Pose-moi tes questions : prix, garantie, installation, matières… Je réponds cash.' },
+    { w: { merci: 2 }, t: 'Avec plaisir ! Quand tu es prêt : le tuteur se configure ce soir en 10 minutes.' + CTA },
+    { w: { parent: 2, enfant: 2, fils: 1, fille: 1, ado: 2 }, t: 'Pour les parents : fini les soirées devoirs dans la douleur. <strong>3 900 FCFA une fois</strong> au lieu de 30 000 FCFA/h de cours particulier.' + CTA },
+    { w: { etudiant: 2, eleve: 2, eleves: 2, fac: 1 }, t: 'Pour toi : tuteur de poche à <strong>23h30 sans jugement</strong>, quiz auto sur tes cours en 10 secondes.' + CTA }
   ];
-  var FALLBACK = 'Bonne question ! Le plus simple : <strong>10 min d\u2019installation, 3 900 FCFA une fois, remboursé 30 jours</strong>. Regarde la <a href="#faq" data-chat-link class="font-bold text-brand-600 underline">FAQ</a> ou l\u2019<a href="#tarifs" data-chat-link class="font-bold text-brand-600 underline">offre</a>. Autre question ?';
-  function bubble(html, me) {
-    var d = document.createElement('div');
-    d.className = me
-      ? 'ml-8 rounded-2xl rounded-br-md btn-primary-gradient text-white px-3.5 py-2.5'
-      : 'mr-8 rounded-2xl rounded-bl-md bg-slate-100 text-slate-800 px-3.5 py-2.5';
-    d.innerHTML = html;
-    msgs.appendChild(d);
-    msgs.scrollTop = msgs.scrollHeight;
-    return d;
+  var FALLBACK = 'Honnêtement, je ne sais répondre que sur le Pack : <strong>prix, garantie, installation, contenu, matières, paiement, livraison</strong>. Regarde la <a href="#faq" data-chat-link class="font-bold text-brand-600 underline">FAQ</a>, l\u2019<a href="#tarifs" data-chat-link class="font-bold text-brand-600 underline">offre</a>, ou reformule ta question.';
+  function answer(q) {
+    var s = norm(q), best = null, bestScore = 0;
+    for (var i = 0; i < RULES.length; i++) {
+      var score = 0, keys = RULES[i].w;
+      for (var k in keys) {
+        if (Object.prototype.hasOwnProperty.call(keys, k) && hit(s, k)) score += keys[k];
+      }
+      if (score > bestScore) { bestScore = score; best = RULES[i].t; }
+    }
+    return bestScore >= 2 ? best : FALLBACK;
   }
   function typing(cb) {
     var t = bubble('<span class="inline-flex gap-1"><span class="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce"></span><span class="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce" style="animation-delay:.15s"></span><span class="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce" style="animation-delay:.3s"></span></span>', false);
     setTimeout(function () { t.remove(); cb(); }, 600);
-  }
-  function answer(q) {
-    var s = ' ' + q.toLowerCase() + ' ';
-    for (var i = 0; i < RULES.length; i++) {
-      var keys = RULES[i].k;
-      for (var j = 0; j < keys.length; j++) {
-        if (s.indexOf(keys[j]) !== -1) return RULES[i].t;
-      }
-    }
-    return FALLBACK;
   }
   function quickBtns() {
     quick.innerHTML = '';
