@@ -1239,13 +1239,38 @@ var MK_CHECKOUT_URL = 'https://pro-ia.mymaketou.shop/fr/products/prof-ia/checkou
     }
   }
   fab.addEventListener('click', function () { toggle(); });
+  var convo = [];
+  function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function linkify(s) { return s.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener" class="font-bold text-brand-600 underline">$1</a>'); }
+  function askAI(q, done) {
+    var ctrl = null, timed = false;
+    try { ctrl = new AbortController(); } catch (e) {}
+    var to = setTimeout(function () { timed = true; try { if (ctrl) ctrl.abort(); } catch (e) {} }, 12000);
+    convo.push({ role: 'user', content: q });
+    fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: convo.slice(-6) }),
+      signal: ctrl ? ctrl.signal : undefined
+    }).then(function (r) { return r.text().then(function (t) { try { return { ok: r.ok, d: JSON.parse(t) }; } catch (e) { return { ok: false, d: {} }; } }); })
+    .catch(function () { return { ok: false, d: {} }; })
+    .then(function (res) {
+      clearTimeout(to);
+      if (!timed && res.ok && res.d && res.d.reply) {
+        convo.push({ role: 'assistant', content: res.d.reply });
+        done(linkify(esc(res.d.reply)).replace(/\n/g, '<br/>') + CTA);
+      } else {
+        done(answer(q));
+      }
+    });
+  }
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     var q = input.value.trim();
     if (!q) return;
     input.value = '';
-    bubble(q.replace(/</g, '&lt;'), true);
-    typing(function () { bubble(answer(q), false); });
+    bubble(esc(q), true);
+    typing(function () { askAI(q, function (html) { bubble(html, false); }); });
   });
   msgs.addEventListener('click', function (e) {
     var a = e.target.closest('[data-chat-link]');
