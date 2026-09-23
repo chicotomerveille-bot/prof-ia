@@ -1354,8 +1354,14 @@ var MK_CHECKOUT_URL = 'https://pro-ia.mymaketou.shop/products/prof-ia/checkout';
   document.getElementById('exit-cta').addEventListener('click', hide);
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') hide(); });
   // Desktop : souris qui quitte vers le haut (onglet / fermeture).
-  // C'est le seul vrai signal de sortie : rien ne s'affiche au scroll ni au bout d'un délai.
+  // Triple garde : pointeur fin (pas de tactile), curseur vu à l'intérieur
+  // de la page juste avant, sortie par le haut. Rien au scroll, rien au hasard.
+  var lastY = null, finePointer = false;
+  try { finePointer = window.matchMedia('(pointer:fine)').matches; } catch (e) {}
+  document.addEventListener('mousemove', function (e) { lastY = e.clientY; }, { passive: true });
   document.addEventListener('mouseout', function (e) {
+    if (!finePointer) return;
+    if (lastY === null || lastY <= 50) return;
     if (!e.relatedTarget && e.clientY <= 0) show();
   });
 })();
