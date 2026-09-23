@@ -30,7 +30,6 @@
 <h1 class="text-2xl sm:text-3xl font-black tracking-tight">Paiement réussi !</h1>
 <p class="text-sm sm:text-base text-slate-600 mt-2">Ton Pack est prêt. Télécharge-le maintenant :</p>
 <div id="delivery-list" class="mt-4 space-y-2 text-left"></div>
-<p id="pay-ref" class="text-xs text-slate-400 mt-3 font-mono"></p>
 </div>
 <div id="state-fail" class="hidden">
 <h1 class="text-2xl font-black tracking-tight">Paiement non confirmé</h1>
@@ -51,6 +50,13 @@ var DELIVERY = [
 function qs(name) {
   var m = new RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
   return m ? decodeURIComponent(m[1]) : '';
+}
+function cartRef() {
+  try {
+    return qs('cart') || qs('cartId') || localStorage.getItem('mk_cart_id') || '';
+  } catch (e) {
+    return qs('cart') || qs('cartId');
+  }
 }
 function show(id) {
   ['state-loading', 'state-success', 'state-fail'].forEach(function (s) {
@@ -83,22 +89,20 @@ function renderDelivery() {
   });
 }
 function check() {
-  var token = qs('token');
-  if (!token) {
-    document.getElementById('fail-msg').textContent = 'Lien invalide (référence manquante).';
+  var id = cartRef();
+  if (!id) {
+    document.getElementById('fail-msg').textContent = 'Référence de commande introuvable. Vérifie l\u2019e-mail de confirmation Maketou.';
     show('state-fail');
     return;
   }
   show('state-loading');
-  fetch('/api/mf-status?token=' + encodeURIComponent(token))
+  fetch('/api/mk-status?cartId=' + encodeURIComponent(id))
     .then(function (r) { return r.json(); })
     .then(function (d) {
-      var st = d && d.data && d.data.statut;
-      if (d && d.statut && st === 'paid') {
-        document.getElementById('pay-ref').textContent = 'Réf : ' + (d.data.tokenPay || token);
+      if (d && d.status === 'completed') {
         renderDelivery();
         show('state-success');
-      } else if (st === 'pending') {
+      } else if (d && d.status === 'waiting_payment') {
         document.getElementById('fail-msg').textContent = 'Paiement en cours de traitement. Attends 1 minute puis revérifie.';
         show('state-fail');
       } else {
