@@ -1152,11 +1152,14 @@ PDF, poly, photo de cahier : importé en secondes, résumé en 3 points clés.
 })();
 </script>
 <!-- Sales assistant chat -->
-<button id="chat-fab" aria-label="Discuter avec l'assistant" class="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-50 w-14 h-14 rounded-full btn-primary-gradient text-white shadow-glow flex items-center justify-center transform hover:scale-105 transition-transform">
+<div class="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-50 flex items-center gap-2">
+<span id="chat-hint" class="hidden sm:inline-block bg-white border border-slate-200 shadow-lg rounded-full px-4 py-2 text-xs font-extrabold text-slate-800">Une question ? Écris-moi !</span>
+<button id="chat-fab" aria-label="Discuter avec l'assistant" class="relative w-14 h-14 rounded-full btn-primary-gradient text-white shadow-glow flex items-center justify-center transform hover:scale-105 transition-transform">
 <svg id="chat-ico-open" aria-hidden="true" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm3.75 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm3.75 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z"/></svg>
 <svg id="chat-ico-close" aria-hidden="true" class="w-6 h-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
 <span id="chat-dot" class="hidden absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-rose-500 border-2 border-white"></span>
 </button>
+</div>
 <div id="chat-panel" class="fixed z-50 bottom-36 sm:bottom-24 right-4 sm:right-6 w-[calc(100vw-2rem)] max-w-sm bg-white rounded-3xl shadow-2xl border border-slate-200 hidden flex-col overflow-hidden" role="dialog" aria-label="Assistant de vente" style="max-height:min(480px,60vh)">
 <div class="btn-primary-gradient text-white px-5 py-4">
 <p class="font-black text-sm">Assistant Prof IA</p>
@@ -1205,11 +1208,18 @@ PDF, poly, photo de cahier : importé en secondes, résumé en 3 points clés.
     { w: { contact: 2, support: 2, telephone: 2, tel: 1, humain: 2, aide: 1, personne: 1 }, t: 'Je suis un <strong>assistant automatique</strong> : je réponds sur le prix, la garantie, l\u2019installation et le contenu. Pour un humain, écris au support indiqué dans l\u2019e-mail de commande — réponse sous 24 h.' },
     { w: { robot: 2, ia: 2, 'qui es': 2, 'qui etes': 2, assistant: 1 }, t: 'Je suis l\u2019<strong>assistant automatique</strong> du site Prof IA : je réponds uniquement sur le Pack (prix, garantie, installation, contenu). Teste-moi !' },
     { w: { pays: 2, ville: 2, situe: 2, situes: 2, situez: 2, local: 1, ligne: 1, distance: 1, site: 1, ou: 1 }, t: 'Tout est <strong>100 % en ligne</strong> : tu paies sur ton téléphone et tu reçois le Pack aussitôt, où que tu sois.' },
-    { w: { 'combien de temps': 3, delai: 2, duree: 2, quand: 1, temps: 1, vite: 1, rapide: 1 }, t: '<strong>2 minutes</strong> pour recevoir le Pack après paiement, <strong>10 minutes</strong> pour configurer ton tuteur. Ce soir, c\u2019est prêt.' },
+    { w: { 'combien de temps': 3, delai: 2, duree: 2, dure: 2, quand: 1, temps: 1, vite: 1, rapide: 1, combien: 1 }, t: '<strong>2 minutes</strong> pour recevoir le Pack après paiement, <strong>10 minutes</strong> pour configurer ton tuteur. Ce soir, c\u2019est prêt.' },
     { w: { bonjour: 2, salut: 2, hello: 2, bonsoir: 2, cc: 2 }, t: 'Salut ! Pose-moi tes questions : prix, garantie, installation, matières… Je réponds cash.' },
     { w: { merci: 2 }, t: 'Avec plaisir ! Quand tu es prêt : le tuteur se configure ce soir en 10 minutes.' + CTA },
     { w: { parent: 2, enfant: 2, fils: 1, fille: 1, ado: 2 }, t: 'Pour les parents : fini les soirées devoirs dans la douleur. <strong>3 900 FCFA une fois</strong> au lieu de 30 000 FCFA/h de cours particulier.' + CTA },
-    { w: { etudiant: 2, eleve: 2, eleves: 2, fac: 1 }, t: 'Pour toi : tuteur de poche à <strong>23h30 sans jugement</strong>, quiz auto sur tes cours en 10 secondes.' + CTA }
+    { w: { etudiant: 2, eleve: 2, eleves: 2, fac: 1 }, t: 'Pour toi : tuteur de poche à <strong>23h30 sans jugement</strong>, quiz auto sur tes cours en 10 secondes.' + CTA },
+    { w: { difference: 2, different: 1, chatgpt: 1, gemini: 1, gratuit: 1, gratuites: 1 }, t: 'ChatGPT seul donne des réponses toutes faites. Le Pack le transforme en <strong>vrai tuteur qui interroge</strong> et connaît ton programme. C\u2019est toute la différence.' },
+    { w: { pourquoi: 2, sert: 2, utilite: 1, interet: 1 }, t: 'Pour ne plus rester bloqué seul : <strong>explications simples, quiz auto, correction type examen</strong> — à 23h30 comme à 14h.' + CTA },
+    { w: { age: 2, ans: 2, vieux: 1, jeune: 1 }, t: '<strong>Tous âges</strong> : du collège aux adultes en reprise d\u2019études. Si tu as des cours à absorber, c\u2019est pour toi.' },
+    { w: { afrique: 2, benin: 3, senegal: 3, togo: 3, cameroun: 3, burkina: 3, mali: 3, niger: 3, ivoire: 1, pays: 1 }, t: 'Oui, où que tu sois en <strong>Afrique francophone</strong> : paiement Wave, Orange, MTN, Moov, Pack reçu aussitôt.' + CTA },
+    { w: { 'quel numero': 4, numero: 2, whatsapp: 2 }, t: 'Tu paies avec ton <strong>numéro Mobile Money</strong> (Wave, Orange, MTN, Moov) sur la page de paiement sécurisée.' + CTA },
+    { w: { vie: 2, toujours: 1, definitif: 1 }, t: '<strong>Accès à vie</strong> : tu paies 3 900 FCFA une fois, tu gardes le système pour toute ta scolarité. Mises à jour incluses.' },
+    { w: { ok: 2, daccord: 2, oui: 1 }, t: 'Parfait ! Le plus dur, c\u2019est de commencer : <strong>10 minutes ce soir</strong> et ton tuteur est prêt.' + CTA }
   ];
   var FALLBACK = 'Honnêtement, je ne sais répondre que sur le Pack : <strong>prix, garantie, installation, contenu, matières, paiement, livraison</strong>. Regarde la <a href="#faq" data-chat-link class="font-bold text-brand-600 underline">FAQ</a>, l\u2019<a href="#tarifs" data-chat-link class="font-bold text-brand-600 underline">offre</a>, ou reformule ta question.';
   function answer(q) {
@@ -1250,6 +1260,8 @@ PDF, poly, photo de cahier : importé en secondes, résumé en 3 points clés.
   }
   function toggle(force) {
     opened = typeof force === 'boolean' ? force : !opened;
+    var hint = document.getElementById('chat-hint');
+    if (hint && opened) hint.style.display = 'none';
     panel.classList.toggle('hidden', !opened);
     panel.classList.toggle('flex', opened);
     document.getElementById('chat-ico-open').classList.toggle('hidden', opened);
