@@ -157,8 +157,22 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Product","name":"Le Système Prof IA","description":"Pack clé-en-main: guide pas-à-pas + masterclass vidéo + 60 prompts socratiques pour réviser 300+ pages.","brand":{"@type":"Brand","name":"Prof IA"},"offers":{"@type":"Offer","price":"3900","priceCurrency":"XOF","availability":"https://schema.org/InStock","url":"https://prof-ia.example.com/#tarifs"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.9","reviewCount":"312"}}
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Est-ce un abonnement mensuel ou un achat unique ?","acceptedAnswer":{"@type":"Answer","text":"Achat unique 3 900 FCFA, accès à vie. Zéro abonnement."}},{"@type":"Question","name":"L'installation est-elle compliquée ?","acceptedAnswer":{"@type":"Answer","text":"Non. 10 minutes, vidéo écran, copier-coller. iPhone, Android, ordinateur."}},{"@type":"Question","name":"Comment fonctionne la garantie 30 jours ?","acceptedAnswer":{"@type":"Answer","text":"30 jours pour tester. Pas de résultat ? Un e-mail, remboursé à 100 %."}}]}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Est-ce un abonnement mensuel ou un achat unique ?","acceptedAnswer":{"@type":"Answer","text":"Achat unique 3 900 FCFA, à vie. Zéro abonnement, zéro frais cachés."}},{"@type":"Question","name":"L'installation est-elle compliquée ?","acceptedAnswer":{"@type":"Answer","text":"Non. 10 minutes, vidéo écran, copier-coller. iPhone, Android, ordi."}},{"@type":"Question","name":"Comment fonctionne la garantie 30 jours ?","acceptedAnswer":{"@type":"Answer","text":"30 jours. Pas de résultat ? 1 e-mail, remboursé à 100 %."}}]}
 </script>
+<!-- Meta Pixel -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1075654517596850');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1075654517596850&ev=PageView&noscript=1" alt=""/></noscript>
 </head>
 <body class="bg-slate-50 text-slate-900 antialiased selection:bg-brand-500 selection:text-white">
 <a href="#contenu-pack" class="skip-link">Aller au contenu</a>
@@ -1150,6 +1164,7 @@ var MK_CHECKOUT_URL = 'https://pro-ia.mymaketou.shop/products/prof-ia/checkout';
   var btns = document.querySelectorAll('[data-pay]');
   for (var i = 0; i < btns.length; i++) {
     btns[i].addEventListener('click', function () {
+      try { if (typeof fbq !== 'undefined') fbq('track', 'InitiateCheckout', { value: 3900, currency: 'XOF' }); } catch (e) {}
       window.location.href = MK_CHECKOUT_URL;
     });
   }
