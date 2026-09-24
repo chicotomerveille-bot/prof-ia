@@ -4,9 +4,9 @@
    - LLM_API_KEY : ta clé API (jamais exposée au navigateur)
    - LLM_MODEL   : ex. anthropic/claude-3-haiku (optionnel)
    Sans clé : l'API répond 501 et le widget utilise le moteur de règles local. */
-const LLM_API_URL = process.env.LLM_API_URL || '';
+const LLM_API_URL = process.env.LLM_API_URL || 'https://api.deepseek.com/chat/completions';
 const LLM_API_KEY = process.env.LLM_API_KEY || '';
-const LLM_MODEL = process.env.LLM_MODEL || 'anthropic/claude-3-haiku';
+const LLM_MODEL = process.env.LLM_MODEL || 'deepseek-chat';
 
 const SYSTEM = [
   'Tu es l\u2019assistant de vente du site "Système Prof IA" (Sénégal/Afrique francophone). Tu parles français, cash et concret, réponses courtes (2-4 phrases max).',
