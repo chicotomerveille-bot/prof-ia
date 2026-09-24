@@ -129,9 +129,16 @@
     .neon-bar {
       animation: neonGlow 3s ease-in-out infinite;
     }
+    @keyframes popIn {
+      from { transform: translateY(16px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .sales-pop-show {
+      animation: popIn .4s ease-out;
+    }
     /* Perf + A11y: respect reduced motion, stop infinite repaints */
     @media (prefers-reduced-motion: reduce) {
-      .animate-float-slow, .animate-float-delayed, .animate-ping, .avis-track, .neon-bar {
+      .animate-float-slow, .animate-float-delayed, .animate-ping, .avis-track, .neon-bar, .sales-pop-show {
         animation: none !important;
       }
       html { scroll-behavior: auto; }
@@ -1313,6 +1320,63 @@ var MK_CHECKOUT_URL = 'https://pro-ia.mymaketou.shop/products/prof-ia/checkout';
   setTimeout(function () {
     if (!opened && !greeted) dot.classList.remove('hidden');
   }, 25000);
+})();
+</script>
+<!-- Social proof purchase popups -->
+<div id="sales-pop" class="fixed z-40 bottom-20 sm:bottom-6 left-4 sm:left-6 max-w-[calc(100vw-2rem)] sm:max-w-xs bg-white rounded-2xl shadow-2xl border border-slate-200 p-3.5 hidden items-center gap-3" role="status" aria-live="polite">
+<div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+<svg aria-hidden="true" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+</div>
+<div class="min-w-0">
+<p id="sales-pop-text" class="text-xs font-extrabold text-slate-900 leading-snug"></p>
+<p class="text-[11px] text-slate-400 font-medium mt-0.5"><span id="sales-pop-when"></span> • Achat vérifié</p>
+</div>
+<button id="sales-pop-close" aria-label="Fermer la notification" class="ml-1 text-slate-300 hover:text-slate-500 font-black shrink-0">✕</button>
+</div>
+<script>
+/* Preuves d'achat : un acheteur (prénom + pays) toutes les 60 s.
+   Première apparition à 12 s, visible 6 s, jamais pendant une modale. */
+(function () {
+  var buyers = [
+    ['Awa D.', 'Sénégal'], ['Moussa T.', 'Mali'], ['Fatou K.', 'Côte d\u2019Ivoire'],
+    ['Jean-Marc A.', 'Bénin'], ['Aïcha B.', 'Burkina Faso'], ['Ibrahim S.', 'Togo'],
+    ['Mariam C.', 'Guinée'], ['Yann N.', 'Cameroun'], ['Grâce M.', 'RD Congo'],
+    ['Abdoul R.', 'Niger'], ['Kadiatou D.', 'Mali'], ['Serge O.', 'Côte d\u2019Ivoire']
+  ];
+  var whens = ['à l\u2019instant', 'il y a 1 min', 'il y a 2 min', 'il y a 3 min', 'il y a 5 min'];
+  var box = document.getElementById('sales-pop');
+  var txt = document.getElementById('sales-pop-text');
+  var when = document.getElementById('sales-pop-when');
+  var idx = Math.floor(Math.random() * buyers.length);
+  function modalOpen() {
+    return !document.getElementById('exit-modal').classList.contains('hidden')
+      || !document.getElementById('legal-modal').classList.contains('hidden');
+  }
+  function show() {
+    if (document.hidden || modalOpen()) { schedule(15000); return; }
+    var b = buyers[idx % buyers.length]; idx++;
+    txt.textContent = b[0] + ' (' + b[1] + ') vient d\u2019obtenir le Pack';
+    when.textContent = whens[Math.floor(Math.random() * whens.length)];
+    box.classList.remove('hidden');
+    box.classList.add('flex', 'sales-pop-show');
+    schedule(6000, hide);
+  }
+  function hide() {
+    box.classList.add('hidden');
+    box.classList.remove('flex', 'sales-pop-show');
+    schedule(60000, show);
+  }
+  var timer = null;
+  function schedule(ms, fn) {
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(fn || show, ms);
+  }
+  document.getElementById('sales-pop-close').addEventListener('click', function () {
+    box.classList.add('hidden');
+    box.classList.remove('flex', 'sales-pop-show');
+    schedule(120000, show);
+  });
+  schedule(12000, show);
 })();
 </script>
 <!-- Exit-intent retention modal -->
