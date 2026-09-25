@@ -92,6 +92,7 @@ module.exports = async (req, res) => {
   try {
     await put(path, JSON.stringify(d), {
       accessToken: token,
+      access: 'private',
       contentType: 'application/json',
       addRandomSuffix: false,
       allowOverwrite: true
