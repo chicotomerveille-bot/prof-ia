@@ -1,11 +1,13 @@
-/* Stats privées : beacon visiteur + lecture protégée par mot de passe.
-   Stockage : Vercel Blob (1 fichier JSON par jour).
-   - POST /api/track {sid, view, dt, ref, p} → enregistre (public, anonyme)
+/* Stats privées : beacons en fichiers immuables (aucune réécriture → aucune perte).
+   Stockage : Vercel Blob, un petit fichier par envoi.
+   - POST /api/track {sid, view, dt, ref, p} → ajoute un fichier (public, anonyme)
    - GET  /api/track?key=MOT_DE_PASSE → stats agrégées (protégé)
-   Variables Vercel : BLOB_READ_WRITE_TOKEN (auto via Blob Store), ADMIN_STATS_KEY (ton mot de passe). */
+   Variables Vercel : BLOB_READ_WRITE_TOKEN (auto), ADMIN_STATS_KEY (mot de passe). */
 const { list, put } = require('@vercel/blob');
 
-function today() { return new Date().toISOString().slice(0, 10); }
+const MAX_FILES = 3000;
+
+function day() { return new Date().toISOString().slice(0, 10); }
 
 module.exports = async (req, res) => {
   const token = process.env.BLOB_READ_WRITE_TOKEN;
@@ -19,40 +21,52 @@ module.exports = async (req, res) => {
       return;
     }
     try {
-      const out = await list({ prefix: 'stats/days/', limit: 60, token });
-      const files = (out.blobs || []).slice(-30);
-      const debug = { files: files.map((b) => b.pathname + ':' + b.size) };
-      const days = [];
-      let totalViews = 0, totalTime = 0, sessions = 0;
-      const uniq = new Set();
+      let files = [];
+      let cursor;
+      do {
+        const out = await list({ prefix: 'stats/e/', limit: 1000, cursor, token });
+        files = files.concat(out.blobs || []);
+        cursor = out.hasMore ? out.cursor : undefined;
+      } while (cursor && files.length < MAX_FILES);
+      files = files.slice(-MAX_FILES);
+      const byDay = {};
+      const visitors = new Set();
+      let totalViews = 0, totalTime = 0;
       const refs = {};
       const devices = { mobile: 0, desktop: 0 };
-      for (const b of files) {
+      const seenDevices = new Set();
+      await Promise.all(files.map(async (b) => {
         try {
-          const fresh = b.url + (b.url.indexOf('?') === -1 ? '?' : '&') + 'v=' + Date.now();
-          const r = await fetch(fresh, { headers: { Authorization: 'Bearer ' + token } });
-          const d = await r.json();
-          const sids = Object.keys(d.s || {});
-          days.push({ day: b.pathname.split('/').pop().replace('.json', ''), views: d.v || 0, visitors: sids.length });
-          totalViews += d.v || 0;
-          for (const entry of Object.entries(d.s || {})) {
-            const sid = entry[0], s = entry[1];
-            sessions++;
-            totalTime += s.t || 0;
-            uniq.add(sid);
-            const ref = s.r || 'direct';
-            refs[ref] = (refs[ref] || 0) + 1;
-            devices[s.d === 'mobile' ? 'mobile' : 'desktop']++;
+          const r = await fetch(b.url, { headers: { Authorization: 'Bearer ' + token } });
+          const e = await r.json();
+          const d = (b.pathname.split('/')[2] || '').slice(0, 10);
+          if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) return;
+          const dayRow = byDay[d] || (byDay[d] = { views: 0, sids: new Set(), time: 0 });
+          dayRow.views += e.v ? 1 : 0;
+          totalViews += e.v ? 1 : 0;
+          if (e.sid && e.sid !== 'anon') {
+            visitors.add(e.sid);
+            dayRow.sids.add(e.sid);
+            if (!seenDevices.has(e.sid)) {
+              seenDevices.add(e.sid);
+              devices[e.d === 'mobile' ? 'mobile' : 'desktop']++;
+            }
           }
+          dayRow.time += Math.min(300, Number(e.t) || 0);
+          totalTime += Math.min(300, Number(e.t) || 0);
+          const ref = e.r || 'direct';
+          refs[ref] = (refs[ref] || 0) + (e.v ? 1 : 0);
         } catch (e) {}
-      }
+      }));
+      const days = Object.keys(byDay).sort().slice(-30).map((k) => ({
+        day: k, views: byDay[k].views, visitors: byDay[k].sids.size
+      }));
       res.status(200).json({
-        debug,
         days,
         totalViews,
-        visitors: uniq.size,
-        sessions,
-        avgTime: sessions ? Math.round(totalTime / sessions) : 0,
+        visitors: visitors.size,
+        sessions: visitors.size,
+        avgTime: visitors.size ? Math.round(totalTime / visitors.size) : 0,
         refs: Object.entries(refs).sort((a, b) => b[1] - a[1]).slice(0, 10),
         devices
       });
@@ -71,35 +85,26 @@ module.exports = async (req, res) => {
   }
   body = body || {};
   const sid = (body.sid || 'anon').toString().slice(0, 40);
-  const path = 'stats/days/' + today() + '.json';
-  let d = { v: 0, s: {} };
-  try {
-    const out = await list({ prefix: path, limit: 1, token });
-    if (out.blobs && out.blobs.length) {
-      const fresh = out.blobs[0].url + '?v=' + Date.now();
-      const r = await fetch(fresh, { headers: { Authorization: 'Bearer ' + token } });
-      d = await r.json();
-    }
-  } catch (e) {}
-  d.v = (d.v || 0) + (body.view ? 1 : 0);
-  const s = d.s[sid] || { t: 0 };
-  s.t = (s.t || 0) + Math.min(120, Number(body.dt) || 0);
-  if (body.ref) s.r = body.ref.toString().slice(0, 120);
-  if (body.p) s.p = body.p.toString().slice(0, 80);
-  const ua = req.headers['user-agent'] || '';
-  s.d = /mobile|android|iphone|ipad/i.test(ua) ? 'mobile' : 'desktop';
-  d.s[sid] = s;
-  const keys = Object.keys(d.s);
-  if (keys.length > 2000) {
-    for (const k of keys.slice(0, keys.length - 2000)) delete d.s[k];
+  if (!body.view && !(Number(body.dt) > 0)) {
+    res.status(200).json({ ok: true });
+    return;
   }
+  const ua = req.headers['user-agent'] || '';
+  const evt = {
+    sid,
+    v: body.view ? 1 : 0,
+    t: Math.min(300, Number(body.dt) || 0),
+    r: (body.ref || '').toString().slice(0, 120),
+    p: (body.p || '').toString().slice(0, 80),
+    d: /mobile|android|iphone|ipad/i.test(ua) ? 'mobile' : 'desktop'
+  };
+  const name = 'stats/e/' + day() + '/' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8) + '.json';
   try {
-    await put(path, JSON.stringify(d), {
+    await put(name, JSON.stringify(evt), {
       accessToken: token,
       access: 'private',
       contentType: 'application/json',
       addRandomSuffix: false,
-      allowOverwrite: true,
       cacheControlMaxAge: 0
     });
   } catch (e) {
