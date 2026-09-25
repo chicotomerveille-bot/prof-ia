@@ -28,7 +28,8 @@ module.exports = async (req, res) => {
       const devices = { mobile: 0, desktop: 0 };
       for (const b of files) {
         try {
-          const r = await fetch(b.url, { headers: { Authorization: 'Bearer ' + token } });
+          const fresh = b.url + (b.url.indexOf('?') === -1 ? '?' : '&') + 'v=' + Date.now();
+          const r = await fetch(fresh, { headers: { Authorization: 'Bearer ' + token } });
           const d = await r.json();
           const sids = Object.keys(d.s || {});
           days.push({ day: b.pathname.split('/').pop().replace('.json', ''), views: d.v || 0, visitors: sids.length });
@@ -73,7 +74,8 @@ module.exports = async (req, res) => {
   try {
     const out = await list({ prefix: path, limit: 1, token });
     if (out.blobs && out.blobs.length) {
-      const r = await fetch(out.blobs[0].url, { headers: { Authorization: 'Bearer ' + token } });
+      const fresh = out.blobs[0].url + '?v=' + Date.now();
+      const r = await fetch(fresh, { headers: { Authorization: 'Bearer ' + token } });
       d = await r.json();
     }
   } catch (e) {}
