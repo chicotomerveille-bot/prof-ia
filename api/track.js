@@ -99,7 +99,8 @@ module.exports = async (req, res) => {
       access: 'private',
       contentType: 'application/json',
       addRandomSuffix: false,
-      allowOverwrite: true
+      allowOverwrite: true,
+      cacheControlMaxAge: 0
     });
   } catch (e) {
     console.error('[track] put failed:', e && e.message);
