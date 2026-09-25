@@ -21,6 +21,7 @@ module.exports = async (req, res) => {
     try {
       const out = await list({ prefix: 'stats/days/', limit: 60, token });
       const files = (out.blobs || []).slice(-30);
+      const debug = { files: files.map((b) => b.pathname + ':' + b.size) };
       const days = [];
       let totalViews = 0, totalTime = 0, sessions = 0;
       const uniq = new Set();
@@ -46,6 +47,7 @@ module.exports = async (req, res) => {
         } catch (e) {}
       }
       res.status(200).json({
+        debug,
         days,
         totalViews,
         visitors: uniq.size,
