@@ -97,6 +97,8 @@ module.exports = async (req, res) => {
       addRandomSuffix: false,
       allowOverwrite: true
     });
-  } catch (e) {}
+  } catch (e) {
+    console.error('[track] put failed:', e && e.message);
+  }
   res.status(200).json({ ok: true });
 };
