@@ -1441,4 +1441,45 @@ var MK_CHECKOUT_URL = 'https://pro-ia.mymaketou.shop/products/prof-ia/checkout';
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
 })();
 </script>
+<script>
+/* Mesure d'audience anonyme : 1 visiteur = 1 identifiant local, temps actif cumulé. */
+(function () {
+  try {
+    var sid = null;
+    try {
+      sid = localStorage.getItem('profia_sid');
+      if (!sid) {
+        sid = 's' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+        localStorage.setItem('profia_sid', sid);
+      }
+    } catch (e) { sid = 'anon'; }
+    var ref = '';
+    try {
+      if (document.referrer) {
+        var u = new URL(document.referrer);
+        if (u.hostname !== location.hostname) ref = u.hostname;
+      }
+    } catch (e) {}
+    function send(view, dt) {
+      try {
+        var d = JSON.stringify({ sid: sid, view: view ? 1 : 0, dt: dt || 0, ref: ref, p: location.pathname });
+        if (navigator.sendBeacon) { navigator.sendBeacon('/api/track', d); }
+        else { fetch('/api/track', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: d, keepalive: true }); }
+      } catch (e) {}
+    }
+    send(true, 0);
+    var acc = 0, last = Date.now(), active = false;
+    ['mousemove', 'scroll', 'keydown', 'touchstart'].forEach(function (ev) {
+      document.addEventListener(ev, function () { active = true; }, { passive: true });
+    });
+    setInterval(function () {
+      var now = Date.now();
+      if (!document.hidden && active) { acc += Math.round((now - last) / 1000); active = false; }
+      last = now;
+      if (acc >= 30) { send(false, acc); acc = 0; }
+    }, 15000);
+    window.addEventListener('pagehide', function () { send(false, acc); acc = 0; });
+  } catch (e) {}
+})();
+</script>
 </body></html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Stats — Prof IA (privé)</title>
+<meta name="robots" content="noindex, nofollow"/>
+<meta name="theme-color" content="#0f172a"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800;900&amp;display=swap" rel="stylesheet"/>
+<style>body{font-family:'Plus Jakarta Sans',sans-serif}</style>
+</head>
+<body class="bg-slate-950 text-white min-h-screen">
+<main class="max-w-4xl mx-auto px-4 py-10">
+<div id="gate" class="max-w-sm mx-auto mt-16 bg-slate-900 border border-slate-800 rounded-3xl p-8 text-center">
+<h1 class="text-xl font-black">Stats privées</h1>
+<p class="text-xs text-slate-400 mt-1">Lien réservé au propriétaire du site.</p>
+<input id="pwd" type="password" placeholder="Mot de passe" class="mt-5 w-full rounded-xl bg-slate-800 border border-slate-700 text-sm px-4 py-3"/>
+<button id="go" class="mt-3 w-full rounded-xl bg-white text-slate-950 font-extrabold text-sm px-4 py-3">Voir les stats</button>
+<p id="err" class="hidden text-xs font-bold text-rose-400 mt-2">Mot de passe incorrect.</p>
+</div>
+<div id="dash" class="hidden">
+<div class="flex items-center justify-between">
+<div>
+<h1 class="text-2xl font-black">Trafic du site</h1>
+<p class="text-xs text-slate-400">prof-ia-sigma.vercel.app • 30 derniers jours</p>
+</div>
+<button id="refresh" class="text-xs font-bold bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5">Actualiser</button>
+</div>
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mt-6">
+<div class="bg-slate-900 border border-slate-800 rounded-2xl p-4"><p class="text-3xl font-black" id="s-visitors">–</p><p class="text-xs text-slate-400 font-bold">Visiteurs uniques</p></div>
+<div class="bg-slate-900 border border-slate-800 rounded-2xl p-4"><p class="text-3xl font-black" id="s-views">–</p><p class="text-xs text-slate-400 font-bold">Pages vues</p></div>
+<div class="bg-slate-900 border border-slate-800 rounded-2xl p-4"><p class="text-3xl font-black" id="s-time">–</p><p class="text-xs text-slate-400 font-bold">Temps moyen</p></div>
+<div class="bg-slate-900 border border-slate-800 rounded-2xl p-4"><p class="text-3xl font-black" id="s-today">–</p><p class="text-xs text-slate-400 font-bold">Visiteurs aujourd'hui</p></div>
+</div>
+<h2 class="text-sm font-black uppercase tracking-wider text-slate-400 mt-8 mb-3">Visiteurs par jour</h2>
+<div id="bars" class="flex items-end gap-1.5 h-32"></div>
+<h2 class="text-sm font-black uppercase tracking-widest text-slate-400 mt-8 mb-3">Provenance</h2>
+<div id="refs" class="space-y-2 text-sm"></div>
+<p class="text-xs text-slate-500 mt-8">Mobile : <span id="s-mobile">–</span> • Desktop : <span id="s-desktop">–</span></p>
+</div>
+</main>
+<script>
+(function () {
+  var key = '';
+  try { key = sessionStorage.getItem('profia_stats_key') || ''; } catch (e) {}
+  function fmt(s) { s = Math.max(0, Math.round(s)); if (s < 60) return s + ' s'; var m = Math.floor(s / 60); return m + ' min ' + (s % 60) + ' s'; }
+  function load() {
+    fetch('/api/track?key=' + encodeURIComponent(key))
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (res) {
+        if (!res.ok) {
+          document.getElementById('err').classList.remove('hidden');
+          document.getElementById('dash').classList.add('hidden');
+          document.getElementById('gate').classList.remove('hidden');
+          return;
+        }
+        var d = res.d;
+        document.getElementById('gate').classList.add('hidden');
+        document.getElementById('dash').classList.remove('hidden');
+        document.getElementById('s-visitors').textContent = d.visitors;
+        document.getElementById('s-views').textContent = d.totalViews;
+        document.getElementById('s-time').textContent = fmt(d.avgTime);
+        var today = new Date().toISOString().slice(0, 10);
+        var t = (d.days || []).filter(function (x) { return x.day === today; })[0];
+        document.getElementById('s-today').textContent = t ? t.visitors : 0;
+        document.getElementById('s-mobile').textContent = (d.devices && d.devices.mobile) || 0;
+        document.getElementById('s-desktop').textContent = (d.devices && d.devices.desktop) || 0;
+        var bars = document.getElementById('bars');
+        bars.innerHTML = '';
+        var max = 1;
+        (d.days || []).forEach(function (x) { if (x.visitors > max) max = x.visitors; });
+        (d.days || []).slice(-14).forEach(function (x) {
+          var w = document.createElement('div');
+          w.className = 'flex-1 flex flex-col items-center gap-1';
+          w.title = x.day + ' : ' + x.visitors + ' visiteurs, ' + x.views + ' vues';
+          var h = Math.max(4, Math.round((x.visitors / max) * 100));
+          w.innerHTML = '<div class="w-full rounded-t-lg bg-gradient-to-t from-blue-700 to-cyan-400" style="height:' + h + 'px"></div><span class="text-[9px] text-slate-500">' + x.day.slice(5) + '</span>';
+          bars.appendChild(w);
+        });
+        var refs = document.getElementById('refs');
+        refs.innerHTML = '';
+        ((d.refs || []).length ? d.refs : [['(aucune donnée)', 0]]).forEach(function (r) {
+          var row = document.createElement('div');
+          row.className = 'flex items-center justify-between bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5';
+          row.innerHTML = '<span class="font-bold"></span><span class="text-slate-400 font-bold"></span>';
+          row.children[0].textContent = r[0];
+          row.children[1].textContent = r[1];
+          refs.appendChild(row);
+        });
+      })
+      .catch(function () {
+        document.getElementById('err').textContent = 'Serveur injoignable.';
+        document.getElementById('err').classList.remove('hidden');
+      });
+  }
+  document.getElementById('go').addEventListener('click', function () {
+    key = document.getElementById('pwd').value;
+    try { sessionStorage.setItem('profia_stats_key', key); } catch (e) {}
+    load();
+  });
+  document.getElementById('refresh').addEventListener('click', load);
+  if (key) { document.getElementById('pwd').value = key; load(); }
+})();
+</script>
+</body>
+</html>
