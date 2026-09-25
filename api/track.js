@@ -19,7 +19,7 @@ module.exports = async (req, res) => {
       return;
     }
     try {
-      const out = await list({ prefix: 'stats/days/', limit: 60 });
+      const out = await list({ prefix: 'stats/days/', limit: 60, token });
       const files = (out.blobs || []).slice(-30);
       const days = [];
       let totalViews = 0, totalTime = 0, sessions = 0;
@@ -71,7 +71,7 @@ module.exports = async (req, res) => {
   const path = 'stats/days/' + today() + '.json';
   let d = { v: 0, s: {} };
   try {
-    const out = await list({ prefix: path, limit: 1 });
+    const out = await list({ prefix: path, limit: 1, token });
     if (out.blobs && out.blobs.length) {
       const r = await fetch(out.blobs[0].url);
       d = await r.json();
