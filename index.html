@@ -1267,7 +1267,7 @@ var MK_CHECKOUT_URL = 'https://pro-ia.mymaketou.shop/products/prof-ia/checkout';
   fab.addEventListener('click', function () { toggle(); });
   var convo = [];
   function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
-  function linkify(s) { return s.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener" class="font-bold text-brand-600 underline">$1</a>'); }
+  function linkify(s) { s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>'); return s.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener" class="font-bold text-brand-600 underline">$1</a>'); }
   function askAI(q, done) {
     var ctrl = null, timed = false;
     try { ctrl = new AbortController(); } catch (e) {}
